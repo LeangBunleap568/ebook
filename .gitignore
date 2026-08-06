@@ -30,7 +30,7 @@ buildNumber.properties
 .vscode/
 *.vscode
 
-# IntelliJ IDEA (เผื่อเปิดสลับ IDE)
+# IntelliJ IDEA 
 .idea/
 *.iml
 *.iws
