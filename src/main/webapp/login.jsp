@@ -74,9 +74,9 @@
                 </div>
                 
                 <div class="row mt-4">
-                    <div class="col-sm-9 offset-sm-3 d-flex justify-content-between align-items-center">
+                    <div class="col-sm-9 offset-sm-3 d-flex justify-content-between align-items-center ">
                         <a href="#" class="text-decoration-none small text-muted">Need help?</a>
-                        <button type="submit" class="btn btn-signin px-4">Sign in</button>
+                        <button type="submit" class="btn btn-signin px-4" >Sign in</button>
                     </div>
                 </div>
             </form>
