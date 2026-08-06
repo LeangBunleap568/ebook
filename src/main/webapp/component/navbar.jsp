@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!-- Custom Style for Modern Hover Effect -->
 <style>
@@ -52,8 +53,14 @@
             </form>
         </div>
         <div class="col-md-3 text-end">
-            <a href="login.jsp" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">Login</a>
-            <a href="register.jsp" class="btn btn-dark btn-sm rounded-0 px-3">Register</a>
+            <c:if test="${empty userobj}">
+                <a href="login.jsp" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">Login</a>
+                <a href="register.jsp" class="btn btn-dark btn-sm rounded-0 px-3">Register</a>
+            </c:if>
+            <c:if test="${not empty userobj}">
+                <a href="#" class="btn btn-success btn-sm rounded-0 px-3 me-1">${userobj.name}</a>
+
+            </c:if>
         </div>
     </div>
 </div>

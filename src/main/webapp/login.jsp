@@ -59,17 +59,50 @@
         <div class="login-box">
             <h3 class="mb-4 text-dark text-center">Login</h3>
 
-            <form action="${pageContext.request.contextPath}/login" method="post">
+            <%
+                String failedMsg = (String) session.getAttribute("failedMsg");
+                String error = (String) session.getAttribute("error");
+                String succMsg = (String) session.getAttribute("succMsg");
+
+                if (failedMsg != null) {
+            %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= failedMsg %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            <%
+                    session.removeAttribute("failedMsg");
+                } else if (error != null) {
+            %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            <%
+                    session.removeAttribute("error");
+                }
+                if (succMsg != null) {
+            %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= succMsg %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            <%
+                    session.removeAttribute("succMsg");
+                }
+            %>
+
+            <form action="${pageContext.request.contextPath}/login" method="post" autocomplete="off">
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-3 col-form-label small text-end" for="emailExampleInput">Email or username</label>
                     <div class="col-sm-9">
-                        <input type="text" name="email" id="emailExampleInput" class="form-control" required>
+                        <input type="text" name="email" id="emailExampleInput" class="form-control" required autocomplete="off">
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-3 col-form-label small text-end" for="passwordExampleInput">Password</label>
                     <div class="col-sm-9">
-                        <input type="password" name="password" id="passwordExampleInput" class="form-control" required>
+                        <input type="password" name="password" id="passwordExampleInput" class="form-control" required autocomplete="new-password">
                     </div>
                 </div>
                 

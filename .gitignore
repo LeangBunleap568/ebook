@@ -49,3 +49,6 @@ $RECYCLE.BIN/
 .AppleDouble
 .LSOverride
 ._*
+
+# Environment Variables
+.env

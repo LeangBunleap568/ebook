@@ -1,47 +1,51 @@
 package com.user.servlet;
+
 import java.io.IOException;
-import jakarta.servlet.annotation.WebServlet;
+
+
+import com.entity.user;
+
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/login")
 public class loginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+
         try {
             String email = req.getParameter("email");
             String password = req.getParameter("password");
-            if (email != null) {
-                email = email.trim();
-            } else {
-                email = "";
-            }
-            if (password != null) {
-                password = password.trim();
-            } else {
-                password = "";
-            }
 
-            String adminEmail = "admin@gmail.com";
-            String adminUser = "admin";
-            String adminPassword = "admin";
-            boolean isAdmin = adminPassword.equals(password)
-                    && (adminEmail.equalsIgnoreCase(email) || adminUser.equalsIgnoreCase(email));
+            email = (email != null) ? email.trim() : "";
+            password = (password != null) ? password.trim() : "";
 
-            System.out.println("Login attempt email=[" + email + "] password=[" + password + "] admin=[" + isAdmin + "]");
-            if (isAdmin) {
+            System.out.println("Login attempt email=[" + email + "]");
+
+            if ("admin@gmail.com".equals(email)) {
+                user adminUser = new user();
+                adminUser.setName("Admin");
+                adminUser.setEmail(email);
+                session.setAttribute("userobj", adminUser);
                 resp.sendRedirect(req.getContextPath() + "/admin/home.jsp");
             } else {
-                resp.sendRedirect(req.getContextPath() + "/userhomePage.jsp");
+                user normalUser = new user();
+                normalUser.setName("User"); // Or extract name from email prefix
+                normalUser.setEmail(email);
+                session.setAttribute("userobj", normalUser);
+                resp.sendRedirect(req.getContextPath() + "/index.jsp");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
+            System.out.println("loginServlet Exception: " + e.getMessage());
             e.printStackTrace();
+            session.setAttribute("error", "Login error: " + e.getMessage());
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
         }
-            
     }
-    
 }

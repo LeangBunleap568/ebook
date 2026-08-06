@@ -95,36 +95,36 @@
 
             <div id="formAlert" class="alert-inline" role="alert"></div>
 
-            <form action="register" method="post" onsubmit="return validateRegisterForm();">
+            <form action="register" method="post" onsubmit="return validateRegisterForm();" autocomplete="off">
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-4 col-form-label small text-end">Full Name</label>
                     <div class="col-sm-8">
-                        <input type="text" id="name" name="name" class="form-control" required>
+                        <input type="text" id="name" name="name" class="form-control" required autocomplete="off">
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-4 col-form-label small text-end">E-mail</label>
                     <div class="col-sm-8">
-                        <input type="email" id="email" name="email" class="form-control" required>
+                        <input type="email" id="email" name="email" class="form-control" required autocomplete="off">
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-4 col-form-label small text-end">Phone Number</label>
                     <div class="col-sm-8">
-                        <input type="tel" id="phone" name="phone" class="form-control" required>
+                        <input type="tel" id="phone" name="phone" class="form-control" required autocomplete="off">
                     </div>
                 </div>
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-4 col-form-label small text-end">Password</label>
                     <div class="col-sm-8">
-                        <input type="password" id="password" name="password" class="form-control" required>
+                        <input type="password" id="password" name="password" class="form-control" required autocomplete="new-password">
                     </div>
                 </div>
 
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-4 col-form-label small text-end">Confirm Password</label>
                     <div class="col-sm-8">
-                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required autocomplete="new-password">
                     </div>
                 </div>
 
