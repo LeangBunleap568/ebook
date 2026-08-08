@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ebook App - Home</title>
     <%@include file="component/rootCss.jsp" %>
-	<%@ page import="java.sql.Connection" %>
-	<%@ page import="com.db.DBconnect" %>
 </head>
 <body class="bg-light">
 
@@ -20,8 +18,6 @@
             <p class="lead text-light">Discover thousands of books, read anywhere, and upgrade your knowledge.</p>
         </div>
     </div>
-	<% Connection conn = DBconnect.getConn();
-	out.println(conn); %>
     <!-- 1. Recent Books Section -->
     <div class="container my-5">
         <h3 class="text-center fw-bold mb-4">Recent Books</h3>

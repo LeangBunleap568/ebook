@@ -2,8 +2,9 @@ package com.user.servlet;
 
 import java.io.IOException;
 
+import com.DAO.UserDAOImpl;
+import com.db.DBconnect;
 import com.entity.user;
-
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,51 +21,41 @@ public class RegisterServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         try {
-            // Fetch form parameters
             String name = req.getParameter("name");
             String email = req.getParameter("email");
             String phone = req.getParameter("phone");
             String password = req.getParameter("password");
-            String confirm = req.getParameter("confirm_password");
-
-            // Validate name
-            if (name == null || name.trim().isEmpty() || !name.matches("[a-zA-Z\\s]+")) {
-                session.setAttribute("error", "Name must contain only letters");
-                resp.sendRedirect("register.jsp");
-                return;
-            }
-
-            // Validate password match
-            if (password == null || confirm == null || !password.equals(confirm)) {
-                session.setAttribute("error", "Passwords do not match");
-                resp.sendRedirect("register.jsp");
-                return;
-            }
 
             // Build user entity
             user us = new user();
-            us.setName(name.trim());
-            us.setEmail(email.trim());
-            us.setPhone(phone);
-            us.setPassword(password);
+            us.setName(name != null ? name.trim() : "");
+            us.setEmail(email != null ? email.trim() : "");
+            us.setPhone(phone != null ? phone.trim() : "");
+            us.setPassword(password != null ? password : "");
 
-            // Insert into database (removed as per instructions)
-            // Just simulate success
-            boolean success = true;
+            // Save to DB — throws exception on any failure
+            UserDAOImpl dao = new UserDAOImpl(DBconnect.getConn());
+            dao.userRegistre(us);
 
-            if (success) {
-                session.setAttribute("succMsg", "User Registered Successfully");
-                resp.sendRedirect("register.jsp");
-            } else {
-                session.setAttribute("error", "Registration failed. Email may already exist.");
-                resp.sendRedirect("register.jsp");
-            }
+            // If we reach here, insert was successful
+            session.setAttribute("succMsg", "Registration successful! Please log in.");
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
 
         } catch (Exception e) {
-            System.out.println("RegisterServlet Exception: " + e.getMessage());
+            // Print the FULL cause chain so we can see the real MySQL error
+            System.out.println("========================================");
+            System.out.println("❌ RegisterServlet error: " + e.getMessage());
+            Throwable cause = e.getCause();
+            while (cause != null) {
+                System.out.println("   Caused by: " + cause.getMessage());
+                cause = cause.getCause();
+            }
             e.printStackTrace();
-            session.setAttribute("error", "Registration error: " + e.getMessage());
-            resp.sendRedirect("register.jsp");
+            System.out.println("========================================");
+
+            String msg = (e.getMessage() != null) ? e.getMessage() : e.getClass().getName();
+            session.setAttribute("error", msg);
+            resp.sendRedirect(req.getContextPath() + "/register.jsp");
         }
     }
 }

@@ -1,70 +1,113 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.sql.*" %>
-<%@ page import="com.db.DBconnect" %>
+<%@ page import="java.sql.*, com.db.DBconnect, com.DAO.UserDAOImpl, com.entity.user" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aiven Connection Test</title>
+    <title>DB Diagnostic</title>
     <style>
-        body { font-family: Arial; padding: 20px; }
-        .box { padding: 20px; margin: 10px 0; border-radius: 5px; }
-        .success { background: #d4edda; border: 2px solid #28a745; color: #155724; }
-        .error { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
+        body { font-family: Arial, sans-serif; padding: 30px; background: #f4f4f4; }
         h1 { color: #333; }
-        pre { background: #f4f4f4; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .box { padding: 16px 20px; margin: 12px 0; border-radius: 6px; font-size: 15px; }
+        .ok  { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+        .err { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
+        .inf { background: #d1ecf1; border: 2px solid #17a2b8; color: #0c5460; }
+        pre  { background: #fff; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 13px; }
+        a.btn { display: inline-block; margin-top: 20px; padding: 10px 20px;
+                background: #303f9f; color: #fff; border-radius: 4px; text-decoration: none; }
     </style>
 </head>
 <body>
-    <h1>🔌 Aiven Database Connection Test</h1>
-    <hr>
-    
-    <%
+<h1>🔍 Ebook DB Diagnostic</h1>
+<hr>
+<%
+    // ── STEP 1: Connection ──────────────────────────────────────────
+    Connection conn = null;
+    try {
+        conn = DBconnect.getConn();
+    } catch (Exception e) {
+        out.println("<div class='box err'><b>❌ STEP 1 FAILED — Cannot get connection</b><br>" + e.getMessage() + "<pre>");
+        e.printStackTrace(new java.io.PrintWriter(out));
+        out.println("</pre></div>");
+    }
+
+    if (conn != null && !conn.isClosed()) {
+        out.println("<div class='box ok'>✅ <b>STEP 1 PASSED</b> — Connected to MySQL<br>"
+            + "URL: " + conn.getMetaData().getURL() + "<br>"
+            + "DB: "  + conn.getCatalog() + "</div>");
+
+        // ── STEP 2: Table check / auto-create ──────────────────────
         try {
-            out.println("<div class='box'>");
-            Connection conn = DBconnect.getConn();
-            
-            if (conn == null) {
-                out.println("<div class='box error'>");
-                out.println("<h2>❌ FAILED: Connection is NULL</h2>");
-                out.println("<p>DBconnect.getConn() returned null</p>");
-                out.println("</div>");
-            } else if (conn.isClosed()) {
-                out.println("<div class='box error'>");
-                out.println("<h2>❌ FAILED: Connection is CLOSED</h2>");
-                out.println("</div>");
-            } else {
-                out.println("<div class='box success'>");
-                out.println("<h2>✓ SUCCESS: Connected to Aiven!</h2>");
-                out.println("<p><strong>Database Product:</strong> " + conn.getMetaData().getDatabaseProductName() + "</p>");
-                out.println("<p><strong>URL:</strong> " + conn.getMetaData().getURL() + "</p>");
-                out.println("<p><strong>Database Version:</strong> " + conn.getMetaData().getDatabaseProductVersion() + "</p>");
-                
-                // Check user table
-                DatabaseMetaData dbm = conn.getMetaData();
-                ResultSet tables = dbm.getTables(null, null, "user", null);
-                
-                if (tables.next()) {
-                    out.println("<h3>✓ Table 'user' EXISTS</h3>");
-                } else {
-                    out.println("<h3>❌ Table 'user' NOT FOUND</h3>");
+            UserDAOImpl dao = new UserDAOImpl(conn);
+            out.println("<div class='box ok'>✅ <b>STEP 2 PASSED</b> — UserDAOImpl initialized (table ensured)</div>");
+
+            // ── STEP 3: Count existing users ───────────────────────
+            try (Statement st = conn.createStatement();
+                 ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM `user`")) {
+                if (rs.next()) {
+                    out.println("<div class='box inf'>ℹ️ <b>STEP 3</b> — Users in DB: <b>" + rs.getInt(1) + "</b></div>");
                 }
-                
-                out.println("</div>");
-                conn.close();
             }
+
+            // ── STEP 4: Test register ───────────────────────────────
+            String testEmail = "test_diag_" + System.currentTimeMillis() + "@test.com";
+            user testUser = new user();
+            testUser.setName("Test User");
+            testUser.setEmail(testEmail);
+            testUser.setPhone("0000000000");
+            testUser.setPassword("test123");
+
+            boolean registered = false;
+            try {
+                registered = dao.userRegistre(testUser);
+            } catch (Exception e) {
+                out.println("<div class='box err'>❌ <b>STEP 4 FAILED</b> — Register threw exception:<br>"
+                    + e.getMessage() + "<pre>");
+                e.printStackTrace(new java.io.PrintWriter(out));
+                out.println("</pre></div>");
+            }
+
+            if (registered) {
+                out.println("<div class='box ok'>✅ <b>STEP 4 PASSED</b> — Test user INSERT successful<br>Email: " + testEmail + "</div>");
+
+                // ── STEP 5: Test login ──────────────────────────────
+                user loggedIn = null;
+                try {
+                    loggedIn = dao.login(testEmail, "test123");
+                } catch (Exception e) {
+                    out.println("<div class='box err'>❌ <b>STEP 5 FAILED</b> — Login threw exception:<br>" + e.getMessage() + "</div>");
+                }
+
+                if (loggedIn != null) {
+                    out.println("<div class='box ok'>✅ <b>STEP 5 PASSED</b> — Login successful for: <b>"
+                        + loggedIn.getName() + "</b> (" + loggedIn.getEmail() + ")</div>");
+
+                    // Cleanup test user
+                    try (PreparedStatement del = conn.prepareStatement("DELETE FROM `user` WHERE email = ?")) {
+                        del.setString(1, testEmail);
+                        del.executeUpdate();
+                        out.println("<div class='box inf'>🧹 Test user cleaned up.</div>");
+                    }
+
+                    out.println("<div class='box ok' style='font-size:18px;'>"
+                        + "🎉 <b>ALL STEPS PASSED</b> — Register &amp; Login are fully working!</div>");
+                } else {
+                    out.println("<div class='box err'>❌ <b>STEP 5 FAILED</b> — Login returned null (credential mismatch or query error)</div>");
+                }
+            }
+
         } catch (Exception e) {
-            out.println("<div class='box error'>");
-            out.println("<h2>❌ ERROR:</h2>");
-            out.println("<p><strong>" + e.getClass().getName() + "</strong></p>");
-            out.println("<p>" + e.getMessage() + "</p>");
-            out.println("<pre>");
+            out.println("<div class='box err'>❌ <b>STEP 2/3 FAILED</b>:<br>" + e.getMessage() + "<pre>");
             e.printStackTrace(new java.io.PrintWriter(out));
-            out.println("</pre>");
-            out.println("</div>");
+            out.println("</pre></div>");
         }
-    %>
-    
-    <hr>
-    <p><a href="register.jsp">Back to Register</a></p>
+
+    } else if (conn == null) {
+        out.println("<div class='box err'>❌ <b>Connection is NULL</b> — Check DBconnect credentials</div>");
+    }
+%>
+
+<a class="btn" href="register.jsp">→ Go to Register</a>
+&nbsp;&nbsp;
+<a class="btn" href="login.jsp">→ Go to Login</a>
 </body>
 </html>

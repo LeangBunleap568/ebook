@@ -1,8 +1,10 @@
 package com.DAO;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import com.entity.user;
 
@@ -12,55 +14,80 @@ public class UserDAOImpl implements UserDAO {
     public UserDAOImpl(Connection conn) {
         super();
         this.conn = conn;
+        ensureTableExists();
+    }
+
+    private void ensureTableExists() {
+        if (conn == null) return;
+        try {
+            DatabaseMetaData meta = conn.getMetaData();
+            try (ResultSet rs = meta.getTables(null, null, "user", new String[]{"TABLE"})) {
+                if (!rs.next()) {
+                    System.out.println("Creating `user` table...");
+                    String sql =
+                        "CREATE TABLE `user` (" +
+                        "  id       INT NOT NULL AUTO_INCREMENT," +
+                        "  name     VARCHAR(100) NOT NULL," +
+                        "  email    VARCHAR(150) NOT NULL UNIQUE," +
+                        "  phone    VARCHAR(20)  DEFAULT NULL," +
+                        "  password VARCHAR(255) NOT NULL," +
+                        "  address  VARCHAR(255) DEFAULT NULL," +
+                        "  landmark VARCHAR(100) DEFAULT NULL," +
+                        "  city     VARCHAR(100) DEFAULT NULL," +
+                        "  state    VARCHAR(100) DEFAULT NULL," +
+                        "  pincode  VARCHAR(20)  DEFAULT NULL," +
+                        "  PRIMARY KEY (id)" +
+                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+                    try (Statement st = conn.createStatement()) {
+                        st.executeUpdate(sql);
+                        System.out.println("`user` table created.");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("ensureTableExists error: " + e.getMessage());
+        }
     }
 
     @Override
     public boolean userRegistre(user us) {
-        boolean f = false;
+        if (conn == null) {
+            throw new RuntimeException("Cannot connect to database. Check MySQL is running and credentials are correct.");
+        }
         try {
-            // Generate next ID
-            int nextId = 1;
-            String idSql = "SELECT COALESCE(MAX(id), 0) + 1 FROM `user`";
-            try (PreparedStatement idPs = conn.prepareStatement(idSql);
-                 ResultSet rs = idPs.executeQuery()) {
-                if (rs.next()) {
-                    nextId = rs.getInt(1);
-                }
-            }
-
-            // Insert new user
-            String sql = "INSERT INTO `user` (id, name, email, phone, password) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO `user` (name, email, phone, password) VALUES (?, ?, ?, ?)";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, nextId);
-                ps.setString(2, us.getName());
-                ps.setString(3, us.getEmail());
-                ps.setString(4, us.getPhone());
-                ps.setString(5, us.getPassword());
-
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected == 1) {
-                    f = true;
-                    System.out.println("User registered successfully with ID: " + nextId);
-                }
+                ps.setString(1, us.getName());
+                ps.setString(2, us.getEmail());
+                ps.setString(3, us.getPhone());
+                ps.setString(4, us.getPassword());
+                ps.executeUpdate();
+                System.out.println("User registered: " + us.getEmail());
+                return true;
             }
         } catch (Exception e) {
-            System.out.println("UserDAO Error: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Register error: " + e.getMessage());
+            // Surface a user-friendly message for duplicate email
+            if (e.getMessage() != null && e.getMessage().contains("Duplicate entry")) {
+                throw new RuntimeException("This email is already registered. Please use a different email.");
+            }
+            throw new RuntimeException("Registration failed: " + e.getMessage());
         }
-        return f;
     }
 
     @Override
     public user login(String email, String password) {
-        user us = null;
+        if (conn == null) {
+            throw new RuntimeException("Cannot connect to database.");
+        }
         try {
-            String sql = "SELECT * FROM `user` WHERE email=? AND password=?";
+            String sql = "SELECT * FROM `user` WHERE email = ? AND password = ?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, email);
                 ps.setString(2, password);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        us = new user();
+                        user us = new user();
                         us.setId(rs.getInt("id"));
                         us.setName(rs.getString("name"));
                         us.setEmail(rs.getString("email"));
@@ -71,14 +98,14 @@ public class UserDAOImpl implements UserDAO {
                         us.setCity(rs.getString("city"));
                         us.setState(rs.getString("state"));
                         us.setPincode(rs.getString("pincode"));
+                        return us;
                     }
                 }
             }
         } catch (Exception e) {
-            System.out.println("UserDAO login error: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("Login error: " + e.getMessage());
+            throw new RuntimeException("Login failed: " + e.getMessage());
         }
-        return us;
+        return null; // credentials not found
     }
 }
-

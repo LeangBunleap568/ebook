@@ -2,7 +2,9 @@ package com.user.servlet;
 
 import java.io.IOException;
 
-
+import com.DAO.UserDAO;
+import com.DAO.UserDAOImpl;
+import com.db.DBconnect;
 import com.entity.user;
 
 import jakarta.servlet.ServletException;
@@ -20,27 +22,32 @@ public class loginServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         try {
-            String email = req.getParameter("email");
+            String email    = req.getParameter("email");
             String password = req.getParameter("password");
 
-            email = (email != null) ? email.trim() : "";
+            email    = (email    != null) ? email.trim()    : "";
             password = (password != null) ? password.trim() : "";
 
-            System.out.println("Login attempt email=[" + email + "]");
+            System.out.println("Login attempt: email=[" + email + "]");
 
-            if ("admin@gmail.com".equals(email)) {
-                user adminUser = new user();
-                adminUser.setName("Admin");
-                adminUser.setEmail(email);
-                session.setAttribute("userobj", adminUser);
-                resp.sendRedirect(req.getContextPath() + "/admin/home.jsp");
+            // Query the database
+            UserDAO dao = new UserDAOImpl(DBconnect.getConn());
+            user us = dao.login(email, password);
+
+            if (us != null) {
+                session.setAttribute("userobj", us);
+
+                // Redirect admin users to the admin dashboard
+                if ("admin@gmail.com".equalsIgnoreCase(us.getEmail())) {
+                    resp.sendRedirect(req.getContextPath() + "/admin/home.jsp");
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/index.jsp");
+                }
             } else {
-                user normalUser = new user();
-                normalUser.setName("User"); // Or extract name from email prefix
-                normalUser.setEmail(email);
-                session.setAttribute("userobj", normalUser);
-                resp.sendRedirect(req.getContextPath() + "/index.jsp");
+                session.setAttribute("failedMsg", "Invalid email or password. Please try again.");
+                resp.sendRedirect(req.getContextPath() + "/login.jsp");
             }
+
         } catch (Exception e) {
             System.out.println("loginServlet Exception: " + e.getMessage());
             e.printStackTrace();
