@@ -16,7 +16,7 @@
         height: 2px;
         bottom: 4px;
         left: 0;
-        background-color: #ffc107; /* ពណ៌លឿងស្រដៀងនឹងปຸ່ມ Setting ឬអាចប្តូរតាមតម្រូវការ */
+        background-color: #ffc107;
         transition: width 0.3s ease-in-out;
     }
 
@@ -44,23 +44,36 @@
 <div class="container-fluid px-4 py-3 bg-white border-bottom">
     <div class="row align-items-center">
         <div class="col-md-3 text-primary">
-            <h4 class="fw-bold mb-0">Ebook Store</h4>
+            <h4 class="fw-bold mb-0"><i class="fas fa-book-open text-primary me-2"></i>Ebook Store</h4>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <form class="d-flex" role="search">
                 <input class="form-control rounded-0 me-2" type="search" placeholder="Search books..." aria-label="Search">
                 <button class="btn btn-outline-primary rounded-0 px-3" type="submit">Search</button>
             </form>
         </div>
-        <div class="col-md-3 text-end">
-            <c:if test="${empty userobj}">
-                <a href="login.jsp" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">Login</a>
-                <a href="register.jsp" class="btn btn-dark btn-sm rounded-0 px-3">Register</a>
-            </c:if>
-            <c:if test="${not empty userobj}">
-                <a href="#" class="btn btn-success btn-sm rounded-0 px-3 me-1">${userobj.name}</a>
+        <div class="col-md-4 text-end">
+            <c:choose>
+                <%-- ONLY ADMIN SEES LOGOUT --%>
+                <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or pageContext.request.requestURI.contains('/admin/')}">
+                    <a href="#" class="btn btn-success btn-sm rounded-0 px-3 me-1">
+                        <i class="fas fa-user-shield me-1"></i>Admin
+                    </a>
+                    <a href="${pageContext.request.contextPath}/logout" class="btn btn-danger btn-sm rounded-0 px-3">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                </c:when>
 
-            </c:if>
+                <%-- NORMAL USER SEES ONLY SIGN IN + REGISTER --%>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/login.jsp" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">
+                        <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                    </a>
+                    <a href="${pageContext.request.contextPath}/register.jsp" class="btn btn-dark btn-sm rounded-0 px-3">
+                        <i class="fas fa-user-plus me-1"></i>Register
+                    </a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>
@@ -72,25 +85,55 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item me-2">
-                    <a class="nav-link text-white active" aria-current="page" href="index.jsp">Home</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a class="nav-link text-white" href="#">Recent Book</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a class="nav-link text-white" href="#">New Book</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a class="nav-link text-white" href="#">Old Book</a>
-                </li>
-            </ul>
-            
-            <div class="d-flex align-items-center gap-2">
-                <a href="#" class="btn btn-light btn-sm text-dark rounded-0 px-3">Contact Us</a>
-                <a href="#" class="btn btn-warning btn-sm text-dark rounded-0 px-3">Setting</a>
-            </div>
+            <c:choose>
+                <%-- ONLY ADMIN SEES ADD BOOKS, ALL BOOKS, ORDERS --%>
+                <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or pageContext.request.requestURI.contains('/admin/')}">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white active" href="${pageContext.request.contextPath}/admin/home.jsp">
+                                <i class="fas fa-home me-1"></i>Home
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/admin/addBook.jsp">
+                                <i class="fas fa-plus-circle me-1"></i>Add Books
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/admin/allBook.jsp">
+                                <i class="fas fa-book-open me-1"></i>All Books
+                            </a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/admin/orderBook.jsp">
+                                <i class="fas fa-box-open me-1"></i>Orders
+                            </a>
+                        </li>
+                    </ul>
+                </c:when>
+
+                <%-- NORMAL USER SEES STANDARD STORE MENU ONLY (NO ADD BOOKS, ALL BOOKS, ORDERS, ADMIN, OR LOGOUT) --%>
+                <c:otherwise>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white active" aria-current="page" href="${pageContext.request.contextPath}/index.jsp">Home</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/index.jsp#recent-books">Recent Book</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/index.jsp#new-books">New Book</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/index.jsp#old-books">Old Book</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="#" class="btn btn-light btn-sm text-dark rounded-0 px-3">Contact Us</a>
+                        <a href="#" class="btn btn-warning btn-sm text-dark rounded-0 px-3">Setting</a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </nav>
