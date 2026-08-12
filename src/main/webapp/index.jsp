@@ -49,8 +49,8 @@
                     <img src="img/javaBook.jpg" class="card-img-top mx-auto mt-2 book-img" alt="Java Programming">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Java Programming</h5>
-                            <p class="text-muted small mb-1">Author: John Doe</p>
+                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Java Programmings</h5>
+                            <p class="text-muted small mb-1">Author: Joyce Farrell</p>
                             <span class="badge bg-primary-subtle text-primary rounded-0 mb-2">Recent</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
@@ -65,10 +65,10 @@
             <!-- Book 2 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/1670219741murach.webp" class="card-img-top mx-auto mt-2 book-img" alt="Murach Servlets">
+                    <img src="img/1670219741murach.webp" class="card-img-top mx-auto mt-2 book-img" alt="Murach Java Servlets and JSP">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Murach's Java Servlets</h5>
+                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Murach's Java Servlets & JSP</h5>
                             <p class="text-muted small mb-1">Author: Joel Murach</p>
                             <span class="badge bg-primary-subtle text-primary rounded-0 mb-2">Recent</span>
                         </div>
@@ -84,7 +84,7 @@
             <!-- Book 3 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/61aatAAWF6L._UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="Spring Boot">
+                    <img src="img/61aatAAWF6L._UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="Spring Boot in Action">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Spring Boot in Action</h5>
@@ -151,10 +151,10 @@
             <!-- Book 2 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/717hDNtqA5L._AC_UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="JavaScript Guide">
+                    <img src="img/717hDNtqA5L._AC_UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="JavaScript The Definitive Guide">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">JavaScript Definitive Guide</h5>
+                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">JavaScript: Definitive Guide</h5>
                             <p class="text-muted small mb-1">Author: David Flanagan</p>
                             <span class="badge bg-success-subtle text-success rounded-0 mb-2">New</span>
                         </div>
@@ -170,11 +170,11 @@
             <!-- Book 3 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (1).jpg" class="card-img-top mx-auto mt-2 book-img" alt="React & Redux">
+                    <img src="img/images (1).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Learning React">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">React & Redux Guide</h5>
-                            <p class="text-muted small mb-1">Author: Dan Abramov</p>
+                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Learning React</h5>
+                            <p class="text-muted small mb-1">Author: Alex Banks & Eve Porcello</p>
                             <span class="badge bg-success-subtle text-success rounded-0 mb-2">New</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
@@ -189,11 +189,11 @@
             <!-- Book 4 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (2).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Full Stack Dev">
+                    <img src="img/images (2).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Full-Stack Web Development with React and Node">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Full Stack Web Dev</h5>
-                            <p class="text-muted small mb-1">Author: Angela Yu</p>
+                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Full-Stack Web Dev</h5>
+                            <p class="text-muted small mb-1">Author: Eric Sarrion</p>
                             <span class="badge bg-success-subtle text-success rounded-0 mb-2">New</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
@@ -218,11 +218,11 @@
             <!-- Book 1 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (3).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Database Systems">
+                    <img src="img/images (3).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Database System Concepts">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Database Systems Classic</h5>
-                            <p class="text-muted small mb-1">Author: Abraham S.</p>
+                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Database System Concepts</h5>
+                            <p class="text-muted small mb-1">Author: Abraham Silberschatz</p>
                             <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
@@ -237,11 +237,11 @@
             <!-- Book 2 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (4).jpg" class="card-img-top mx-auto mt-2 book-img" alt="C++ Programming">
+                    <img src="img/images (4).jpg" class="card-img-top mx-auto mt-2 book-img" alt="C++ Primer">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">C++ Programming Primer</h5>
-                            <p class="text-muted small mb-1">Author: Stanley B.</p>
+                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">C++ Primer</h5>
+                            <p class="text-muted small mb-1">Author: Stanley B. Lippman</p>
                             <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
@@ -256,11 +256,11 @@
             <!-- Book 3 -->
             <div class="col-md-3">
                 <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (5).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Data Structures">
+                    <img src="img/images (5).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Data Structures and Algorithm Analysis in C">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Data Structures in C</h5>
-                            <p class="text-muted small mb-1">Author: Mark Allen</p>
+                            <p class="text-muted small mb-1">Author: Mark Allen Weiss</p>
                             <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
@@ -279,7 +279,7 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Computer Networks</h5>
-                            <p class="text-muted small mb-1">Author: Andrew S.</p>
+                            <p class="text-muted small mb-1">Author: Andrew S. Tanenbaum</p>
                             <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
