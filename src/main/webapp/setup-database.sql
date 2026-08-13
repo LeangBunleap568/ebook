@@ -2,21 +2,18 @@
 -- Ebook App - Database Setup Script
 -- Run this in MySQL before deploying the application.
 --
--- MySQL: root@localhost:3306
--- Run with: mysql -u root -pebook123 < setup-database.sql
+-- MySQL Port: 3309 (Updated to match your MySQL Workbench)
 -- ============================================================
 
 -- Step 1: Create the database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS ebook
+CREATE DATABASE IF NOT EXISTS `ebook-app`
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 
 -- Step 2: Use the ebook database
-USE ebook;
+USE `ebook-app`;
 
 -- Step 3: Create the user table if it doesn't exist
--- (The app also auto-creates this table on first connection,
---  but running this manually ensures it's ready.)
 CREATE TABLE IF NOT EXISTS `user` (
     id       INT          NOT NULL AUTO_INCREMENT,
     name     VARCHAR(100) NOT NULL,
@@ -35,4 +32,3 @@ CREATE TABLE IF NOT EXISTS `user` (
 SELECT 'Database and table are ready!' AS status;
 SHOW TABLES;
 DESCRIBE `user`;
-

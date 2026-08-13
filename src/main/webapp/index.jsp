@@ -8,16 +8,28 @@
     <%@include file="component/rootCss.jsp" %>
     <style>
         .book-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            transition: all 0.25s ease-in-out;
+            border: 1px solid rgba(0, 0, 0, 0.06) !important;
+            border-radius: 12px !important;
         }
         .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
+        }
+        .book-img-wrapper {
+            height: 220px;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #f8f9fa;
         }
         .book-img {
-            height: 200px;
-            object-fit: cover;
+            height: 100%;
             width: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .book-card:hover .book-img {
+            transform: scale(1.04);
         }
     </style>
 </head>
@@ -25,272 +37,321 @@
 
     <%@include file="component/navbar.jsp" %>
 
-    <!-- Hero Banner Section -->
-    <div class="text-center text-white py-5 shadow-sm" style="background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('img/javaBook.jpg'); background-size: cover; background-position: center; padding: 100px 20px;">
-        <div class="container">
-            <h1 class="display-4 fw-bold text-white mb-3"><i class="fas fa-book-reader text-warning me-2"></i>Ebook Management System</h1>
-            <p class="lead text-light mb-4">Discover thousands of technology, programming, and classic ebooks in Cambodian Riel.</p>
-            <a href="register.jsp" class="btn btn-warning rounded-0 px-4 py-2 fw-bold text-dark me-2">Get Started</a>
-            <a href="#recent-books" class="btn btn-outline-light rounded-0 px-4 py-2">Explore Catalog</a>
-        </div>
-    </div>
-
-    <!-- 1. Recent Books Section -->
-    <div class="container my-5" id="recent-books">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold mb-0 text-dark"><i class="fas fa-clock text-primary me-2"></i>Recent Books</h3>
-            <a href="#" class="btn btn-sm btn-outline-dark rounded-0">View All</a>
-        </div>
-
-        <div class="row g-4">
-            <!-- Book 1 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/javaBook.jpg" class="card-img-top mx-auto mt-2 book-img" alt="Java Programming">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Java Programmings</h5>
-                            <p class="text-muted small mb-1">Author: Joyce Farrell</p>
-                            <span class="badge bg-primary-subtle text-primary rounded-0 mb-2">Recent</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">100,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Book 2 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/1670219741murach.webp" class="card-img-top mx-auto mt-2 book-img" alt="Murach Java Servlets and JSP">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Murach's Java Servlets & JSP</h5>
-                            <p class="text-muted small mb-1">Author: Joel Murach</p>
-                            <span class="badge bg-primary-subtle text-primary rounded-0 mb-2">Recent</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">120,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Book 3 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/61aatAAWF6L._UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="Spring Boot in Action">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Spring Boot in Action</h5>
-                            <p class="text-muted small mb-1">Author: Craig Walls</p>
-                            <span class="badge bg-primary-subtle text-primary rounded-0 mb-2">Recent</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">140,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Book 4 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/61o1cENQKLL._UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="Clean Code">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Clean Code</h5>
-                            <p class="text-muted small mb-1">Author: Robert C. Martin</p>
-                            <span class="badge bg-primary-subtle text-primary rounded-0 mb-2">Recent</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">160,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. New Books Section -->
+    <!-- Main Content Container -->
     <div class="container my-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold mb-0 text-dark"><i class="fas fa-star text-warning me-2"></i>New Books</h3>
-            <a href="#" class="btn btn-sm btn-outline-dark rounded-0">View All</a>
-        </div>
 
-        <div class="row g-4">
-            <!-- Book 1 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/711YQqVr6aL._UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="Python Crash Course">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Python Crash Course</h5>
-                            <p class="text-muted small mb-1">Author: Eric Matthes</p>
-                            <span class="badge bg-success-subtle text-success rounded-0 mb-2">New</span>
+        <!-- 1. Recent Books Section -->
+        <section id="recent-books" class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                <h4 class="fw-bold mb-0 text-dark d-flex align-items-center">
+                    <i class="fas fa-clock text-primary me-2"></i> Recent Books
+                </h4>
+                <a href="#" class="btn btn-sm btn-outline-primary rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Book 1 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/javaBook.jpg" class="book-img" alt="Java Programming">
                         </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">110,000 ៛</span>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-primary-subtle text-primary rounded-1 mb-2">Recent</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Java Programming</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Joyce Farrell</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-primary mb-2">100,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/1670219741murach.webp" class="book-img" alt="PHP & MySQL">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-primary-subtle text-primary rounded-1 mb-2">Recent</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">PHP and MySQL for Beginner</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Jim Keogh</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-primary mb-2">120,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/61aatAAWF6L._UF1000,1000_QL80_.jpg" class="book-img" alt="Spring Boot">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-primary-subtle text-primary rounded-1 mb-2">Recent</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Spring Boot in Action</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Craig Walls</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-primary mb-2">140,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 4 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/61o1cENQKLL._UF1000,1000_QL80_.jpg" class="book-img" alt="Clean Code">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-primary-subtle text-primary rounded-1 mb-2">Recent</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Clean Code</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Robert C. Martin</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-primary mb-2">160,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Book 2 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/717hDNtqA5L._AC_UF1000,1000_QL80_.jpg" class="card-img-top mx-auto mt-2 book-img" alt="JavaScript The Definitive Guide">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">JavaScript: Definitive Guide</h5>
-                            <p class="text-muted small mb-1">Author: David Flanagan</p>
-                            <span class="badge bg-success-subtle text-success rounded-0 mb-2">New</span>
+        <!-- 2. New Books Section -->
+        <section class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                <h4 class="fw-bold mb-0 text-dark d-flex align-items-center">
+                    <i class="fas fa-sparkles text-success me-2"></i> New Books
+                </h4>
+                <a href="#" class="btn btn-sm btn-outline-success rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Book 1 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/711YQqVr6aL._UF1000,1000_QL80_.jpg" class="book-img" alt="Python Crash Course">
                         </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">130,000 ៛</span>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-success-subtle text-success rounded-1 mb-2">New</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Python Crash Course</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Eric Matthes</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-success mb-2">110,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/717hDNtqA5L._AC_UF1000,1000_QL80_.jpg" class="book-img" alt="JS Guide">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-success-subtle text-success rounded-1 mb-2">New</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">JavaScript: Definitive Guide</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: David Flanagan</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-success mb-2">130,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/images (1).jpg" class="book-img" alt="Learning React">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-success-subtle text-success rounded-1 mb-2">New</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Learning React</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Alex Banks & Eve Porcello</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-success mb-2">150,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 4 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/images (2).jpg" class="book-img" alt="Full Stack Dev">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-success-subtle text-success rounded-1 mb-2">New</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Full-Stack Web Dev</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Eric Sarrion</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-success mb-2">180,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Book 3 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (1).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Learning React">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Learning React</h5>
-                            <p class="text-muted small mb-1">Author: Alex Banks & Eve Porcello</p>
-                            <span class="badge bg-success-subtle text-success rounded-0 mb-2">New</span>
+        <!-- 3. Old Books Section -->
+        <section class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                <h4 class="fw-bold mb-0 text-dark d-flex align-items-center">
+                    <i class="fas fa-history text-secondary me-2"></i> Old Books
+                </h4>
+                <a href="#" class="btn btn-sm btn-outline-secondary rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Book 1 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/images (3).jpg" class="book-img" alt="Database Concepts">
                         </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">150,000 ៛</span>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-secondary-subtle text-secondary rounded-1 mb-2">Old</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Database System Concepts</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Abraham Silberschatz</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-secondary mb-2">50,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/images (4).jpg" class="book-img" alt="C++ Primer">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-secondary-subtle text-secondary rounded-1 mb-2">Old</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">C++ Primer</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Stanley B. Lippman</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-secondary mb-2">45,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/images (5).jpg" class="book-img" alt="Data Structures">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-secondary-subtle text-secondary rounded-1 mb-2">Old</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Data Structures in C</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Mark Allen Weiss</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-secondary mb-2">60,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 4 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 book-card p-3 bg-white shadow-sm">
+                        <div class="book-img-wrapper mb-3">
+                            <img src="img/images (6).jpg" class="book-img" alt="Computer Networks">
+                        </div>
+                        <div class="card-body p-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <span class="badge bg-secondary-subtle text-secondary rounded-1 mb-2">Old</span>
+                                <h6 class="card-title text-truncate fw-bold text-dark mb-1">Computer Networks</h6>
+                                <p class="text-muted small text-truncate mb-2">Author: Andrew S. Tanenbaum</p>
+                            </div>
+                            <div class="pt-2 border-top mt-2">
+                                <div class="fw-bold text-secondary mb-2">55,000 ៛</div>
+                                <div class="d-grid gap-1 d-flex">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Book 4 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (2).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Full-Stack Web Development with React and Node">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Full-Stack Web Dev</h5>
-                            <p class="text-muted small mb-1">Author: Eric Sarrion</p>
-                            <span class="badge bg-success-subtle text-success rounded-0 mb-2">New</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">180,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. Old Books Section -->
-    <div class="container my-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold mb-0 text-dark"><i class="fas fa-history text-secondary me-2"></i>Old Books</h3>
-            <a href="#" class="btn btn-sm btn-outline-dark rounded-0">View All</a>
-        </div>
-
-        <div class="row g-4">
-            <!-- Book 1 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (3).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Database System Concepts">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Database System Concepts</h5>
-                            <p class="text-muted small mb-1">Author: Abraham Silberschatz</p>
-                            <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">50,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Book 2 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (4).jpg" class="card-img-top mx-auto mt-2 book-img" alt="C++ Primer">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">C++ Primer</h5>
-                            <p class="text-muted small mb-1">Author: Stanley B. Lippman</p>
-                            <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">45,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Book 3 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (5).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Data Structures and Algorithm Analysis in C">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Data Structures in C</h5>
-                            <p class="text-muted small mb-1">Author: Mark Allen Weiss</p>
-                            <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">60,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Book 4 -->
-            <div class="col-md-3">
-                <div class="card h-100 book-card text-center p-2 rounded-0 shadow-sm bg-white border-0">
-                    <img src="img/images (6).jpg" class="card-img-top mx-auto mt-2 book-img" alt="Computer Networks">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title text-truncate fs-6 fw-bold mb-1">Computer Networks</h5>
-                            <p class="text-muted small mb-1">Author: Andrew S. Tanenbaum</p>
-                            <span class="badge bg-secondary-subtle text-secondary rounded-0 mb-2">Old</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-                            <a href="#" class="btn btn-danger btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                            <a href="#" class="btn btn-success btn-sm px-2 py-1 rounded-0" style="font-size: 12px;"><i class="fas fa-eye me-1"></i>View</a>
-                            <span class="badge bg-secondary py-2 px-2 rounded-0" style="font-size: 12px;">55,000 ៛</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <%@include file="component/footer.jsp" %>

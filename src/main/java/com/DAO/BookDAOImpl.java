@@ -23,15 +23,14 @@ public class BookDAOImpl implements BookDAO {
         try {
             if (conn != null) {
                 String sql = "CREATE TABLE IF NOT EXISTS `book_dtls` ("
-                        + " `bookId` INT NOT NULL AUTO_INCREMENT,"
-                        + " `bookname` VARCHAR(255) NOT NULL,"
-                        + " `author` VARCHAR(255) NOT NULL,"
-                        + " `price` VARCHAR(50) NOT NULL,"
-                        + " `bookCategory` VARCHAR(100) NOT NULL,"
-                        + " `status` VARCHAR(50) NOT NULL,"
-                        + " `photo` VARCHAR(255) NOT NULL,"
-                        + " `email` VARCHAR(150) NOT NULL,"
-                        + " PRIMARY KEY (`bookId`)"
+                        + " `bookId` INT AUTO_INCREMENT PRIMARY KEY,"
+                        + " `bookname` VARCHAR(255),"
+                        + " `author` VARCHAR(255),"
+                        + " `price` VARCHAR(50),"
+                        + " `bookCategory` VARCHAR(100),"
+                        + " `status` VARCHAR(50),"
+                        + " `photo` VARCHAR(255),"
+                        + " `email` VARCHAR(150)"
                         + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
                 Statement stmt = conn.createStatement();
                 stmt.execute(sql);
@@ -165,5 +164,36 @@ public class BookDAOImpl implements BookDAO {
             e.printStackTrace();
         }
         return f;
+    }
+
+    @Override
+    public List<BookDtls> getNewBook() {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE bookCategory=? AND status=? ORDER BY bookId DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "New");
+            ps.setString(2, "Active");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+                System.out.println("Fetched New Book: " + b.getBookName());
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getNewBook Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
     }
 }

@@ -17,9 +17,12 @@
                 <div class="card border-0 rounded-0 shadow-sm p-4 bg-white">
                     <h3 class="text-center fw-bold mb-4">Add New Book</h3>
 
-                    <form action="../addBooks" method="post" enctype="multipart/form-data">
+                    <!-- Red error text container for validation -->
+                    <div id="errorMsg" class="alert alert-danger rounded-0 d-none text-center fw-bold py-2 mb-3" role="alert"></div>
+
+                    <form action="../addBooks" method="post" enctype="multipart/form-data" onsubmit="return validateBookForm()">
                         
-                        <!-- ផ្នែកទី១៖ ព័ត៌មានទូទៅរបស់សៀវភៅ (General Book Details) -->
+                        <!-- 1. Book Details -->
                         <div class="mb-4">
                             <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">1. Book Information</h5>
                             
@@ -38,17 +41,17 @@
                             </div>
 
                             <div class="row">
-                                <!-- Price in Riel -->
+                                <!-- Price -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold small">Price (៛ Riel)</label>
-                                    <input type="number" step="100" class="form-control rounded-0" name="price" placeholder="e.g. 10000" required>
+                                    <input type="number" step="100" min="10000" class="form-control rounded-0" id="bookPrice" name="price" placeholder="e.g. 10000" required>
                                 </div>
 
                                 <!-- Book Categories -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold small">Book Category</label>
-                                    <select class="form-select rounded-0" name="categories">
-                                        <option selected disabled>--Select Category--</option>
+                                    <select class="form-select rounded-0" name="categories" required>
+                                        <option value="" selected disabled>--Select Category--</option>
                                         <option value="New">New Book</option>
                                         <option value="Recent">Recent Book</option>
                                         <option value="Old">Old Book</option>
@@ -60,8 +63,8 @@
                                 <!-- Book Status -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold small">Book Status</label>
-                                    <select class="form-select rounded-0" name="status">
-                                        <option selected disabled>--Select Status--</option>
+                                    <select class="form-select rounded-0" name="status" required>
+                                        <option value="" selected disabled>--Select Status--</option>
                                         <option value="Active">Active</option>
                                         <option value="Inactive">Inactive</option>
                                     </select>
@@ -69,18 +72,16 @@
                             </div>
                         </div>
 
-                        <!-- ផ្នែកទី២៖ អప్‌ឡូដរូបភាពមាន ONCHANGE Input (Image Upload with Preview) -->
+                        <!-- 2. Image Upload -->
                         <div class="mb-4">
                             <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">2. Book Cover Image</h5>
                             
                             <div class="row align-items-center">
                                 <div class="col-md-8 mb-3">
                                     <label class="form-label fw-bold small">Upload Cover Photo</label>
-                                    <!-- ដាក់ព្រឹត្តិការណ៍ onchange ដើម្បីបង្ហាញរូបភាពភ្លាមៗ -->
-                                    <input type="file" class="form-control rounded-0" id="bookImgInput" name="bimg" onchange="previewImage(event)">
+                                    <input type="file" class="form-control rounded-0" id="bookImgInput" name="bimg" accept="image/*" onchange="previewImage(event)" required>
                                 </div>
                                 <div class="col-md-4 text-center mb-3">
-                                    <!-- ប្រអប់បង្ហាញរូបភាពមើលជាមុន (Preview Box) -->
                                     <div class="border p-1 bg-light d-inline-block">
                                         <img id="imgPreview" src="https://via.placeholder.com/100x130?text=Preview" alt="Book Cover Preview" style="width: 90px; height: 120px; object-fit: cover;">
                                     </div>
@@ -99,7 +100,6 @@
         </div>
     </div>
 
-    <!-- JavaScript សម្រាប់ដំណើរការ Onchange Preview រូបភាព -->
     <script>
         function previewImage(event) {
             var reader = new FileReader();
@@ -110,6 +110,31 @@
             if(event.target.files[0]) {
                 reader.readAsDataURL(event.target.files[0]);
             }
+        }
+
+        function validateBookForm() {
+            var priceInput = document.getElementById("bookPrice").value;
+            var price = parseFloat(priceInput);
+            var imgInput = document.getElementById("bookImgInput");
+            var errorBox = document.getElementById("errorMsg");
+
+            // Hide error message initially
+            errorBox.classList.add("d-none");
+            errorBox.innerText = "";
+
+            if (isNaN(price) || price < 10000) {
+                errorBox.innerText = "Price must be at least 10,000 Riel!";
+                errorBox.classList.remove("d-none");
+                return false;
+            }
+
+            if (imgInput.files.length === 0) {
+                errorBox.innerText = "Please select a book cover image!";
+                errorBox.classList.remove("d-none");
+                return false;
+            }
+
+            return true;
         }
     </script>
 

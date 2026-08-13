@@ -12,10 +12,10 @@ public class DBconnect {
     }
 
     private static final String HOST = getEnvVar("DB_HOST", "127.0.0.1");
-    private static final String PORT = getEnvVar("DB_PORT", "3306");
-    private static final String DB_NAME = getEnvVar("DB_NAME", "ebook");
+    private static final String PORT = getEnvVar("DB_PORT", "3309");
+    private static final String DB_NAME = getEnvVar("DB_NAME", "ebook-app");
     private static final String USER = getEnvVar("DB_USER", "root");
-    private static final String PASSWORD = getEnvVar("DB_PASSWORD", "");
+    private static final String PASSWORD = getEnvVar("DB_PASSWORD", "admin123");
 
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DB_NAME
             + "?useSSL=false"
