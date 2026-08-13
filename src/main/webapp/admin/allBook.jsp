@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.DAO.BookDAOImpl" %>
+<%@ page import="com.db.DBconnect" %>
+<%@ page import="com.entity.BookDtls" %>
+<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,61 +60,54 @@
                             <th scope="col">Status</th>
                             <th scope="col" class="text-center" style="width: 140px;">Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNrdS1L8kXE59xg8bUsf5c7NXLBzjaAzoOU8rad0hcFZN6E0XvfgHfmUQ5&s=10" 
-                                     style="width: 42px; height: 56px; object-fit: cover;" alt="Cover">
-                            </td>
-                            <td>
-                                <span class="fw-bold text-dark d-block">Java Programming</span>
-                                <small class="text-muted">ISBN: 978-0134685991</small>
-                            </td>
-                            <td class="text-secondary">John Doe</td>
-                            <td><span class="badge bg-info-subtle text-info-emphasis border border-info-subtle rounded-1 px-2 py-1">Recent</span></td>
-                            <td class="fw-bold text-dark">100,000 ៛</td>
-                            <td>
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-1">
-                                    <i class="fas fa-circle fa-xs me-1"></i>Active
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <a href="editBook.jsp?id=1" class="btn btn-sm btn-outline-primary btn-action me-1">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <a href="delete_book?id=1" class="btn btn-sm btn-outline-danger btn-action">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5f5rrgQ-UrqMVfC7GQZrNfhYfW0ggDzr2TFwpICP9Ww&s=10" 
-                                     style="width: 42px; height: 56px; object-fit: cover;" alt="Cover">
-                            </td>
-                            <td>
-                                <span class="fw-bold text-dark d-block">Java Spring Boot</span>
-                                <small class="text-muted">ISBN: 978-1484236932</small>
-                            </td>
-                            <td class="text-secondary">Piseth Java</td>
-                            <td><span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-1 px-2 py-1">New</span></td>
-                            <td class="fw-bold text-dark">300,000 ៛</td>
-                            <td>
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-1">
-                                    <i class="fas fa-circle fa-xs me-1"></i>Active
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <a href="editBook.jsp?id=2" class="btn btn-sm btn-outline-primary btn-action me-1">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                                <a href="delete_book?id=2" class="btn btn-sm btn-outline-danger btn-action">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
+                   <tbody>
+    <%
+    BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+    List<BookDtls> list = dao.getAllBooks();
+    for (BookDtls b : list) {
+        String photoName = b.getPhotoName();
+        String imageSrc = "";
+        if (photoName != null && (photoName.startsWith("http://") || photoName.startsWith("https://"))) {
+            imageSrc = photoName;
+        } else {
+            imageSrc = request.getContextPath() + "/img/" + photoName;
+        }
+    %>
+    <tr>
+        <td>
+            <img src="<%= imageSrc %>" 
+                 style="width: 42px; height: 56px; object-fit: cover;" 
+                 alt="<%= b.getBookName() %>"
+                 onerror="this.onerror=null; this.src='https://via.placeholder.com/42x56?text=No+Cover';" />
+        </td>
+        <td>
+            <span class="fw-bold text-dark d-block"><%= b.getBookName() %></span>
+        </td>
+        <td class="text-secondary"><%= b.getAuthor() %></td>
+        <td>
+            <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle rounded-1 px-2 py-1">
+                <%= b.getBookCategory() %>
+            </span>
+        </td>
+        <td class="fw-bold text-dark"><%= b.getPrice() %> ៛</td>
+        <td>
+            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-1">
+                <i class="fas fa-circle fa-xs me-1"></i><%= b.getStatus() %>
+            </span>
+        </td>
+        <td class="text-center">
+            <a href="editBook.jsp?id=<%= b.getBookId() %>" class="btn btn-sm btn-outline-primary btn-action me-1">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="../delete_book?id=<%= b.getBookId() %>" class="btn btn-sm btn-outline-danger btn-action">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </td>
+    </tr>
+    <%
+    }
+    %>
+</tbody>
                 </table>
             </div>
         </div>

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ebook App - Add Book</title>
     <%@include file="../component/rootCss.jsp" %>
+    <style>
+        .custom-card {
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            border-radius: 8px !important;
+        }
+        .preview-box {
+            width: 100px;
+            height: 130px;
+            border: 2px dashed #dee2e6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            overflow: hidden;
+            position: relative;
+        }
+        .preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -14,11 +38,30 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card border-0 rounded-0 shadow-sm p-4 bg-white">
-                    <h3 class="text-center fw-bold mb-4">Add New Book</h3>
+                <div class="card custom-card shadow-sm p-4 bg-white">
+                    <h3 class="text-center fw-bold text-dark mb-4">
+                        <i class="fas fa-plus-circle text-primary me-2"></i>Add New Book
+                    </h3>
 
-                    <!-- Red error text container for validation -->
-                    <div id="errorMsg" class="alert alert-danger rounded-0 d-none text-center fw-bold py-2 mb-3" role="alert"></div>
+                    <!-- Dynamic Session Notifications -->
+                    <c:if test="${not empty succMsg}">
+                        <div class="alert alert-success alert-dismissible fade show rounded-1 text-center fw-semibold mb-3" role="alert">
+                            <i class="fas fa-check-circle me-1"></i> ${succMsg}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <c:remove var="succMsg" scope="session"/>
+                    </c:if>
+
+                    <c:if test="${not empty failedMsg}">
+                        <div class="alert alert-danger alert-dismissible fade show rounded-1 text-center fw-semibold mb-3" role="alert">
+                            <i class="fas fa-exclamation-triangle me-1"></i> ${failedMsg}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <c:remove var="failedMsg" scope="session"/>
+                    </c:if>
+
+                    <!-- Client-Side JavaScript Validation Alert -->
+                    <div id="errorMsg" class="alert alert-warning rounded-1 d-none text-center fw-semibold py-2 mb-3" role="alert"></div>
 
                     <form action="../addBooks" method="post" enctype="multipart/form-data" onsubmit="return validateBookForm()">
                         
@@ -29,29 +72,29 @@
                             <div class="row">
                                 <!-- Book Name -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold small">Book Name</label>
-                                    <input type="text" class="form-control rounded-0" name="bname" required>
+                                    <label class="form-label fw-bold small">Book Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control rounded-1" name="bname" placeholder="Enter book title" required>
                                 </div>
 
                                 <!-- Author Name -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold small">Author Name</label>
-                                    <input type="text" class="form-control rounded-0" name="author" required>
+                                    <label class="form-label fw-bold small">Author Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control rounded-1" name="author" placeholder="Enter author name" required>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <!-- Price -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold small">Price (៛ Riel)</label>
-                                    <input type="number" step="100" min="10000" class="form-control rounded-0" id="bookPrice" name="price" placeholder="e.g. 10000" required>
+                                    <label class="form-label fw-bold small">Price (៛ Riel) <span class="text-danger">*</span></label>
+                                    <input type="number" step="100" min="10000" class="form-control rounded-1" id="bookPrice" name="price" placeholder="e.g. 10000" required>
                                 </div>
 
                                 <!-- Book Categories -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold small">Book Category</label>
-                                    <select class="form-select rounded-0" name="categories" required>
-                                        <option value="" selected disabled>--Select Category--</option>
+                                    <label class="form-label fw-bold small">Book Category <span class="text-danger">*</span></label>
+                                    <select class="form-select rounded-1" name="categories" required>
+                                        <option value="" selected disabled>-- Select Category --</option>
                                         <option value="New">New Book</option>
                                         <option value="Recent">Recent Book</option>
                                         <option value="Old">Old Book</option>
@@ -62,9 +105,9 @@
                             <div class="row">
                                 <!-- Book Status -->
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold small">Book Status</label>
-                                    <select class="form-select rounded-0" name="status" required>
-                                        <option value="" selected disabled>--Select Status--</option>
+                                    <label class="form-label fw-bold small">Book Status <span class="text-danger">*</span></label>
+                                    <select class="form-select rounded-1" name="status" required>
+                                        <option value="" selected disabled>-- Select Status --</option>
                                         <option value="Active">Active</option>
                                         <option value="Inactive">Inactive</option>
                                     </select>
@@ -78,20 +121,29 @@
                             
                             <div class="row align-items-center">
                                 <div class="col-md-8 mb-3">
-                                    <label class="form-label fw-bold small">Upload Cover Photo</label>
-                                    <input type="file" class="form-control rounded-0" id="bookImgInput" name="bimg" accept="image/*" onchange="previewImage(event)" required>
+                                    <label class="form-label fw-bold small">Upload Cover Photo <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control rounded-1" id="bookImgInput" name="bimg" accept="image/*" onchange="previewImage(event)" required>
+                                    <div class="form-text small">Accepted formats: JPG, PNG, WEBP.</div>
                                 </div>
                                 <div class="col-md-4 text-center mb-3">
-                                    <div class="border p-1 bg-light d-inline-block">
-                                        <img id="imgPreview" src="https://via.placeholder.com/100x130?text=Preview" alt="Book Cover Preview" style="width: 90px; height: 120px; object-fit: cover;">
+                                    <label class="form-label fw-bold small d-block mb-2">Preview</label>
+                                    <div class="preview-box mx-auto">
+                                        <div id="emptyPreview" class="text-muted small text-center p-2">
+                                            <i class="fas fa-image fa-2x d-block mb-1 text-secondary opacity-50"></i>
+                                            <span>No Cover Selected</span>
+                                        </div>
+                                        <img id="imgPreview" src="" alt="Book Cover Preview" class="d-none">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Submit Button -->
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-dark rounded-0 py-2 fw-bold">Add Book</button>
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="allBook.jsp" class="btn btn-outline-secondary rounded-1 px-4 fw-semibold">Cancel</a>
+                            <button type="submit" class="btn btn-primary rounded-1 px-4 fw-semibold">
+                                <i class="fas fa-plus me-1"></i> Add Book
+                            </button>
                         </div>
 
                     </form>
@@ -103,12 +155,20 @@
     <script>
         function previewImage(event) {
             var reader = new FileReader();
+            var output = document.getElementById('imgPreview');
+            var emptyBox = document.getElementById('emptyPreview');
+
             reader.onload = function(){
-                var output = document.getElementById('imgPreview');
                 output.src = reader.result;
+                output.classList.remove('d-none');
+                emptyBox.classList.add('d-none');
             };
-            if(event.target.files[0]) {
+
+            if (event.target.files && event.target.files[0]) {
                 reader.readAsDataURL(event.target.files[0]);
+            } else {
+                output.classList.add('d-none');
+                emptyBox.classList.remove('d-none');
             }
         }
 
@@ -118,7 +178,6 @@
             var imgInput = document.getElementById("bookImgInput");
             var errorBox = document.getElementById("errorMsg");
 
-            // Hide error message initially
             errorBox.classList.add("d-none");
             errorBox.innerText = "";
 

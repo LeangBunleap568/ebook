@@ -130,7 +130,7 @@
                     </ul>
                     <div class="d-flex align-items-center gap-2">
                         <a href="#" class="btn btn-light btn-sm text-dark rounded-0 px-3">Contact Us</a>
-                        <a href="#" class="btn btn-warning btn-sm text-dark rounded-0 px-3">Settings</a>
+                        <a href="#" class="btn btn-warning btn-sm text-dark rounded-0 px-3">Setting</a>
                     </div>
                 </c:otherwise>
             </c:choose>
