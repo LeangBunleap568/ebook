@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import com.ebook.dao.impl.UserDAOImpl;
-import com.db.DBconnect;
-import com.entity.user;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.user;
 
 @WebServlet("/update_profile")
 public class UpdateProfileServlet extends HttpServlet {
@@ -52,6 +52,6 @@ public class UpdateProfileServlet extends HttpServlet {
         } else {
             session.setAttribute("failedMsg", "Incorrect Password. Profile not updated.");
         }
-        resp.sendRedirect("edit_profile.jsp");
+        resp.sendRedirect("user/edit_profile.jsp");
     }
 }

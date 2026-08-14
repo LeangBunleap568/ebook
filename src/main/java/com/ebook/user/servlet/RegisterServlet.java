@@ -3,8 +3,8 @@ package com.ebook.user.servlet;
 import java.io.IOException;
 
 import com.ebook.dao.impl.UserDAOImpl;
-import com.db.DBconnect;
-import com.entity.user;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.user;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
             us.setPhone(phone != null ? phone.trim() : "");
             us.setPassword(password != null ? password : "");
 
-            // Save to DB — throws exception on any failure
+            // Save to DB â€” throws exception on any failure
             UserDAOImpl dao = new UserDAOImpl(DBconnect.getConn());
 
             // Check for duplicate email
@@ -52,7 +52,7 @@ public class RegisterServlet extends HttpServlet {
         } catch (Exception e) {
             // Print the FULL cause chain so we can see the real MySQL error
             System.out.println("========================================");
-            System.out.println("❌ RegisterServlet error: " + e.getMessage());
+            System.out.println("âŒ RegisterServlet error: " + e.getMessage());
             Throwable cause = e.getCause();
             while (cause != null) {
                 System.out.println("   Caused by: " + cause.getMessage());

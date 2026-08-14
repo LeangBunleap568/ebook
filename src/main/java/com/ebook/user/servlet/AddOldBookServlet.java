@@ -13,8 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 import com.ebook.dao.impl.BookDAOImpl;
-import com.db.DBconnect;
-import com.entity.BookDtls;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.BookDtls;
 
 @WebServlet("/add_old_book")
 @MultipartConfig
@@ -50,10 +50,10 @@ public class AddOldBookServlet extends HttpServlet {
                 part.write(path + File.separator + fileName);
 
                 session.setAttribute("succMsg", "Book Published Successfully");
-                resp.sendRedirect("sell_book.jsp");
+                resp.sendRedirect("user/sell_book.jsp");
             } else {
                 session.setAttribute("failedMsg", "Something went wrong on server");
-                resp.sendRedirect("sell_book.jsp");
+                resp.sendRedirect("user/sell_book.jsp");
             }
 
         } catch (Exception e) {

@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import com.ebook.dao.impl.BookDAOImpl;
-import com.db.DBconnect;
+import com.ebook.db.DBconnect;
 
 @WebServlet("/delete_old_book")
 public class DeleteOldBookServlet extends HttpServlet {
@@ -30,6 +30,6 @@ public class DeleteOldBookServlet extends HttpServlet {
         } else {
             session.setAttribute("failedMsg", "Something went wrong. Please try again.");
         }
-        resp.sendRedirect("old_book.jsp");
+        resp.sendRedirect("user/old_book.jsp");
     }
 }

@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.db.DBconnect" %>
-<%@ page import="com.entity.BookDtls" %>
+<%@ page import="com.ebook.db.DBconnect" %>
+<%@ page import="com.ebook.entity.BookDtls" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Recent Books</title>
-    <%@include file="component/rootCss.jsp" %>
+    <title>All New Books</title>
+    <%@include file="../component/rootCss.jsp" %>
     <style>
         .book-card {
             transition: all 0.25s ease-in-out;
@@ -38,17 +38,17 @@
     </style>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
 
     <div class="container my-5">
         <h4 class="fw-bold mb-4 text-dark text-center">
-            <i class="fas fa-clock text-primary me-2"></i> All Recent Books
+            <i class="fas fa-sparkles text-success me-2"></i> All New Books
         </h4>
 
         <div class="row g-4">
             <% 
                 BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
-                List<BookDtls> list = dao.getAllRecentBook();
+                List<BookDtls> list = dao.getAllNewBook();
                 for (BookDtls b : list) { 
             %>
             <div class="col-6 col-md-4 col-lg-3">
@@ -58,14 +58,14 @@
                     </div>
                     <div class="card-body p-0 d-flex flex-column justify-content-between">
                         <div>
-                            <span class="badge bg-primary-subtle text-primary rounded-1 mb-2">Recent</span>
+                            <span class="badge bg-success-subtle text-success rounded-1 mb-2">New</span>
                             <h6 class="card-title text-truncate fw-bold text-dark mb-1"><%= b.getBookName() %></h6>
                             <p class="text-muted small text-truncate mb-2">Author: <%= b.getAuthor() %></p>
                         </div>
                         <div class="pt-2 border-top mt-2">
-                            <div class="fw-bold text-primary mb-2"><%= b.getPrice() %> ៛</div>
+                            <div class="fw-bold text-success mb-2"><%= b.getPrice() %> áŸ›</div>
                             <div class="d-grid gap-1 d-flex">
-                                <a href="cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                <a href="../cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                 <a href="view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
                             </div>
                         </div>
@@ -76,6 +76,6 @@
         </div>
     </div>
 
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>

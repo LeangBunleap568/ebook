@@ -1,6 +1,6 @@
 package com.ebook.dao;
 
-import com.entity.user;
+import com.ebook.entity.user;
 
 public interface UserDAO {
 	public boolean userRegistre(user us);

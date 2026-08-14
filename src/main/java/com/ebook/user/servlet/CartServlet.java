@@ -11,10 +11,10 @@ import jakarta.servlet.http.HttpSession;
 
 import com.ebook.dao.impl.BookDAOImpl;
 import com.ebook.dao.impl.CartDAOImpl;
-import com.db.DBconnect;
-import com.entity.BookDtls;
-import com.entity.Cart;
-import com.entity.user;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.BookDtls;
+import com.ebook.entity.Cart;
+import com.ebook.entity.user;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {

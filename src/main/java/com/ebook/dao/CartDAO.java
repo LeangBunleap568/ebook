@@ -1,6 +1,6 @@
 package com.ebook.dao;
 
-import com.entity.Cart;
+import com.ebook.entity.Cart;
 
 public interface CartDAO {
     public boolean addCart(Cart c);

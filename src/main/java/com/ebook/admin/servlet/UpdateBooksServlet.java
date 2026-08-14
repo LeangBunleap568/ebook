@@ -9,8 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import com.ebook.dao.impl.BookDAOImpl;
-import com.db.DBconnect;
-import com.entity.BookDtls;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.BookDtls;
 
 @WebServlet("/admin/updateBook")
 public class UpdateBooksServlet extends HttpServlet {

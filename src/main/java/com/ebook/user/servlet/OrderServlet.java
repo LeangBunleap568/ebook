@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import com.ebook.dao.impl.BookOrderDAOImpl;
 import com.ebook.dao.impl.CartDAOImpl;
-import com.db.DBconnect;
-import com.entity.Book_Order;
-import com.entity.Cart;
-import com.entity.user;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.Book_Order;
+import com.ebook.entity.Cart;
+import com.ebook.entity.user;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -77,16 +77,16 @@ public class OrderServlet extends HttpServlet {
                 cartDao.deleteCartByUid(u.getId());
                 session.setAttribute("orderNo", orderNo);
                 session.setAttribute("succMsg", "Order Placed Successfully! Order ID: " + orderNo);
-                resp.sendRedirect("order_success.jsp");
+                resp.sendRedirect("user/order_success.jsp");
             } else {
                 session.setAttribute("failedMsg", "Order failed. Please try again.");
-                resp.sendRedirect("cart.jsp");
+                resp.sendRedirect("user/cart.jsp");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("failedMsg", "Something went wrong: " + e.getMessage());
-            resp.sendRedirect("cart.jsp");
+            resp.sendRedirect("user/cart.jsp");
         }
     }
 }

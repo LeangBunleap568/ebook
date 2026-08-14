@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.entity.Book_Order;
+import com.ebook.entity.Book_Order;
 
 public class BookOrderDAOImpl implements BookOrderDAO {
 

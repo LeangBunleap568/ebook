@@ -1,4 +1,4 @@
-package com.db;
+package com.ebook.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,13 +26,13 @@ public class DBconnect {
 
     public static Connection getConn() {
         try {
-            // isValid(2) actually pings MySQL — catches server-side timeouts
+            // isValid(2) actually pings MySQL â€” catches server-side timeouts
             // that isClosed() alone cannot detect.
             if (conn == null || conn.isClosed() || !conn.isValid(2)) {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("========================================");
-                System.out.println("✅ DB Connected Successfully!");
+                System.out.println("âœ… DB Connected Successfully!");
                 System.out.println("   Host     : " + HOST);
                 System.out.println("   Port     : " + PORT);
                 System.out.println("   Database : " + DB_NAME);
@@ -41,7 +41,7 @@ public class DBconnect {
             }
         } catch (Exception e) {
             System.out.println("========================================");
-            System.out.println("❌ DB Connection FAILED!");
+            System.out.println("âŒ DB Connection FAILED!");
             System.out.println("   Reason: " + e.getMessage());
             System.out.println("========================================");
             e.printStackTrace();

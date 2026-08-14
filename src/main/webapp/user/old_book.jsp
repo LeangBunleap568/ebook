@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.db.DBconnect" %>
-<%@ page import="com.entity.BookDtls" %>
-<%@ page import="com.entity.user" %>
+<%@ page import="com.ebook.db.DBconnect" %>
+<%@ page import="com.ebook.entity.BookDtls" %>
+<%@ page import="com.ebook.entity.user" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -11,10 +11,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Old Books</title>
-    <%@include file="component/rootCss.jsp" %>
+    <%@include file="../component/rootCss.jsp" %>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
     <c:if test="${empty userobj}">
         <c:redirect url="login.jsp"></c:redirect>
     </c:if>
@@ -68,10 +68,10 @@
                                     <td><%= i++ %></td>
                                     <td><%= b.getBookName() %></td>
                                     <td><%= b.getAuthor() %></td>
-                                    <td class="text-danger fw-bold"><%= b.getPrice() %> ៛</td>
+                                    <td class="text-danger fw-bold"><%= b.getPrice() %> áŸ›</td>
                                     <td><span class="badge bg-warning text-dark"><%= b.getBookCategory() %></span></td>
                                     <td>
-                                        <a href="delete_old_book?em=<%= b.getEmail() %>&id=<%= b.getBookId() %>"
+                                        <a href="../delete_old_book?em=<%= b.getEmail() %>&id=<%= b.getBookId() %>"
                                            class="btn btn-sm btn-danger rounded-2"
                                            onclick="return confirm('Are you sure you want to delete this book?')">
                                             <i class="fas fa-trash-alt me-1"></i> Delete
@@ -88,6 +88,6 @@
         </div>
     </div>
 
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>

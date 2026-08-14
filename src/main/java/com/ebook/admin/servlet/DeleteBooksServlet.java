@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import com.ebook.dao.impl.BookDAOImpl;
-import com.db.DBconnect;
+import com.ebook.db.DBconnect;
 
 @WebServlet("/admin/deleteBook")
 public class DeleteBooksServlet extends HttpServlet {

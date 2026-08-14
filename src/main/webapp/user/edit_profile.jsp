@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <%@include file="component/rootCss.jsp" %>
+    <%@include file="../component/rootCss.jsp" %>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
     <c:if test="${empty userobj}">
         <c:redirect url="login.jsp"></c:redirect>
     </c:if>
@@ -35,7 +35,7 @@
                             <c:remove var="failedMsg" scope="session"/>
                         </c:if>
 
-                        <form action="update_profile" method="POST">
+                        <form action="../update_profile" method="POST">
                             <input type="hidden" name="id" value="${userobj.id}">
 
                             <div class="mb-3">
@@ -73,6 +73,6 @@
         </div>
     </div>
 
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>

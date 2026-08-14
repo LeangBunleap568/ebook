@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.ebook.dao.UserDAO;
 import com.ebook.dao.impl.UserDAOImpl;
-import com.db.DBconnect;
-import com.entity.user;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.user;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import com.ebook.dao.impl.BookDAOImpl;
-import com.db.DBconnect;
-import com.entity.BookDtls;
+import com.ebook.db.DBconnect;
+import com.ebook.entity.BookDtls;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;

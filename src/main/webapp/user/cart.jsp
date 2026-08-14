@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.CartDAOImpl" %>
-<%@ page import="com.db.DBconnect" %>
-<%@ page import="com.entity.Cart" %>
-<%@ page import="com.entity.user" %>
+<%@ page import="com.ebook.db.DBconnect" %>
+<%@ page import="com.ebook.entity.Cart" %>
+<%@ page import="com.ebook.entity.user" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,10 +10,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart</title>
-    <%@include file="component/rootCss.jsp" %>
+    <%@include file="../component/rootCss.jsp" %>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
     <c:if test="${empty userobj}">
         <c:redirect url="login.jsp"></c:redirect>
     </c:if>
@@ -48,7 +48,7 @@
                         <% if(cartList.isEmpty()) { %>
                             <div class="alert alert-warning text-center my-4">
                                 <h5><i class="fas fa-exclamation-circle me-2"></i> Your cart is empty.</h5>
-                                <a href="index.jsp" class="btn btn-primary mt-3">Start Shopping</a>
+                                <a href="../index.jsp" class="btn btn-primary mt-3">Start Shopping</a>
                             </div>
                         <% } else { %>
                             <table class="table table-striped table-hover align-middle">
@@ -65,7 +65,7 @@
                                     <tr class="text-center">
                                         <td><%= c.getBookName() %></td>
                                         <td><%= c.getAuthor() %></td>
-                                        <td class="text-danger fw-bold"><%= c.getPrice() %> ៛</td>
+                                        <td class="text-danger fw-bold"><%= c.getPrice() %> áŸ›</td>
                                         <td>
                                             <a href="remove_cart?cid=<%= c.getCid() %>&uid=<%= c.getUid() %>" class="btn btn-sm btn-danger rounded-2">
                                                 <i class="fas fa-trash-alt me-1"></i> Remove
@@ -75,14 +75,14 @@
                                     <% } %>
                                     <tr class="text-center table-light">
                                         <td colspan="2" class="text-end fw-bold">Total Price:</td>
-                                        <td class="text-success fw-bold fs-5"><%= totalPrice %> ៛</td>
+                                        <td class="text-success fw-bold fs-5"><%= totalPrice %> áŸ›</td>
                                         <td></td>
                                     </tr>
                                 </tbody>
                             </table>
                             
                             <div class="d-flex justify-content-between align-items-center mt-4 border-top pt-3">
-                                <a href="index.jsp" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Continue Shopping</a>
+                                <a href="../index.jsp" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Continue Shopping</a>
                             </div>
                         <% } %>
                     </div>
@@ -94,7 +94,7 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body p-4">
                         <h4 class="text-success fw-bold mb-4"><i class="fas fa-map-marker-alt me-2"></i> Order Details</h4>
-                        <form action="order" method="post">
+                        <form action="../order" method="post">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Name</label>
@@ -153,6 +153,6 @@
         </div>
     </div>
     
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>

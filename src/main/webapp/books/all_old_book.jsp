@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.db.DBconnect" %>
-<%@ page import="com.entity.BookDtls" %>
+<%@ page import="com.ebook.db.DBconnect" %>
+<%@ page import="com.ebook.entity.BookDtls" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Old Books</title>
-    <%@include file="component/rootCss.jsp" %>
+    <%@include file="../component/rootCss.jsp" %>
     <style>
         .book-card {
             transition: all 0.25s ease-in-out;
@@ -38,7 +38,7 @@
     </style>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
 
     <div class="container my-5">
         <h4 class="fw-bold mb-4 text-dark text-center">
@@ -63,9 +63,9 @@
                             <p class="text-muted small text-truncate mb-2">Author: <%= b.getAuthor() %></p>
                         </div>
                         <div class="pt-2 border-top mt-2">
-                            <div class="fw-bold text-secondary mb-2"><%= b.getPrice() %> ៛</div>
+                            <div class="fw-bold text-secondary mb-2"><%= b.getPrice() %> áŸ›</div>
                             <div class="d-grid gap-1 d-flex">
-                                <a href="cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                <a href="../cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                 <a href="view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
                             </div>
                         </div>
@@ -76,6 +76,6 @@
         </div>
     </div>
 
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>

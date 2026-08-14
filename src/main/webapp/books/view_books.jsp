@@ -1,16 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.db.DBconnect" %>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.ebook.db.DBconnect" %>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.entity.BookDtls" %>
+<%@ page import="com.ebook.entity.BookDtls" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>View Book Details</title>
-    <%@include file="component/rootCss.jsp" %>
+    <%@include file="../component/rootCss.jsp" %>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
 
     <%
         int id = Integer.parseInt(request.getParameter("id"));
@@ -52,17 +52,17 @@
 
                 <div class="text-center p-3 mt-4">
                     <% if("Old".equals(b.getBookCategory())) { %>
-                        <a href="index.jsp" class="btn btn-success btn-lg me-2"><i class="fas fa-cart-plus me-1"></i> Continue Shopping</a>
-                        <span class="btn btn-danger btn-lg disabled"><%= b.getPrice() %> ៛</span>
+                        <a href="../index.jsp" class="btn btn-success btn-lg me-2"><i class="fas fa-cart-plus me-1"></i> Continue Shopping</a>
+                        <span class="btn btn-danger btn-lg disabled"><%= b.getPrice() %> áŸ›</span>
                     <% } else { %>
-                        <a href="cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-primary btn-lg me-2"><i class="fas fa-cart-plus me-1"></i> Add to Cart</a>
-                        <span class="btn btn-danger btn-lg disabled"><%= b.getPrice() %> ៛</span>
+                        <a href="../cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-primary btn-lg me-2"><i class="fas fa-cart-plus me-1"></i> Add to Cart</a>
+                        <span class="btn btn-danger btn-lg disabled"><%= b.getPrice() %> áŸ›</span>
                     <% } %>
                 </div>
             </div>
         </div>
     </div>
     
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>

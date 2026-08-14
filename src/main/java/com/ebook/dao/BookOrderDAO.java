@@ -1,7 +1,7 @@
 package com.ebook.dao;
 
 import java.util.List;
-import com.entity.Book_Order;
+import com.ebook.entity.Book_Order;
 
 public interface BookOrderDAO {
     public boolean saveOrder(List<Book_Order> blist);

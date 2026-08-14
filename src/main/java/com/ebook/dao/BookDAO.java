@@ -1,7 +1,7 @@
 package com.ebook.dao;
 
 import java.util.List;
-import com.entity.BookDtls;
+import com.ebook.entity.BookDtls;
 
 public interface BookDAO {
 

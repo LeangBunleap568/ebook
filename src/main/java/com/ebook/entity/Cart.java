@@ -1,4 +1,4 @@
-package com.entity;
+package com.ebook.entity;
 
 public class Cart {
     private int cid;

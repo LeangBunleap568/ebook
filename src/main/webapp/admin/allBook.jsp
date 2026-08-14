@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.db.DBconnect" %>
-<%@ page import="com.entity.BookDtls" %>
+<%@ page import="com.ebook.db.DBconnect" %>
+<%@ page import="com.ebook.entity.BookDtls" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -117,7 +117,7 @@
                                     <%= b.getBookCategory() %>
                                 </span>
                             </td>
-                            <td class="fw-bold text-dark"><%= b.getPrice() %> ៛</td>
+                            <td class="fw-bold text-dark"><%= b.getPrice() %> áŸ›</td>
                             <td>
                                 <span class="badge bg-success-subtle text-success border border-success-subtle rounded-1">
                                     <i class="fas fa-circle fa-xs me-1"></i><%= b.getStatus() %>

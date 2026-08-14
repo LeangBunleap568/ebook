@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.entity.user" %>
+<%@ page import="com.ebook.entity.user" %>
 <%@ page import="com.ebook.dao.impl.CartDAOImpl" %>
-<%@ page import="com.db.DBconnect" %>
+<%@ page import="com.ebook.db.DBconnect" %>
 
 <!-- Custom Style for Modern Hover Effect -->
 <style>
@@ -69,7 +69,7 @@
 
                 <%-- LOGGED IN USER SEES NAME, CART, LOGOUT --%>
                 <c:when test="${not empty userobj}">
-                    <a href="${pageContext.request.contextPath}/setting.jsp" class="btn btn-success btn-sm rounded-0 px-3 me-1">
+                    <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn btn-success btn-sm rounded-0 px-3 me-1">
                         <i class="fas fa-user me-1"></i>${userobj.name}
                     </a>
                     <%
@@ -80,7 +80,7 @@
                             cartCount = cartDao.countCart(navUser.getId());
                         }
                     %>
-                    <a href="${pageContext.request.contextPath}/cart.jsp" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">
+                    <a href="${pageContext.request.contextPath}/user/cart.jsp" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">
                         <i class="fas fa-shopping-cart me-1"></i>Cart (<%= cartCount %>)
                     </a>
                     <a href="${pageContext.request.contextPath}/logout" class="btn btn-danger btn-sm rounded-0 px-3">
@@ -143,18 +143,18 @@
                             <a class="nav-link text-white active" aria-current="page" href="${pageContext.request.contextPath}/index.jsp">Home</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/all_recent_book.jsp">Recent Book</a>
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/books/all_recent_book.jsp">Recent Book</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/all_new_book.jsp">New Book</a>
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/books/all_new_book.jsp">New Book</a>
                         </li>
                         <li class="nav-item me-2">
-                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/all_old_book.jsp">Old Book</a>
+                            <a class="nav-link text-white" href="${pageContext.request.contextPath}/books/all_old_book.jsp">Old Book</a>
                         </li>
                     </ul>
                     <div class="d-flex align-items-center gap-2">
                         <a href="${pageContext.request.contextPath}/contact.jsp" class="btn btn-light btn-sm text-dark rounded-0 px-3">Contact Us</a>
-                        <a href="${pageContext.request.contextPath}/setting.jsp" class="btn btn-warning btn-sm text-dark rounded-0 px-3">Setting</a>
+                        <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn btn-warning btn-sm text-dark rounded-0 px-3">Setting</a>
                     </div>
                 </c:otherwise>
             </c:choose>

@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import com.entity.user;
+import com.ebook.entity.user;
 
 public class UserDAOImpl implements UserDAO {
     private Connection conn;

@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-import com.entity.Cart;
+import com.ebook.entity.Cart;
 
 public class CartDAOImpl implements CartDAO {
 

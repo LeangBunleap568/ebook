@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl"%>
-<%@ page import="com.db.DBconnect"%>
-<%@ page import="com.entity.BookDtls"%>
+<%@ page import="com.ebook.db.DBconnect"%>
+<%@ page import="com.ebook.entity.BookDtls"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +45,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label fw-bold small">Price (៛ Riel)</label>
+                                    <label class="form-label fw-bold small">Price (áŸ› Riel)</label>
                                     <input type="number" step="100" class="form-control rounded-0" name="price" value="<%= b.getPrice() %>" placeholder="e.g. 10000" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
