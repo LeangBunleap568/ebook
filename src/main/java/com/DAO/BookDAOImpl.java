@@ -171,7 +171,7 @@ public class BookDAOImpl implements BookDAO {
         List<BookDtls> list = new ArrayList<BookDtls>();
         BookDtls b = null;
         try {
-            String sql = "SELECT * FROM book_dtls WHERE bookCategory=? AND status=? ORDER BY bookId DESC";
+            String sql = "SELECT * FROM book_dtls WHERE bookCategory=? AND status=? ORDER BY bookId DESC LIMIT 4";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, "New");
             ps.setString(2, "Active");
@@ -187,11 +187,69 @@ public class BookDAOImpl implements BookDAO {
                 b.setPhotoName(rs.getString(7));
                 b.setEmail(rs.getString(8));
                 list.add(b);
-                System.out.println("Fetched New Book: " + b.getBookName());
             }
             ps.close();
         } catch (Exception e) {
             System.out.println("BookDAOImpl getNewBook Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<BookDtls> getRecentBooks() {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE status=? ORDER BY bookId DESC LIMIT 4";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "Active");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getRecentBooks Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<BookDtls> getOldBooks() {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE bookCategory=? AND status=? ORDER BY bookId DESC LIMIT 4";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "Old");
+            ps.setString(2, "Active");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getOldBooks Exception: " + e.getMessage());
             e.printStackTrace();
         }
         return list;

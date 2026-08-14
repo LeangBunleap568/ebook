@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.DAO.BookDAOImpl"%>
+<%@ page import="com.db.DBconnect"%>
+<%@ page import="com.entity.BookDtls"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,41 +19,61 @@
             <div class="col-md-8">
                 <div class="card border-0 rounded-0 shadow-sm p-4 bg-white">
                     <h3 class="text-center fw-bold mb-4">Edit Book Details</h3>
-
-                    <form action="../editBooks" method="post">
-                        <input type="hidden" name="id" value="${param.id}">
+                    
+                    <% 
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+                        BookDtls b = dao.getBookById(id);
+                        
+                        if (b != null) {
+                    %>
+                    
+                    <form action="${pageContext.request.contextPath}/admin/updateBook" method="post">
+                        <input type="hidden" name="id" value="<%= b.getBookId() %>">
                         
                         <div class="mb-4">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold small">Book Name</label>
-                                    <input type="text" class="form-control rounded-0" name="bname" required>
+                                    <input type="text" class="form-control rounded-0" name="bname" value="<%= b.getBookName() %>" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold small">Author Name</label>
-                                    <input type="text" class="form-control rounded-0" name="author" required>
+                                    <input type="text" class="form-control rounded-0" name="author" value="<%= b.getAuthor() %>" required>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold small">Price (៛ Riel)</label>
-                                    <input type="number" step="100" class="form-control rounded-0" name="price" placeholder="e.g. 10000" required>
+                                    <input type="number" step="100" class="form-control rounded-0" name="price" value="<%= b.getPrice() %>" placeholder="e.g. 10000" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-bold small">Book Status</label>
                                     <select class="form-select rounded-0" name="status">
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
+                                        <option value="Active" <%= "Active".equalsIgnoreCase(b.getStatus()) ? "selected" : "" %>>Active</option>
+                                        <option value="Inactive" <%= "Inactive".equalsIgnoreCase(b.getStatus()) ? "selected" : "" %>>Inactive</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-dark rounded-0 py-2 fw-bold">Update Book</button>
+                        <div class="d-flex gap-2">
+                            <a href="allBook.jsp" class="btn btn-outline-secondary rounded-0 w-50 py-2">Cancel</a>
+                            <button type="submit" class="btn btn-dark rounded-0 w-50 py-2 fw-bold" >Update Book</button>
                         </div>
                     </form>
+
+                    <% 
+                        } else { 
+                    %>
+                        <div class="alert alert-danger text-center">
+                            Book not found with ID: <%= id %>
+                        </div>
+                    <% 
+                        } 
+                    %>
+
                 </div>
             </div>
         </div>

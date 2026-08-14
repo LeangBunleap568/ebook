@@ -15,5 +15,10 @@ public interface BookDAO {
 
     public boolean deleteBooks(int id);
 
+    // get data in admin to display in page user
     public List<BookDtls> getNewBook();
+
+    public List<BookDtls> getRecentBooks();
+
+    public List<BookDtls> getOldBooks();
 }

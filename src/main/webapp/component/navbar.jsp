@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page import="com.entity.user" %>
 
 <!-- Custom Style for Modern Hover Effect -->
 <style>
@@ -64,7 +65,20 @@
                     </a>
                 </c:when>
 
-                <%-- NORMAL USER SEES ONLY SIGN IN + REGISTER --%>
+                <%-- LOGGED IN USER SEES NAME, CART, LOGOUT --%>
+                <c:when test="${not empty userobj}">
+                    <a href="#" class="btn btn-success btn-sm rounded-0 px-3 me-1">
+                        <i class="fas fa-user me-1"></i>${userobj.name}
+                    </a>
+                    <a href="#" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">
+                        <i class="fas fa-shopping-cart me-1"></i>Cart
+                    </a>
+                    <a href="${pageContext.request.contextPath}/logout" class="btn btn-danger btn-sm rounded-0 px-3">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                </c:when>
+
+                <%-- NOT LOGGED IN USER SEES SIGN IN + REGISTER --%>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/login.jsp" class="btn btn-outline-dark btn-sm rounded-0 px-3 me-1">
                         <i class="fas fa-sign-in-alt me-1"></i>Sign In
