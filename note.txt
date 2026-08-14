@@ -1,3 +1,2 @@
 - git pull origin main ដើម្បីទាញយក Code ឬ Commit ថ្មីៗដែលមិត្តភក្តិ ឬ teammate របស់អ្នកបាន Push ឡើងទៅ GitHub
 - "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -h 127.0.0.1 -P 3309 -u root -p change password db
-- git checkout main

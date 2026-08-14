@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.DAO.BookDAOImpl" %>
+<%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
 <%@ page import="com.db.DBconnect" %>
 <%@ page import="com.entity.BookDtls" %>
 <%@ page import="java.util.List" %>
@@ -50,7 +50,7 @@
                 <h4 class="fw-bold mb-0 text-dark d-flex align-items-center">
                     <i class="fas fa-clock text-primary me-2"></i> Recent Books
                 </h4>
-                <a href="#" class="btn btn-sm btn-outline-primary rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="all_recent_book.jsp" class="btn btn-sm btn-outline-primary rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
 
             <div class="row g-4">
@@ -62,7 +62,7 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="card h-100 book-card p-3 bg-white shadow-sm">
                         <div class="book-img-wrapper mb-3">
-                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>">
+                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
                         </div>
                         <div class="card-body p-0 d-flex flex-column justify-content-between">
                             <div>
@@ -73,8 +73,8 @@
                             <div class="pt-2 border-top mt-2">
                                 <div class="fw-bold text-primary mb-2"><%= b.getPrice() %> ៛</div>
                                 <div class="d-grid gap-1 d-flex">
-                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    <a href="cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                 <h4 class="fw-bold mb-0 text-dark d-flex align-items-center">
                     <i class="fas fa-sparkles text-success me-2"></i> New Books
                 </h4>
-                <a href="#" class="btn btn-sm btn-outline-success rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="all_new_book.jsp" class="btn btn-sm btn-outline-success rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
 
             <div class="row g-4">
@@ -101,7 +101,7 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="card h-100 book-card p-3 bg-white shadow-sm">
                         <div class="book-img-wrapper mb-3">
-                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>">
+                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
                         </div>
                         <div class="card-body p-0 d-flex flex-column justify-content-between">
                             <div>
@@ -112,8 +112,8 @@
                             <div class="pt-2 border-top mt-2">
                                 <div class="fw-bold text-success mb-2"><%= b.getPrice() %> ៛</div>
                                 <div class="d-grid gap-1 d-flex">
-                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    <a href="cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                 <h4 class="fw-bold mb-0 text-dark d-flex align-items-center">
                     <i class="fas fa-history text-secondary me-2"></i> Old Books
                 </h4>
-                <a href="#" class="btn btn-sm btn-outline-secondary rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="all_old_book.jsp" class="btn btn-sm btn-outline-secondary rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
 
             <div class="row g-4">
@@ -140,7 +140,7 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="card h-100 book-card p-3 bg-white shadow-sm">
                         <div class="book-img-wrapper mb-3">
-                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>">
+                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
                         </div>
                         <div class="card-body p-0 d-flex flex-column justify-content-between">
                             <div>
@@ -151,8 +151,8 @@
                             <div class="pt-2 border-top mt-2">
                                 <div class="fw-bold text-secondary mb-2"><%= b.getPrice() %> ៛</div>
                                 <div class="d-grid gap-1 d-flex">
-                                    <a href="#" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    <a href="cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
                                 </div>
                             </div>
                         </div>

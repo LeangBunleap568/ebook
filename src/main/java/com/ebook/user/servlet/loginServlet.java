@@ -1,9 +1,9 @@
-package com.user.servlet;
+package com.ebook.user.servlet;
 
 import java.io.IOException;
 
-import com.DAO.UserDAO;
-import com.DAO.UserDAOImpl;
+import com.ebook.dao.UserDAO;
+import com.ebook.dao.impl.UserDAOImpl;
 import com.db.DBconnect;
 import com.entity.user;
 

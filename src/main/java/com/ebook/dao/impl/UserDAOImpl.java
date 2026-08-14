@@ -1,4 +1,6 @@
-package com.DAO;
+package com.ebook.dao.impl;
+
+import com.ebook.dao.*;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -107,5 +109,59 @@ public class UserDAOImpl implements UserDAO {
             throw new RuntimeException("Login failed: " + e.getMessage());
         }
         return null; // credentials not found
+    }
+
+    @Override
+    public boolean checkPassword(int id, String ps) {
+        if (conn == null) return false;
+        try {
+            String sql = "SELECT id FROM `user` WHERE id=? AND password=?";
+            try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                pst.setInt(1, id);
+                pst.setString(2, ps);
+                try (ResultSet rs = pst.executeQuery()) {
+                    return rs.next();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("checkPassword error: " + e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateProfile(user us) {
+        if (conn == null) return false;
+        try {
+            String sql = "UPDATE `user` SET name=?, email=?, phone=? WHERE id=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, us.getName());
+                ps.setString(2, us.getEmail());
+                ps.setString(3, us.getPhone());
+                ps.setInt(4, us.getId());
+                int rows = ps.executeUpdate();
+                return rows > 0;
+            }
+        } catch (Exception e) {
+            System.out.println("updateProfile error: " + e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkUser(String email) {
+        if (conn == null) return false;
+        try {
+            String sql = "SELECT id FROM `user` WHERE email=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, email);
+                try (ResultSet rs = ps.executeQuery()) {
+                    return rs.next(); // true = user already exists
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("checkUser error: " + e.getMessage());
+        }
+        return false;
     }
 }

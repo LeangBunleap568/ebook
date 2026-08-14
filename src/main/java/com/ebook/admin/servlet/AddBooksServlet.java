@@ -1,9 +1,9 @@
-package com.admin.servlet;
+package com.ebook.admin.servlet;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.DAO.BookDAOImpl;
+import com.ebook.dao.impl.BookDAOImpl;
 import com.db.DBconnect;
 import com.entity.BookDtls;
 
@@ -61,8 +61,8 @@ public class AddBooksServlet extends HttpServlet {
             boolean f = dao.addBooks(b);
 
             if (f) {
-                // Save uploaded image to webapp img directory
-                String path = getServletContext().getRealPath("") + "img";
+                // Save uploaded image to webapp book directory (matches JSP image serving path)
+                String path = getServletContext().getRealPath("") + "book";
                 File file = new File(path);
                 if (!file.exists()) {
                     file.mkdirs();

@@ -1,4 +1,4 @@
-package com.admin.servlet;
+package com.ebook.admin.servlet;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import com.DAO.BookDAOImpl;
+import com.ebook.dao.impl.BookDAOImpl;
 import com.db.DBconnect;
 
 @WebServlet("/admin/deleteBook")

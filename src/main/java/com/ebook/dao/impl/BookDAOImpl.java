@@ -1,4 +1,6 @@
-package com.DAO;
+package com.ebook.dao.impl;
+
+import com.ebook.dao.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -250,6 +252,178 @@ public class BookDAOImpl implements BookDAO {
             ps.close();
         } catch (Exception e) {
             System.out.println("BookDAOImpl getOldBooks Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<BookDtls> getAllRecentBook() {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE status=? ORDER BY bookId DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "Active");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getAllRecentBook Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<BookDtls> getAllNewBook() {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE bookCategory=? AND status=? ORDER BY bookId DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "New");
+            ps.setString(2, "Active");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getAllNewBook Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<BookDtls> getAllOldBook() {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE bookCategory=? AND status=? ORDER BY bookId DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "Old");
+            ps.setString(2, "Active");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getAllOldBook Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<BookDtls> getBookByOld(String email, String cate) {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE email=? AND bookCategory=? ORDER BY bookId DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, cate);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getBookByOld Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public boolean oldBookDelete(String email, String cat, int id) {
+        boolean f = false;
+        try {
+            String sql = "DELETE FROM book_dtls WHERE email=? AND bookCategory=? AND bookId=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, cat);
+            ps.setInt(3, id);
+            int i = ps.executeUpdate();
+            if (i == 1) {
+                f = true;
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl oldBookDelete Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return f;
+    }
+
+    @Override
+    public List<BookDtls> getBookBySearch(String ch) {
+        List<BookDtls> list = new ArrayList<BookDtls>();
+        BookDtls b = null;
+        try {
+            String sql = "SELECT * FROM book_dtls WHERE (bookname LIKE ? OR author LIKE ? OR bookCategory LIKE ?) AND status='Active' ORDER BY bookId DESC";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            String pattern = "%" + ch + "%";
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            ps.setString(3, pattern);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                b = new BookDtls();
+                b.setBookId(rs.getInt(1));
+                b.setBookName(rs.getString(2));
+                b.setAuthor(rs.getString(3));
+                b.setPrice(rs.getString(4));
+                b.setBookCategory(rs.getString(5));
+                b.setStatus(rs.getString(6));
+                b.setPhotoName(rs.getString(7));
+                b.setEmail(rs.getString(8));
+                list.add(b);
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl getBookBySearch Exception: " + e.getMessage());
             e.printStackTrace();
         }
         return list;

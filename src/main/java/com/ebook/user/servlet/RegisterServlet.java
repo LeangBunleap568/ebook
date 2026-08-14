@@ -1,8 +1,8 @@
-package com.user.servlet;
+package com.ebook.user.servlet;
 
 import java.io.IOException;
 
-import com.DAO.UserDAOImpl;
+import com.ebook.dao.impl.UserDAOImpl;
 import com.db.DBconnect;
 import com.entity.user;
 
@@ -35,6 +35,14 @@ public class RegisterServlet extends HttpServlet {
 
             // Save to DB — throws exception on any failure
             UserDAOImpl dao = new UserDAOImpl(DBconnect.getConn());
+
+            // Check for duplicate email
+            if (dao.checkUser(email != null ? email.trim() : "")) {
+                session.setAttribute("error", "This email is already registered. Please use a different email or login.");
+                resp.sendRedirect(req.getContextPath() + "/register.jsp");
+                return;
+            }
+
             dao.userRegistre(us);
 
             // If we reach here, insert was successful

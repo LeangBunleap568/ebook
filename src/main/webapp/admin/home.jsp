@@ -76,7 +76,7 @@
                             <i class="fas fa-box-open fa-2x"></i>
                         </div>
                         <h5 class="fw-bold text-dark">Orders</h5>
-                        <a href="orderBook.jsp" class="btn btn-warning btn-sm text-dark rounded-0 w-100 mt-3 fw-semibold">
+                        <a href="all_order.jsp" class="btn btn-warning btn-sm text-dark rounded-0 w-100 mt-3 fw-semibold">
                             <i class="fas fa-truck me-1"></i> View Orders
                         </a>
                     </div>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.DAO.BookDAOImpl" %>
+<%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
 <%@ page import="com.db.DBconnect" %>
 <%@ page import="com.entity.BookDtls" %>
 <%@ page import="java.util.List" %>

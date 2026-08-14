@@ -1,4 +1,4 @@
-package com.DAO;
+package com.ebook.dao;
 
 import java.util.List;
 import com.entity.BookDtls;
@@ -21,4 +21,16 @@ public interface BookDAO {
     public List<BookDtls> getRecentBooks();
 
     public List<BookDtls> getOldBooks();
+
+    public List<BookDtls> getAllRecentBook();
+
+    public List<BookDtls> getAllNewBook();
+
+    public List<BookDtls> getAllOldBook();
+
+    public List<BookDtls> getBookByOld(String email, String cate);
+
+    public boolean oldBookDelete(String email, String cat, int id);
+
+    public List<BookDtls> getBookBySearch(String ch);
 }
