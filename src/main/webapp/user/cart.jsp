@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.CartDAOImpl" %>
 <%@ page import="com.ebook.db.DBconnect" %>
 <%@ page import="com.ebook.entity.Cart" %>
@@ -65,17 +65,17 @@
                                     <tr class="text-center">
                                         <td><%= c.getBookName() %></td>
                                         <td><%= c.getAuthor() %></td>
-                                        <td class="text-danger fw-bold"><%= c.getPrice() %> áŸ›</td>
+                                        <td class="text-danger fw-bold"><%= c.getPrice() %> ៛</td>
                                         <td>
-                                            <a href="remove_cart?cid=<%= c.getCid() %>&uid=<%= c.getUid() %>" class="btn btn-sm btn-danger rounded-2">
+                                            <a href="../remove_cart?cid=<%= c.getCid() %>&uid=<%= c.getUid() %>" class="btn btn-sm btn-danger rounded-2">
                                                 <i class="fas fa-trash-alt me-1"></i> Remove
                                             </a>
                                         </td>
                                     </tr>
                                     <% } %>
                                     <tr class="text-center table-light">
-                                        <td colspan="2" class="text-end fw-bold">Total Price:</td>
-                                        <td class="text-success fw-bold fs-5"><%= totalPrice %> áŸ›</td>
+                                        <td colspan="2" class="text-end fw-bold">Total Price: ៛</td>
+                                        <td class="text-success fw-bold fs-5"><%= totalPrice %> ៛</td>
                                         <td></td>
                                     </tr>
                                 </tbody>

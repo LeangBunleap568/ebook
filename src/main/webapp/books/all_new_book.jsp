@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
 <%@ page import="com.ebook.db.DBconnect" %>
 <%@ page import="com.ebook.entity.BookDtls" %>
@@ -63,7 +63,7 @@
                             <p class="text-muted small text-truncate mb-2">Author: <%= b.getAuthor() %></p>
                         </div>
                         <div class="pt-2 border-top mt-2">
-                            <div class="fw-bold text-success mb-2"><%= b.getPrice() %> áŸ›</div>
+                            <div class="fw-bold text-success mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
                             <div class="d-grid gap-1 d-flex">
                                 <a href="../cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-danger btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                 <a href="view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-outline-secondary btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>

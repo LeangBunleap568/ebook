@@ -17,20 +17,38 @@ public class RemoveCartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int cid = Integer.parseInt(req.getParameter("cid"));
-        int uid = Integer.parseInt(req.getParameter("uid"));
-        
-        CartDAOImpl dao = new CartDAOImpl(DBconnect.getConn());
-        boolean f = dao.removeBook(cid, uid);
-        
-        HttpSession session = req.getSession();
-        
-        if (f) {
-            session.setAttribute("succMsg", "Book Removed from Cart");
-            resp.sendRedirect("user/cart.jsp");
-        } else {
-            session.setAttribute("failedMsg", "Something went wrong on server");
-            resp.sendRedirect("user/cart.jsp");
+        try {
+            String cidStr = req.getParameter("cid");
+            String uidStr = req.getParameter("uid");
+
+            HttpSession session = req.getSession();
+
+            if (cidStr != null && uidStr != null) {
+                int cid = Integer.parseInt(cidStr);
+                int uid = Integer.parseInt(uidStr);
+
+                CartDAOImpl dao = new CartDAOImpl(DBconnect.getConn());
+
+                // ត្រូវប្រាកដថាឈ្មោះ Method ក្នុង CartDAOImpl របស់អ្នកគឺ removeBook ឬ
+                // deleteBook
+                boolean f = dao.removeBook(cid, uid);
+
+                if (f) {
+                    session.setAttribute("succMsg", "Book Removed from Cart successfully!");
+                } else {
+                    session.setAttribute("failedMsg", "Failed to remove book from cart.");
+                }
+            } else {
+                session.setAttribute("failedMsg", "Invalid Request Parameters.");
+            }
+
+            // Redirect ទៅកាន់ user/cart.jsp ដោយប្រើ absolute path ឬ relative path
+            // ត្រឹមត្រូវ
+            resp.sendRedirect(req.getContextPath() + "/user/cart.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendRedirect(req.getContextPath() + "/user/cart.jsp");
         }
     }
 }

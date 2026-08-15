@@ -8,4 +8,5 @@ public interface CartDAO {
     public boolean removeBook(int cid, int uid);
     public int countCart(int uid);
     public boolean deleteCartByUid(int uid);
+    public boolean isBookInCart(int bid, int uid);
 }

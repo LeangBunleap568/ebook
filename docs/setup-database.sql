@@ -1,34 +1,39 @@
--- ============================================================
--- Ebook App - Database Setup Script
--- Run this in MySQL before deploying the application.
---
--- MySQL Port: 3309 (Updated to match your MySQL Workbench)
--- ============================================================
+CREATE DATABASE IF NOT EXISTS ebook;
+USE ebook;
 
--- Step 1: Create the database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS `ebook-app`
-    CHARACTER SET utf8mb4
-    COLLATE utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    phno VARCHAR(20),
+    password VARCHAR(100),
+    address VARCHAR(255),
+    landmark VARCHAR(100),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    pincode VARCHAR(20)
+);
 
--- Step 2: Use the ebook database
-USE `ebook-app`;
+CREATE TABLE IF NOT EXISTS book_details (
+    bookId INT PRIMARY KEY AUTO_INCREMENT,
+    bookname VARCHAR(150),
+    author VARCHAR(100),
+    price VARCHAR(50),
+    bookCategory VARCHAR(50),
+    status VARCHAR(50),
+    photo VARCHAR(255),
+    email VARCHAR(100)
+);
 
--- Step 3: Create the user table if it doesn't exist
-CREATE TABLE IF NOT EXISTS `user` (
-    id       INT          NOT NULL AUTO_INCREMENT,
-    name     VARCHAR(100) NOT NULL,
-    email    VARCHAR(150) NOT NULL UNIQUE,
-    phone    VARCHAR(20)  DEFAULT NULL,
-    password VARCHAR(255) NOT NULL,
-    address  VARCHAR(255) DEFAULT NULL,
-    landmark VARCHAR(100) DEFAULT NULL,
-    city     VARCHAR(100) DEFAULT NULL,
-    state    VARCHAR(100) DEFAULT NULL,
-    pincode  VARCHAR(20)  DEFAULT NULL,
-    PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Step 4: Verify
-SELECT 'Database and table are ready!' AS status;
-SHOW TABLES;
-DESCRIBE `user`;
+CREATE TABLE IF NOT EXISTS book_order (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id VARCHAR(100),
+    user_name VARCHAR(100),
+    email VARCHAR(100),
+    phno VARCHAR(20),
+    address VARCHAR(255),
+    book_name VARCHAR(150),
+    author VARCHAR(100),
+    price VARCHAR(50),
+    payment VARCHAR(50)
+);

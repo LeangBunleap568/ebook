@@ -117,7 +117,7 @@
                                     <%= b.getBookCategory() %>
                                 </span>
                             </td>
-                            <td class="fw-bold text-dark"><%= b.getPrice() %> áŸ›</td>
+                            <td class="fw-bold text-dark"><%= b.getPrice() %>៛</td>
                             <td>
                                 <span class="badge bg-success-subtle text-success border border-success-subtle rounded-1">
                                     <i class="fas fa-circle fa-xs me-1"></i><%= b.getStatus() %>

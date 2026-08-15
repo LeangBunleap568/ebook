@@ -46,14 +46,30 @@ public class CartServlet extends HttpServlet {
             c.setTotalPrice(Double.parseDouble(b.getPrice()));
 
             CartDAOImpl dao2 = new CartDAOImpl(DBconnect.getConn());
+            
+            String referer = req.getHeader("referer");
+            if(referer == null || referer.isEmpty()) {
+                referer = "index.jsp";
+            }
+            
+            // Check if book already exists in the cart
+            boolean isBookExists = dao2.isBookInCart(bid, uid);
+            
+            if(isBookExists) {
+                session.setAttribute("warnMsg", "Book already added to cart!");
+                resp.sendRedirect(referer);
+                return;
+            }
+
             boolean f = dao2.addCart(c);
 
+            // Redirect back to recent books with success/error message
             if (f) {
-                session.setAttribute("addCart", "Book Added to cart");
-                resp.sendRedirect("index.jsp");
+                session.setAttribute("succMsg", "Book Added to Cart successfully!");
+                resp.sendRedirect(referer);
             } else {
-                session.setAttribute("failed", "Something wrong on server");
-                resp.sendRedirect("index.jsp");
+                session.setAttribute("failedMsg", "Failed to add book to cart. Please try again.");
+                resp.sendRedirect(referer);
             }
 
         } catch (Exception e) {

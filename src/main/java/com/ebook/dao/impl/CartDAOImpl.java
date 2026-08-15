@@ -150,4 +150,23 @@ public class CartDAOImpl implements CartDAO {
         }
         return f;
     }
+    @Override
+    public boolean isBookInCart(int bid, int uid) {
+        boolean f = false;
+        try {
+            String sql = "SELECT * FROM cart WHERE bid=? AND uid=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, bid);
+            ps.setInt(2, uid);
+            java.sql.ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                f = true;
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("CartDAOImpl isBookInCart Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return f;
+    }
 }

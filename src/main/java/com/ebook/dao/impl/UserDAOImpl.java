@@ -20,26 +20,26 @@ public class UserDAOImpl implements UserDAO {
     }
 
     private void ensureTableExists() {
-        if (conn == null) return;
+        if (conn == null)
+            return;
         try {
             DatabaseMetaData meta = conn.getMetaData();
-            try (ResultSet rs = meta.getTables(null, null, "user", new String[]{"TABLE"})) {
+            try (ResultSet rs = meta.getTables(null, null, "user", new String[] { "TABLE" })) {
                 if (!rs.next()) {
                     System.out.println("Creating `user` table...");
-                    String sql =
-                        "CREATE TABLE `user` (" +
-                        "  id       INT NOT NULL AUTO_INCREMENT," +
-                        "  name     VARCHAR(100) NOT NULL," +
-                        "  email    VARCHAR(150) NOT NULL UNIQUE," +
-                        "  phone    VARCHAR(20)  DEFAULT NULL," +
-                        "  password VARCHAR(255) NOT NULL," +
-                        "  address  VARCHAR(255) DEFAULT NULL," +
-                        "  landmark VARCHAR(100) DEFAULT NULL," +
-                        "  city     VARCHAR(100) DEFAULT NULL," +
-                        "  state    VARCHAR(100) DEFAULT NULL," +
-                        "  pincode  VARCHAR(20)  DEFAULT NULL," +
-                        "  PRIMARY KEY (id)" +
-                        ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+                    String sql = "CREATE TABLE `user` (" +
+                            "  id       INT NOT NULL AUTO_INCREMENT," +
+                            "  name     VARCHAR(100) NOT NULL," +
+                            "  email    VARCHAR(150) NOT NULL UNIQUE," +
+                            "  phone    VARCHAR(20)  DEFAULT NULL," +
+                            "  password VARCHAR(255) NOT NULL," +
+                            "  address  VARCHAR(255) DEFAULT NULL," +
+                            "  landmark VARCHAR(100) DEFAULT NULL," +
+                            "  city     VARCHAR(100) DEFAULT NULL," +
+                            "  state    VARCHAR(100) DEFAULT NULL," +
+                            "  pincode  VARCHAR(20)  DEFAULT NULL," +
+                            "  PRIMARY KEY (id)" +
+                            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
                     try (Statement st = conn.createStatement()) {
                         st.executeUpdate(sql);
                         System.out.println("`user` table created.");
@@ -54,7 +54,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean userRegistre(user us) {
         if (conn == null) {
-            throw new RuntimeException("Cannot connect to database. Check MySQL is running and credentials are correct.");
+            throw new RuntimeException(
+                    "Cannot connect to database. Check MySQL is running and credentials are correct.");
         }
         try {
             String sql = "INSERT INTO `user` (name, email, phone, password) VALUES (?, ?, ?, ?)";
@@ -113,7 +114,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean checkPassword(int id, String ps) {
-        if (conn == null) return false;
+        if (conn == null)
+            return false;
         try {
             String sql = "SELECT id FROM `user` WHERE id=? AND password=?";
             try (PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -131,7 +133,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean updateProfile(user us) {
-        if (conn == null) return false;
+        if (conn == null)
+            return false;
         try {
             String sql = "UPDATE `user` SET name=?, email=?, phone=? WHERE id=?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -150,7 +153,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean checkUser(String email) {
-        if (conn == null) return false;
+        if (conn == null)
+            return false;
         try {
             String sql = "SELECT id FROM `user` WHERE email=?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -164,4 +168,5 @@ public class UserDAOImpl implements UserDAO {
         }
         return false;
     }
+
 }
