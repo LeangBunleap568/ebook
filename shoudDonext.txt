@@ -1,1 +1,2 @@
 deploy database
+FIX PAGE RECENT ALL NEW

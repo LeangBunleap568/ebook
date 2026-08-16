@@ -6,11 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Settings & Dashboard</title>
-    <%@include file="component/rootCss.jsp" %>
+    <%@include file="../component/rootCss.jsp" %>
 </head>
 <body class="bg-light">
 
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
 
     <c:if test="${empty userobj}">
         <c:redirect url="login.jsp" />
@@ -22,7 +22,7 @@
         <div class="row g-3">
             <!-- Edit Profile -->
             <div class="col-6 col-md-4">
-                <a href="user/edit_profile.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
+                <a href="${pageContext.request.contextPath}/user/edit_profile.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
                     <div class="card-body">
                         <i class="fas fa-user-edit fa-2x text-primary mb-2"></i>
                         <h6 class="card-title text-dark mb-0">Edit Profile</h6>
@@ -32,7 +32,7 @@
 
             <!-- My Orders -->
             <div class="col-6 col-md-4">
-                <a href="user/order.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
+                <a href="${pageContext.request.contextPath}/user/order.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
                     <div class="card-body">
                         <i class="fas fa-box-open fa-2x text-success mb-2"></i>
                         <h6 class="card-title text-dark mb-0">My Orders</h6>
@@ -42,7 +42,7 @@
 
             <!-- Sell Old Book -->
             <div class="col-6 col-md-4">
-                <a href="user/sell_book.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
+                <a href="${pageContext.request.contextPath}/user/sell_book.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
                     <div class="card-body">
                         <i class="fas fa-book fa-2x text-warning mb-2"></i>
                         <h6 class="card-title text-dark mb-0">Sell Old Book</h6>
@@ -52,7 +52,7 @@
 
             <!-- My Old Books -->
             <div class="col-6 col-md-4">
-                <a href="user/old_book.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
+                <a href="${pageContext.request.contextPath}/user/old_book.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
                     <div class="card-body">
                         <i class="fas fa-book-open fa-2x text-info mb-2"></i>
                         <h6 class="card-title text-dark mb-0">My Old Books</h6>
@@ -62,7 +62,7 @@
 
             <!-- Help Center -->
             <div class="col-6 col-md-4">
-                <a href="helpline.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
+                <a href="${pageContext.request.contextPath}/helpline.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
                     <div class="card-body">
                         <i class="fas fa-headset fa-2x text-secondary mb-2"></i>
                         <h6 class="card-title text-dark mb-0">Help Center</h6>
@@ -82,6 +82,7 @@
         </div>
     </div>
 
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+

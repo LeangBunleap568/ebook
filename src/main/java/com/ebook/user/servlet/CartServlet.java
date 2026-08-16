@@ -20,18 +20,18 @@ import com.ebook.entity.user;
 public class CartServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            HttpSession session = req.getSession();
+            HttpSession session = request.getSession();
             user u = (user) session.getAttribute("userobj");
 
             if (u == null) {
                 session.setAttribute("msg", "Please Login First");
-                resp.sendRedirect("login.jsp");
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
                 return;
             }
 
-            int bid = Integer.parseInt(req.getParameter("bid"));
+            int bid = Integer.parseInt(request.getParameter("bid"));
             int uid = u.getId();
 
             BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
@@ -47,7 +47,7 @@ public class CartServlet extends HttpServlet {
 
             CartDAOImpl dao2 = new CartDAOImpl(DBconnect.getConn());
             
-            String referer = req.getHeader("referer");
+            String referer = request.getHeader("referer");
             if(referer == null || referer.isEmpty()) {
                 referer = "index.jsp";
             }
@@ -57,7 +57,7 @@ public class CartServlet extends HttpServlet {
             
             if(isBookExists) {
                 session.setAttribute("warnMsg", "Book already added to cart!");
-                resp.sendRedirect(referer);
+                response.sendRedirect(referer);
                 return;
             }
 
@@ -66,10 +66,10 @@ public class CartServlet extends HttpServlet {
             // Redirect back to recent books with success/error message
             if (f) {
                 session.setAttribute("succMsg", "Book Added to Cart successfully!");
-                resp.sendRedirect(referer);
+                response.sendRedirect(referer);
             } else {
                 session.setAttribute("failedMsg", "Failed to add book to cart. Please try again.");
-                resp.sendRedirect(referer);
+                response.sendRedirect(referer);
             }
 
         } catch (Exception e) {
@@ -77,3 +77,4 @@ public class CartServlet extends HttpServlet {
         }
     }
 }
+

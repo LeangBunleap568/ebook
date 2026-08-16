@@ -16,12 +16,12 @@ import com.ebook.db.DBconnect;
 public class RemoveCartServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String cidStr = req.getParameter("cid");
-            String uidStr = req.getParameter("uid");
+            String cidStr = request.getParameter("cid");
+            String uidStr = request.getParameter("uid");
 
-            HttpSession session = req.getSession();
+            HttpSession session = request.getSession();
 
             if (cidStr != null && uidStr != null) {
                 int cid = Integer.parseInt(cidStr);
@@ -44,11 +44,11 @@ public class RemoveCartServlet extends HttpServlet {
 
             // Redirect ទៅកាន់ user/cart.jsp ដោយប្រើ absolute path ឬ relative path
             // ត្រឹមត្រូវ
-            resp.sendRedirect(req.getContextPath() + "/user/cart.jsp");
+            response.sendRedirect(request.getContextPath() + "/user/cart.jsp");
 
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect(req.getContextPath() + "/user/cart.jsp");
+            response.sendRedirect(request.getContextPath() + "/user/cart.jsp");
         }
     }
 }

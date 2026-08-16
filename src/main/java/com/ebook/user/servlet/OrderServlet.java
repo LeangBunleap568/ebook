@@ -23,26 +23,26 @@ import jakarta.servlet.http.HttpSession;
 public class OrderServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         user u = (user) session.getAttribute("userobj");
 
         if (u == null) {
             session.setAttribute("failedMsg", "Please Login First");
-            resp.sendRedirect("login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 
         try {
-            String name = req.getParameter("name");
-            String email = req.getParameter("email");
-            String phone = req.getParameter("phone");
-            String address = req.getParameter("address");
-            String landmark = req.getParameter("landmark");
-            String city = req.getParameter("city");
-            String state = req.getParameter("state");
-            String pincode = req.getParameter("pincode");
-            String paymentType = req.getParameter("paymentType");
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
+            String landmark = request.getParameter("landmark");
+            String city = request.getParameter("city");
+            String state = request.getParameter("state");
+            String pincode = request.getParameter("pincode");
+            String paymentType = request.getParameter("paymentType");
 
             // Generate unique order number
             String orderNo = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -77,16 +77,17 @@ public class OrderServlet extends HttpServlet {
                 cartDao.deleteCartByUid(u.getId());
                 session.setAttribute("orderNo", orderNo);
                 session.setAttribute("succMsg", "Order Placed Successfully! Order ID: " + orderNo);
-                resp.sendRedirect("user/order_success.jsp");
+                response.sendRedirect(request.getContextPath() + "/user/order_success.jsp");
             } else {
                 session.setAttribute("failedMsg", "Order failed. Please try again.");
-                resp.sendRedirect("user/cart.jsp");
+                response.sendRedirect(request.getContextPath() + "/user/cart.jsp");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("failedMsg", "Something went wrong: " + e.getMessage());
-            resp.sendRedirect("user/cart.jsp");
+            response.sendRedirect(request.getContextPath() + "/user/cart.jsp");
         }
     }
 }
+

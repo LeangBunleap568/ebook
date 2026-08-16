@@ -17,14 +17,14 @@ import com.ebook.entity.user;
 public class UpdateProfileServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        String phone = req.getParameter("phone");
-        String password = req.getParameter("password");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
 
-        HttpSession session = req.getSession();
+        HttpSession session = request.getSession();
         UserDAOImpl dao = new UserDAOImpl(DBconnect.getConn());
 
         boolean passOk = dao.checkPassword(id, password);
@@ -52,6 +52,7 @@ public class UpdateProfileServlet extends HttpServlet {
         } else {
             session.setAttribute("failedMsg", "Incorrect Password. Profile not updated.");
         }
-        resp.sendRedirect("user/edit_profile.jsp");
+        response.sendRedirect(request.getContextPath() + "/user/edit_profile.jsp");
     }
 }
+

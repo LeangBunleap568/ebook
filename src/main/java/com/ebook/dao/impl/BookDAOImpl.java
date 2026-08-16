@@ -443,4 +443,26 @@ public class BookDAOImpl implements BookDAO {
         }
         return count;
     }
+
+    @Override
+    public boolean updateBookImage(int bookId, String photoName) {
+        boolean f = false;
+        try {
+            String sql = "UPDATE book_dtls SET photo=? WHERE bookId=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, photoName);
+            ps.setInt(2, bookId);
+
+            int i = ps.executeUpdate();
+            if (i == 1) {
+                f = true;
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl updateBookImage Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return f;
+    }
 }
+

@@ -115,7 +115,7 @@
             </form>
 
             <div class="mt-4 text-center">
-                <p class="small text-muted">Don't have an account? <a href="register.jsp" class="text-primary text-decoration-none">Register here</a></p>
+                <p class="small text-muted">Don't have an account? <a href="${pageContext.request.contextPath}/register.jsp" class="text-primary text-decoration-none">Register here</a></p>
             </div>
         </div>
     </div>
@@ -124,3 +124,4 @@
 
 </body>
 </html>
+

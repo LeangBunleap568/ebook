@@ -10,10 +10,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
-    <%@include file="component/rootCss.jsp" %>
+    <%@include file="../component/rootCss.jsp" %>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp" %>
+    <%@include file="../component/navbar.jsp" %>
 
     <div class="container p-4 my-4">
         <%
@@ -32,7 +32,7 @@
         <% if (books.isEmpty()) { %>
             <div class="alert alert-warning text-center my-5">
                 <h5><i class="fas fa-exclamation-circle me-2"></i> No books found for "<%= ch %>".</h5>
-                <a href="index.jsp" class="btn btn-primary mt-3">Back to Home</a>
+                <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary mt-3">Back to Home</a>
             </div>
         <% } else { %>
             <div class="row g-4">
@@ -48,8 +48,8 @@
                             <span class="badge bg-warning text-dark mb-2"><%= b.getBookCategory() %></span>
                             <p class="text-danger fw-bold mb-3"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</p>
                             <div class="mt-auto d-flex gap-2">
-                                <a href="books/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-sm btn-outline-primary flex-fill">View</a>
-                                <a href="cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-sm btn-warning flex-fill">
+                                <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-sm btn-outline-primary flex-fill">View</a>
+                                <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-sm btn-warning flex-fill">
                                     <i class="fas fa-cart-plus me-1"></i>Cart
                                 </a>
                             </div>
@@ -61,6 +61,8 @@
         <% } %>
     </div>
 
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+
+

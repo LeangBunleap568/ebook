@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,7 @@
                             <c:remove var="failedMsg" scope="session"/>
                         </c:if>
 
-                        <form action="../update_profile" method="POST">
+                        <form action="${pageContext.request.contextPath}/update_profile" method="POST">
                             <input type="hidden" name="id" value="${userobj.id}">
 
                             <div class="mb-3">
@@ -63,7 +63,7 @@
                                 <button type="submit" class="btn btn-primary w-100 fw-bold">
                                     <i class="fas fa-save me-1"></i> Update Profile
                                 </button>
-                                <a href="setting.jsp" class="btn btn-outline-secondary w-100">Cancel</a>
+                                <a href="${pageContext.request.contextPath}/setting.jsp" class="btn btn-outline-secondary w-100">Cancel</a>
                             </div>
                         </form>
 
@@ -76,3 +76,5 @@
     <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+
+

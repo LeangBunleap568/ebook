@@ -33,4 +33,9 @@ public interface BookDAO {
     public boolean oldBookDelete(String email, String cat, int id);
 
     public List<BookDtls> getBookBySearch(String ch);
+
+    public int countBooks();
+
+    public boolean updateBookImage(int bookId, String photoName);
 }
+

@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
 <%@ page import="com.ebook.db.DBconnect" %>
 <%@ page import="com.ebook.entity.BookDtls" %>
@@ -28,7 +28,7 @@
                 <h4 class="fw-bold m-0"><i class="fas fa-book me-2 text-primary"></i>My Listed Books</h4>
               
             </div>
-            <a href="sell_book.jsp" class="btn btn-warning btn-sm fw-bold shadow-sm px-3">
+            <a href="${pageContext.request.contextPath}/sell_book.jsp" class="btn btn-warning btn-sm fw-bold shadow-sm px-3">
                 <i class="fas fa-plus me-1"></i> Sell Another Book
             </a>
         </div>
@@ -60,7 +60,7 @@
                     <h5 class="fw-bold text-secondary">No books listed yet</h5>
                   
                     <div>
-                        <a href="sell_book.jsp" class="btn btn-warning btn-sm fw-bold px-4">Sell Your First Book</a>
+                        <a href="${pageContext.request.contextPath}/sell_book.jsp" class="btn btn-warning btn-sm fw-bold px-4">Sell Your First Book</a>
                     </div>
                 </div>
             </c:when>
@@ -86,12 +86,12 @@
                                             <td class="ps-4 text-muted small"><%= i++ %></td>
                                             <td class="fw-bold text-dark"><%= b.getBookName() %></td>
                                             <td class="text-muted"><%= b.getAuthor() %></td>
-                                            <td class="fw-bold text-primary"><%= b.getPrice() %> ៛</td>
+                                            <td class="fw-bold text-primary"><%= b.getPrice() %> ?</td>
                                             <td>
                                                 <span class="badge bg-warning text-dark border"><%= b.getBookCategory() %></span>
                                             </td>
                                             <td class="text-end pe-4">
-                                                <a href="../delete_old_book?em=<%= b.getEmail() %>&id=<%= b.getBookId() %>"
+                                                <a href="${pageContext.request.contextPath}/delete_old_book?em=<%= b.getEmail() %>&id=<%= b.getBookId() %>"
                                                    class="btn btn-sm btn-outline-danger border-0 rounded-2"
                                                    onclick="return confirm('Are you sure you want to delete this book?')">
                                                     <i class="fas fa-trash-alt me-1"></i> Delete
@@ -112,3 +112,4 @@
     <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+

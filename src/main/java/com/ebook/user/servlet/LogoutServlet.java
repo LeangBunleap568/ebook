@@ -12,18 +12,19 @@ import jakarta.servlet.http.HttpSession;
 public class LogoutServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            HttpSession session = req.getSession();
+            HttpSession session = request.getSession();
             session.removeAttribute("userobj");
             
-            HttpSession session2 = req.getSession();
+            HttpSession session2 = request.getSession();
             session2.setAttribute("succMsg", "Logout Successfully!");
             
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+

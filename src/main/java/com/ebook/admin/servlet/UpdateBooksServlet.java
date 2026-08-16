@@ -16,13 +16,13 @@ import com.ebook.entity.BookDtls;
 public class UpdateBooksServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            int id = Integer.parseInt(req.getParameter("id"));
-            String bname = req.getParameter("bname");
-            String author = req.getParameter("author");
-            String price = req.getParameter("price");
-            String status = req.getParameter("status");
+            int id = Integer.parseInt(request.getParameter("id"));
+            String bname = request.getParameter("bname");
+            String author = request.getParameter("author");
+            String price = request.getParameter("price");
+            String status = request.getParameter("status");
 
             BookDtls b = new BookDtls();
             b.setBookId(id);
@@ -34,21 +34,21 @@ public class UpdateBooksServlet extends HttpServlet {
             BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
             boolean f = dao.updateEditBooks(b);
 
-            HttpSession session = req.getSession();
+            HttpSession session = request.getSession();
             if (f) {
                 session.setAttribute("succMsg", "Book Updated Successfully!");
-                resp.sendRedirect(req.getContextPath() + "/admin/allBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/allBook.jsp");
             } else {
                 session.setAttribute("failedMsg", "Something went wrong on server!");
 
-                resp.sendRedirect(req.getContextPath() + "/admin/updateBook.jsp?id=" + id);
+                response.sendRedirect(request.getContextPath() + "/admin/updateBook.jsp?id=" + id);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            HttpSession session = req.getSession();
+            HttpSession session = request.getSession();
             session.setAttribute("failedMsg", "An unexpected error occurred.");
-            resp.sendRedirect(req.getContextPath() + "/admin/allBook.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/allBook.jsp");
         }
     }
 }

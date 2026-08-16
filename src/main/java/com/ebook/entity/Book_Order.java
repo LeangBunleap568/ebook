@@ -60,3 +60,4 @@ public class Book_Order {
     public String getPaymentType() { return paymentType; }
     public void setPaymentType(String paymentType) { this.paymentType = paymentType; }
 }
+

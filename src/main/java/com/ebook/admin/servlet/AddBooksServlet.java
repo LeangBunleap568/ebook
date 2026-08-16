@@ -21,22 +21,22 @@ import jakarta.servlet.http.Part;
 public class AddBooksServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
 
         try {
-            String bookName = req.getParameter("bname");
-            String author = req.getParameter("author");
-            String price = req.getParameter("price");
-            String categories = req.getParameter("categories");
-            String status = req.getParameter("status");
-            Part part = req.getPart("bimg");
+            String bookName = request.getParameter("bname");
+            String author = request.getParameter("author");
+            String price = request.getParameter("price");
+            String categories = request.getParameter("categories");
+            String status = request.getParameter("status");
+            Part part = request.getPart("bimg");
             String fileName = (part != null) ? part.getSubmittedFileName() : "";
 
             // Validate image existence
             if (part == null || fileName == null || fileName.trim().isEmpty() || part.getSize() == 0) {
                 session.setAttribute("failedMsg", "Please select a book image!");
-                resp.sendRedirect(req.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
                 return;
             }
 
@@ -50,7 +50,7 @@ public class AddBooksServlet extends HttpServlet {
 
             if (priceVal < 10000) {
                 session.setAttribute("failedMsg", "Invalid price! Must be at least 10,000.");
-                resp.sendRedirect(req.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
                 return;
             }
 
@@ -70,17 +70,17 @@ public class AddBooksServlet extends HttpServlet {
                 part.write(path + File.separator + fileName);
 
                 session.setAttribute("succMsg", "Book Added Successfully!");
-                resp.sendRedirect(req.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
             } else {
                 session.setAttribute("failedMsg", "Failed to Add Book. Please try again.");
-                resp.sendRedirect(req.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
             }
 
         } catch (Exception e) {
             System.out.println("BooksAdd Exception: " + e.getMessage());
             e.printStackTrace();
             session.setAttribute("failedMsg", "Error: " + e.getMessage());
-            resp.sendRedirect(req.getContextPath() + "/admin/addBook.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
         }
     }
 }

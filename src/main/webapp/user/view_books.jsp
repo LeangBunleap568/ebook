@@ -36,27 +36,20 @@
             transform: scale(1.03);
         }
         .feature-box {
-            background: #fff0f2;
-            color: #dc3545;
+            background: var(--color-input-bg);
+            color: var(--color-text-dark);
             border-radius: 12px;
             padding: 1rem 0.5rem;
             transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
         }
         .feature-box:hover {
-            background: #dc3545;
+            background: var(--primary);
             color: #ffffff;
             transform: translateY(-4px);
         }
-        .badge-category {
-            background-color: #eef2ff;
-            color: #4f46e5;
-            font-weight: 600;
-            padding: 0.5em 1em;
-            border-radius: 50rem;
-        }
         .btn-custom {
-            border-radius: 50rem;
-            padding: 0.75rem 1.75rem;
+            padding: 0.75rem 2rem !important;
             font-weight: 600;
             transition: all 0.2s ease;
         }
@@ -73,6 +66,13 @@
         int id = Integer.parseInt(request.getParameter("id"));
         BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
         BookDtls b = dao.getBookById(id);
+        
+        String categoryBadgeClass = "bg-secondary-subtle text-secondary";
+        if("New".equals(b.getBookCategory())) {
+            categoryBadgeClass = "bg-success-subtle text-success";
+        } else if("Recent".equals(b.getBookCategory())) {
+            categoryBadgeClass = "bg-primary-subtle text-primary";
+        }
     %>
 
     <div class="container py-5">
@@ -82,13 +82,13 @@
             <div class="col-lg-5">
                 <div class="product-card p-4 h-100 d-flex flex-column justify-content-between text-center">
                     <div class="product-image-container mb-4">
-                        <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="product-image" alt="<%= b.getBookName() %>">
+                        <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="product-image" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
                     </div>
                     <div>
-                        <span class="badge badge-category mb-3 d-inline-block"><%= b.getBookCategory() %></span>
-                        <h4 class="fw-bold text-dark mb-2">Book Name: <span class="text-success"><%= b.getBookName() %></span></h4>
-                        <h5 class="text-muted mb-2">Author Name: <span class="text-success"><%= b.getAuthor() %></span></h5>
-                        <h5 class="text-muted mb-0">Category: <span class="text-success"><%= b.getBookCategory() %></span></h5>
+                        <span class="badge <%= categoryBadgeClass %> mb-3 d-inline-block px-3 py-2" style="font-size: 0.85rem !important;"><%= b.getBookCategory() %></span>
+                        <h4 class="fw-bold text-dark mb-2"><span class="text-secondary small fw-normal">Title:</span> <%= b.getBookName() %></h4>
+                        <h5 class="text-muted mb-2"><span class="small fw-normal">Author:</span> <%= b.getAuthor() %></h5>
+                        <h5 class="text-muted mb-0"><span class="small fw-normal">Category:</span> <%= b.getBookCategory() %></h5>
                     </div>
                 </div>
             </div>
@@ -101,29 +101,29 @@
                         
                         <% if("Old".equals(b.getBookCategory())) { %>
                             <div class="p-3 bg-light rounded-3 mb-4 border">
-                                <h5 class="text-primary m-0 mb-1">Contact Seller</h5>
-                                <h5 class="text-primary m-0"><i class="fas fa-envelope me-2"></i>Email: <%= b.getEmail() %></h5>
+                                <h5 class="text-primary m-0 mb-2 fw-bold"><i class="fas fa-user-circle me-1"></i> Contact Seller</h5>
+                                <p class="text-muted m-0"><i class="fas fa-envelope me-2"></i>Email: <strong><%= b.getEmail() %></strong></p>
                             </div>
                         <% } %>
 
                         <!-- Service Features Row -->
                         <div class="row g-3 my-4">
                             <div class="col-4">
-                                <div class="feature-box">
-                                    <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                                <div class="feature-box shadow-sm">
+                                    <i class="fas fa-money-bill-wave fa-2x mb-2 text-success"></i>
                                     <p class="fw-bold mb-0 small">Cash On Delivery</p>
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="feature-box">
-                                    <i class="fas fa-undo-alt fa-2x mb-2"></i>
+                                <div class="feature-box shadow-sm">
+                                    <i class="fas fa-undo-alt fa-2x mb-2 text-danger"></i>
                                     <p class="fw-bold mb-0 small">Return Available</p>
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="feature-box">
-                                    <i class="fas fa-truck-moving fa-2x mb-2"></i>
-                                    <p class="fw-bold mb-0 small">Free Shipping</p>
+                                <div class="feature-box shadow-sm">
+                                    <i class="fas fa-shipping-fast fa-2x mb-2 text-primary"></i>
+                                    <p class="fw-bold mb-0 small">Free Delivery</p>
                                 </div>
                             </div>
                         </div>
@@ -131,13 +131,13 @@
 
                     <!-- Dynamic Action Buttons & Price Display -->
                     <div class="mt-4 pt-3 border-top">
-                        <div class="d-flex justify-content-center align-items-center gap-2">
+                        <div class="d-flex justify-content-center align-items-center gap-3">
                             <% if("Old".equals(b.getBookCategory())) { %>
-                                <a href="../index.jsp" class="btn btn-success btn-custom btn-lg"><i class="fas fa-cart-plus me-1"></i> Continue Shopping</a>
-                                <span class="btn btn-danger btn-custom btn-lg disabled"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</span>
+                                <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-dark btn-custom btn-lg shadow-sm"><i class="fas fa-shopping-bag me-1"></i> Continue Shopping</a>
+                                <span class="btn btn-outline-danger btn-custom btn-lg disabled bg-light text-danger fw-bold border-danger shadow-sm"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</span>
                             <% } else { %>
-                                <a href="../cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-primary btn-custom btn-lg"><i class="fas fa-cart-plus me-1"></i> Add to Cart</a>
-                                <span class="btn btn-danger btn-custom btn-lg disabled"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</span>
+                                <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-primary btn-custom btn-lg shadow-sm"><i class="fas fa-cart-plus me-1"></i> Add to Cart</a>
+                                <span class="btn btn-outline-danger btn-custom btn-lg disabled bg-light text-danger fw-bold border-danger shadow-sm"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</span>
                             <% } %>
                         </div>
                     </div>
@@ -151,3 +151,4 @@
     <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+

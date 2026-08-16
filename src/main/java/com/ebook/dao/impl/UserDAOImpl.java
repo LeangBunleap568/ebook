@@ -169,4 +169,20 @@ public class UserDAOImpl implements UserDAO {
         return false;
     }
 
+    public int countUsers() {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM user";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
 }
+

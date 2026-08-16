@@ -31,7 +31,7 @@
                         </div>
                         <h5 class="fw-bold mb-2">Customer Helpline</h5>
                         <p class="text-muted small mb-3">Call us directly for fast support</p>
-                        <a href="tel:069543838" class="text-decoration-none h5 fw-bold text-primary mb-0 d-block">
+                        <a href="${pageContext.request.contextPath}/tel:069543838" class="text-decoration-none h5 fw-bold text-primary mb-0 d-block">
                             069 543 838
                         </a>
                     </div>
@@ -63,7 +63,7 @@
                         </div>
                         <h5 class="fw-bold mb-2">Telegram Chat</h5>
                         <p class="text-muted small mb-3">Direct message via phone number</p>
-                        <a href="@Leangbunleap" target="_blank" class="btn btn-outline-info btn-sm fw-bold rounded-pill px-3">
+                        <a href="${pageContext.request.contextPath}/@Leangbunleap" target="_blank" class="btn btn-outline-info btn-sm fw-bold rounded-pill px-3">
                             <i class="fab fa-telegram me-1"></i> Telegram: 069 543 838
                         </a>
                     </div>
@@ -89,3 +89,4 @@
     <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+

@@ -138,4 +138,37 @@ public class BookOrderDAOImpl implements BookOrderDAO {
         bo.setPaymentType(rs.getString("paymentType"));
         return bo;
     }
+
+    public int countOrders() {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(*) FROM book_order";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    @Override
+    public int countActiveTransactions() {
+        int count = 0;
+        try {
+            String sql = "SELECT COUNT(DISTINCT orderNo) FROM book_order";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }
+

@@ -17,14 +17,14 @@ import jakarta.servlet.http.HttpSession;
 public class RegisterServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
 
         try {
-            String name = req.getParameter("name");
-            String email = req.getParameter("email");
-            String phone = req.getParameter("phone");
-            String password = req.getParameter("password");
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String password = request.getParameter("password");
 
             // Build user entity
             user us = new user();
@@ -36,10 +36,9 @@ public class RegisterServlet extends HttpServlet {
             // Save to DB â€” throws exception on any failure
             UserDAOImpl dao = new UserDAOImpl(DBconnect.getConn());
 
-            // Check for duplicate email
             if (dao.checkUser(email != null ? email.trim() : "")) {
                 session.setAttribute("error", "This email is already registered. Please use a different email or login.");
-                resp.sendRedirect(req.getContextPath() + "/register.jsp");
+                response.sendRedirect(request.getContextPath() + "/register.jsp");
                 return;
             }
 
@@ -47,7 +46,7 @@ public class RegisterServlet extends HttpServlet {
 
             // If we reach here, insert was successful
             session.setAttribute("succMsg", "Registration successful! Please log in.");
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
 
         } catch (Exception e) {
             // Print the FULL cause chain so we can see the real MySQL error
@@ -63,7 +62,7 @@ public class RegisterServlet extends HttpServlet {
 
             String msg = (e.getMessage() != null) ? e.getMessage() : e.getClass().getName();
             session.setAttribute("error", msg);
-            resp.sendRedirect(req.getContextPath() + "/register.jsp");
+            response.sendRedirect(request.getContextPath() + "/register.jsp");
         }
     }
 }

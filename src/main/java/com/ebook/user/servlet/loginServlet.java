@@ -18,12 +18,12 @@ import jakarta.servlet.http.HttpSession;
 public class loginServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
 
         try {
-            String email    = req.getParameter("email");
-            String password = req.getParameter("password");
+            String email    = request.getParameter("email");
+            String password = request.getParameter("password");
 
             email    = (email    != null) ? email.trim()    : "";
             password = (password != null) ? password.trim() : "";
@@ -39,20 +39,20 @@ public class loginServlet extends HttpServlet {
 
                 // Redirect admin users to the admin dashboard
                 if ("admin@gmail.com".equalsIgnoreCase(us.getEmail())) {
-                    resp.sendRedirect(req.getContextPath() + "/admin/home.jsp");
+                    response.sendRedirect(request.getContextPath() + "/admin/home.jsp");
                 } else {
-                    resp.sendRedirect(req.getContextPath() + "/index.jsp");
+                    response.sendRedirect(request.getContextPath() + "/index.jsp");
                 }
             } else {
                 session.setAttribute("failedMsg", "Invalid email or password. Please try again.");
-                resp.sendRedirect(req.getContextPath() + "/login.jsp");
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
             }
 
         } catch (Exception e) {
             System.out.println("loginServlet Exception: " + e.getMessage());
             e.printStackTrace();
             session.setAttribute("error", "Login error: " + e.getMessage());
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
         }
     }
 }

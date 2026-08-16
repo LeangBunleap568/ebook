@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@
                         </c:if>
 
                         <%-- Form --%>
-                        <form action="../add_old_book" method="POST" enctype="multipart/form-data">
+                        <form action="${pageContext.request.contextPath}/add_old_book" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="email" value="${userobj.email}">
                             <input type="hidden" name="categories" value="Old">
                             <input type="hidden" name="status" value="Active">
@@ -76,7 +76,7 @@
                             <div class="mb-3">
                                 <label class="form-label small fw-semibold text-secondary">Price <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light text-muted fw-bold">៛</span>
+                                    <span class="input-group-text bg-light text-muted fw-bold">?</span>
                                     <input type="number" name="price" class="form-control bg-light" placeholder="e.g. 20000" required>
                                 </div>
                             </div>
@@ -103,3 +103,4 @@
     <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+

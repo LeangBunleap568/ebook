@@ -48,7 +48,7 @@
                         <% if(cartList.isEmpty()) { %>
                             <div class="alert alert-warning text-center my-4">
                                 <h5><i class="fas fa-exclamation-circle me-2"></i> Your cart is empty.</h5>
-                                <a href="../index.jsp" class="btn btn-primary mt-3">Start Shopping</a>
+                                <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary mt-3">Start Shopping</a>
                             </div>
                         <% } else { %>
                             <table class="table table-striped table-hover align-middle">
@@ -67,7 +67,7 @@
                                         <td><%= c.getAuthor() %></td>
                                         <td class="text-danger fw-bold"><%= c.getPrice() %> ៛</td>
                                         <td>
-                                            <a href="../remove_cart?cid=<%= c.getCid() %>&uid=<%= c.getUid() %>" class="btn btn-sm btn-danger rounded-2">
+                                            <a href="${pageContext.request.contextPath}/remove_cart?cid=<%= c.getCid() %>&uid=<%= c.getUid() %>" class="btn btn-sm btn-danger rounded-2">
                                                 <i class="fas fa-trash-alt me-1"></i> Remove
                                             </a>
                                         </td>
@@ -82,7 +82,7 @@
                             </table>
                             
                             <div class="d-flex justify-content-between align-items-center mt-4 border-top pt-3">
-                                <a href="../index.jsp" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Continue Shopping</a>
+                                <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Continue Shopping</a>
                             </div>
                         <% } %>
                     </div>
@@ -94,7 +94,7 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body p-4">
                         <h4 class="text-success fw-bold mb-4"><i class="fas fa-map-marker-alt me-2"></i> Order Details</h4>
-                        <form action="../order" method="post">
+                        <form action="${pageContext.request.contextPath}/order" method="post">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Name</label>
@@ -156,3 +156,5 @@
     <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+
+

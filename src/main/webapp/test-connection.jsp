@@ -106,8 +106,10 @@
     }
 %>
 
-<a class="btn" href="register.jsp">→ Go to Register</a>
+<a class="btn" href="${pageContext.request.contextPath}/register.jsp">→ Go to Register</a>
 &nbsp;&nbsp;
-<a class="btn" href="login.jsp">→ Go to Login</a>
+<a class="btn" href="${pageContext.request.contextPath}/login.jsp">→ Go to Login</a>
 </body>
 </html>
+
+

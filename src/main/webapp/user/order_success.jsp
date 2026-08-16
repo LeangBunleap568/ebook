@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,8 +28,8 @@
                     </div>
                     <c:remove var="orderNo" scope="session"/>
                     <div class="d-flex gap-3 justify-content-center mt-4">
-                        <a href="order.jsp" class="btn btn-primary"><i class="fas fa-box-open me-1"></i> View Orders</a>
-                        <a href="../index.jsp" class="btn btn-outline-secondary"><i class="fas fa-home me-1"></i> Continue Shopping</a>
+                        <a href="${pageContext.request.contextPath}/user/order.jsp" class="btn btn-primary"><i class="fas fa-box-open me-1"></i> View Orders</a>
+                        <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-outline-secondary"><i class="fas fa-home me-1"></i> Continue Shopping</a>
                     </div>
                 </div>
             </div>
@@ -39,3 +39,5 @@
     <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+
+

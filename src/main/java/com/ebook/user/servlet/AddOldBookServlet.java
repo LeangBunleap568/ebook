@@ -20,15 +20,15 @@ import com.ebook.entity.BookDtls;
 @MultipartConfig
 public class AddOldBookServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            String bookName = req.getParameter("bname");
-            String author = req.getParameter("author");
-            String price = req.getParameter("price");
+            String bookName = request.getParameter("bname");
+            String author = request.getParameter("author");
+            String price = request.getParameter("price");
             String categories = "Old";
             String status = "Active";
-            String email = req.getParameter("email");
-            Part part = req.getPart("bimg");
+            String email = request.getParameter("email");
+            Part part = request.getPart("bimg");
             String fileName = part.getSubmittedFileName();
 
             BookDtls b = new BookDtls(bookName, author, price, categories, status, fileName, email);
@@ -36,7 +36,7 @@ public class AddOldBookServlet extends HttpServlet {
             BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
             boolean f = dao.addBooks(b);
 
-            HttpSession session = req.getSession();
+            HttpSession session = request.getSession();
 
             if (f) {
                 // Since the web pages expect images to be in the "book" directory,
@@ -50,10 +50,10 @@ public class AddOldBookServlet extends HttpServlet {
                 part.write(path + File.separator + fileName);
 
                 session.setAttribute("succMsg", "Book Published Successfully");
-                resp.sendRedirect("user/sell_book.jsp");
+                response.sendRedirect(request.getContextPath() + "/user/sell_book.jsp");
             } else {
                 session.setAttribute("failedMsg", "Something went wrong on server");
-                resp.sendRedirect("user/sell_book.jsp");
+                response.sendRedirect(request.getContextPath() + "/user/sell_book.jsp");
             }
 
         } catch (Exception e) {
@@ -61,3 +61,4 @@ public class AddOldBookServlet extends HttpServlet {
         }
     }
 }
+

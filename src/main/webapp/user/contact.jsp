@@ -6,10 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Contact Us - Ebook Store</title>
-<%@include file="component/rootCss.jsp"%>
+<%@include file="../component/rootCss.jsp" %>
 </head>
 <body class="bg-light">
-    <%@include file="component/navbar.jsp"%>
+    <%@include file="../component/navbar.jsp" %>
 
     <div class="container my-5">
 
@@ -118,6 +118,7 @@
 
     </div>
 
-    <%@include file="component/footer.jsp" %>
+    <%@include file="../component/footer.jsp" %>
 </body>
 </html>
+

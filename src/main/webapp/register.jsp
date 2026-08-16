@@ -95,7 +95,7 @@
 
             <div id="formAlert" class="alert-inline" role="alert"></div>
 
-            <form action="register" method="post" onsubmit="return validateRegisterForm();" autocomplete="off">
+            <form action="${pageContext.request.contextPath}/register" method="post" onsubmit="return validateRegisterForm();" autocomplete="off">
                 <div class="row mb-3 align-items-center">
                     <label class="col-sm-4 col-form-label small text-end">Full Name</label>
                     <div class="col-sm-8">
@@ -130,7 +130,7 @@
 
                 <div class="row mt-4">
                     <div class="col-sm-8 offset-sm-4 d-flex justify-content-between align-items-center">
-                        <a href="login.jsp" class="text-decoration-none small text-muted">Sign in instead</a>
+                        <a href="${pageContext.request.contextPath}/login.jsp" class="text-decoration-none small text-muted">Sign in instead</a>
                         <button type="submit" class="btn btn-register px-4">Register</button>
                     </div>
                 </div>
@@ -176,3 +176,4 @@
     </script>
 </body>
 </html>
+
