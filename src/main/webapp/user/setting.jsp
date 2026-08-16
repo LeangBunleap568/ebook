@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,16 +60,7 @@
                 </a>
             </div>
 
-            <!-- Help Center -->
-            <div class="col-6 col-md-4">
-                <a href="${pageContext.request.contextPath}/helpline.jsp" class="card text-center text-decoration-none shadow-sm h-100 py-4">
-                    <div class="card-body">
-                        <i class="fas fa-headset fa-2x text-secondary mb-2"></i>
-                        <h6 class="card-title text-dark mb-0">Help Center</h6>
-                    </div>
-                </a>
-            </div>
-
+       
             <!-- Logout -->
             <div class="col-6 col-md-4">
                 <a href="${pageContext.request.contextPath}/logout" class="card text-center text-decoration-none shadow-sm h-100 py-4">

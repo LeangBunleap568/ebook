@@ -164,7 +164,7 @@
                                    class="btn btn-sm btn-outline-info btn-action me-1" title="Update Cover Image">
                                     <i class="fas fa-image me-1"></i>Cover
                                 </a>
-                                <a href="${pageContext.request.contextPath}/admin/updateBook.jsp?id=<%= b.getBookId() %>"
+                                <a href="${pageContext.request.contextPath}/admin/edit_books.jsp?id=<%= b.getBookId() %>"
                                    class="btn btn-sm btn-outline-primary btn-action me-1">
                                     <i class="fas fa-edit me-1"></i>Edit
                                 </a>

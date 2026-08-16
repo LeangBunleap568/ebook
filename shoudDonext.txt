@@ -1,2 +1,5 @@
 deploy database
 FIX PAGE RECENT ALL NEW
+
+-delete seacrh navbar in admin
+-add feather user concel delivery

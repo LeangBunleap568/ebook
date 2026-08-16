@@ -59,7 +59,7 @@
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-header bg-dark text-white fw-bold py-3 d-flex align-items-center justify-content-between">
                         <div><i class="fas fa-book me-2"></i> Book Information (ID: <%= b.getBookId() %>)</div>
-                        <a href="${pageContext.request.contextPath}/edit_books.jsp?id=<%= b.getBookId() %>" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                        <a href="${pageContext.request.contextPath}/admin/edit_cover.jsp?id=<%= b.getBookId() %>" class="btn btn-sm btn-outline-light rounded-pill px-3">
                             <i class="fas fa-image me-1"></i> Update Cover Image
                         </a>
                     </div>
