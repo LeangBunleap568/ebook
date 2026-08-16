@@ -264,7 +264,7 @@
                                 </a>
                             </li>
                             <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/admin/addBook.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/addBook.jsp">
+                                <a class="nav-link ${currentUri.endsWith('/admin/add_books.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/add_books.jsp">
                                     <i class="fas fa-plus-circle me-1"></i>Add Books
                                 </a>
                             </li>
@@ -274,7 +274,7 @@
                                 </a>
                             </li>
                             <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/admin/all_order.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/all_order.jsp">
+                                <a class="nav-link ${currentUri.endsWith('/admin/orders.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/orders.jsp">
                                     <i class="fas fa-box-open me-1"></i>Orders
                                 </a>
                             </li>

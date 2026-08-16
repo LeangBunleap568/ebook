@@ -52,7 +52,7 @@
         <!-- Top Breadcrumb/Title Navigation -->
         <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
             <div class="d-flex align-items-center gap-3">
-                <a href="${pageContext.request.contextPath}/all_order.jsp" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
                     <i class="fas fa-arrow-left me-1"></i> Back to Orders
                 </a>
                 <h4 class="fw-bold mb-0 text-dark">
@@ -74,7 +74,7 @@
                     <i class="fas fa-inbox fa-4x text-muted mb-3 opacity-50"></i>
                     <h5 class="fw-bold text-secondary">No orders found for this customer</h5>
                     <p class="text-muted small mb-4">This account hasn't placed any orders yet or the email address is invalid.</p>
-                    <a href="${pageContext.request.contextPath}/all_order.jsp" class="btn btn-primary btn-sm rounded-pill px-4">
+                    <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="btn btn-primary btn-sm rounded-pill px-4">
                         <i class="fas fa-arrow-left me-1"></i> Back to All Orders
                     </a>
                 </div>

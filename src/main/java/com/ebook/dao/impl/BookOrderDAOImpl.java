@@ -170,5 +170,27 @@ public class BookOrderDAOImpl implements BookOrderDAO {
         }
         return count;
     }
+
+    @Override
+    public double getTotalSalesUSD() {
+        double total = 0.0;
+        try {
+            String sql = "SELECT price FROM book_order";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String priceStr = rs.getString("price");
+                if (priceStr != null && !priceStr.trim().isEmpty()) {
+                    try {
+                        total += Double.parseDouble(priceStr.trim());
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookOrderDAOImpl getTotalSalesUSD Exception: " + e.getMessage());
+        }
+        return total;
+    }
 }
 

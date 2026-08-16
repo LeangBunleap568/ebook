@@ -54,7 +54,7 @@
 </head>
 <body>
 
-   <c:set var="activePage" value="home" scope="request" />
+   <c:set var="activePage" value="all_books" scope="request" />
 <%@include file="../component/navbar.jsp" %>
 
     <%-- Flash Messages --%>
@@ -95,7 +95,7 @@
                 %>
                 <small class="text-muted"><%= list.size() %> book(s) in catalog</small>
             </div>
-            <a href="${pageContext.request.contextPath}/admin/addBook.jsp" class="btn btn-primary rounded-pill px-4 fw-semibold">
+            <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-primary rounded-pill px-4 fw-semibold">
                 <i class="fas fa-plus me-1"></i> Add New Book
             </a>
         </div>
@@ -182,7 +182,7 @@
                 <div class="text-center py-5 text-muted">
                     <i class="fas fa-inbox fa-3x mb-3"></i>
                     <p class="fw-semibold">No books found in the catalog.</p>
-                    <a href="${pageContext.request.contextPath}/admin/addBook.jsp" class="btn btn-primary btn-sm rounded-pill px-4">
+                    <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-primary btn-sm rounded-pill px-4">
                         <i class="fas fa-plus me-1"></i> Add First Book
                     </a>
                 </div>

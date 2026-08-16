@@ -104,11 +104,6 @@
         box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
     }
 
-    /*
-     * Bootstrap's navbar-toggler-icon is white by default
-     * because navbar-dark was removed.
-     * This makes the icon dark.
-     */
     .custom-admin-nav .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2831, 41, 55, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
@@ -126,7 +121,6 @@
        ======================================== */
 
     @media (max-width: 991px) {
-
         .custom-admin-nav {
             padding: 8px 0;
         }
@@ -161,7 +155,6 @@
        ======================================== */
 
     @media (max-width: 576px) {
-
         .custom-admin-nav .container-fluid {
             padding-left: 15px !important;
             padding-right: 15px !important;
@@ -177,138 +170,64 @@
     }
 </style>
 
-
 <!-- ========================================
      ADMIN NAVBAR
      ======================================== -->
 
 <nav class="navbar navbar-expand-lg custom-admin-nav sticky-top">
-
     <div class="container-fluid px-4">
 
-        <!-- ========================================
-             BRAND
-             ======================================== -->
-
-        <a class="navbar-brand fw-bold me-4"
-           href="${pageContext.request.contextPath}/admin/home.jsp">
-
-            <i class="fas fa-book-reader me-2"></i>
-           Admin
-
+        <!-- BRAND -->
+        <a class="navbar-brand fw-bold me-4" href="${pageContext.request.contextPath}/admin/home.jsp">
+            <i class="fas fa-book-reader me-2"></i>Admin
         </a>
 
-
-        <!-- ========================================
-             MOBILE TOGGLER
-             ======================================== -->
-
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#adminNavbar"
-                aria-controls="adminNavbar"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-
+        <!-- MOBILE TOGGLER -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-
         </button>
 
-
-        <!-- ========================================
-             NAVIGATION CONTENT
-             ======================================== -->
-
+        <!-- NAVIGATION CONTENT -->
         <div class="collapse navbar-collapse" id="adminNavbar">
-
-
-            <!-- ========================================
-                 NAVIGATION ITEMS
-                 ======================================== -->
-
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
-
 
                 <!-- HOME -->
                 <li class="nav-item">
-
-                    <a class="nav-link ${activePage == 'home' ? 'active' : ''}"
-                       href="${pageContext.request.contextPath}/admin/home.jsp">
-
-                        <i class="fas fa-home me-1"></i>
-                        Home
-
+                    <a class="nav-link ${activePage == 'home' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/home.jsp">
+                        <i class="fas fa-home me-1"></i> Home
                     </a>
-
                 </li>
 
-
-                <!-- ALL BOOKS -->
+                <!-- ALL BOOKS (កែប្រែផ្លូវ Link ឲ្យត្រូវនឹង allBook.jsp) -->
                 <li class="nav-item">
-
-                    <a class="nav-link ${activePage == 'allBooks' ? 'active' : ''}"
-                       href="${pageContext.request.contextPath}/admin/all_books.jsp">
-
-                        <i class="fas fa-book me-1"></i>
-                        All Books
-
+                    <a class="nav-link ${activePage == 'all_books' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/allBook.jsp">
+                        <i class="fas fa-book me-1"></i> All Books
                     </a>
-
                 </li>
-
 
                 <!-- ADD BOOK -->
                 <li class="nav-item">
-
-                    <a class="nav-link ${activePage == 'addBook' ? 'active' : ''}"
-                       href="${pageContext.request.contextPath}/admin/add_books.jsp">
-
-                        <i class="fas fa-plus-circle me-1"></i>
-                        Add Book
-
+                    <a class="nav-link ${activePage == 'add_books' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/add_books.jsp">
+                        <i class="fas fa-plus-circle me-1"></i> Add Book
                     </a>
-
                 </li>
-
 
                 <!-- ORDERS -->
                 <li class="nav-item">
-
-                    <a class="nav-link ${activePage == 'orders' ? 'active' : ''}"
-                       href="${pageContext.request.contextPath}/admin/all_order.jsp">
-
-                        <i class="fas fa-shopping-cart me-1"></i>
-                        Orders
-
+                    <a class="nav-link ${activePage == 'orders' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/orders.jsp">
+                        <i class="fas fa-shopping-cart me-1"></i> Orders
                     </a>
-
                 </li>
-
 
             </ul>
 
-
-            <!-- ========================================
-                 LOGOUT BUTTON
-                 ======================================== -->
-
+            <!-- LOGOUT BUTTON -->
             <div class="d-flex align-items-center">
-
-                <a href="${pageContext.request.contextPath}/logout"
-                   class="btn logout-btn rounded-pill">
-
-                    <i class="fas fa-sign-out-alt me-1"></i>
-                    Logout
-
+                <a href="${pageContext.request.contextPath}/logout" class="btn logout-btn rounded-pill">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
                 </a>
-
             </div>
-
-
         </div>
 
     </div>
-
 </nav>
-

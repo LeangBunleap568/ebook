@@ -9,5 +9,6 @@ public interface BookOrderDAO {
     public List<Book_Order> getAllOrder();
     public int countOrders();
     public int countActiveTransactions();
+    public double getTotalSalesUSD();
 }
 

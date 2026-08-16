@@ -59,7 +59,7 @@
 <body>
 
     <%-- កំណត់ activePage សម្រាប់ Highlight Link "Add Book" លើ Navbar --%>
-    <c:set var="activePage" value="addBook" scope="request" />
+    <c:set var="activePage" value="add_books" scope="request" />
     <%@include file="../component/navbar.jsp" %>
 
     <%-- Flash Messages (Success / Failed Alerts) --%>

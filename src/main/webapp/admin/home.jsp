@@ -26,6 +26,12 @@
             request.setAttribute("totalUsers", userDAO.countUsers());
             request.setAttribute("totalOrders", orderDAO.countOrders());
             request.setAttribute("activeTransactions", orderDAO.countActiveTransactions());
+
+            // Total Sales in USD and KHR (1 USD = 4000 KHR)
+            double totalUSD = orderDAO.getTotalSalesUSD();
+            long totalKHR = Math.round(totalUSD * 4000);
+            request.setAttribute("totalSalesUSD", String.format("%.2f", totalUSD));
+            request.setAttribute("totalSalesKHR", String.format("%,d", totalKHR));
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -227,6 +233,38 @@
 
         </div>
 
+        <%-- Section 1b: Total Revenue --%>
+        <p class="section-label">Total Revenue</p>
+        <div class="row g-2 mb-3">
+
+            <div class="col-xl-6 col-sm-12">
+                <div class="card stat-card" style="background: linear-gradient(135deg, #6f42c1, #5a32a3); color:#fff;">
+                    <div class="card-body">
+                        <div class="stat-label">Total Sales (USD)</div>
+                        <div class="stat-value">$<c:out value="${not empty totalSalesUSD ? totalSalesUSD : '0.00'}"/></div>
+                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
+                            <i class="fas fa-dollar-sign me-1"></i> Cumulative revenue
+                        </div>
+                    </div>
+                    <i class="fas fa-dollar-sign stat-bg-icon"></i>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-sm-12">
+                <div class="card stat-card" style="background: linear-gradient(135deg, #fd7e14, #e06000); color:#fff;">
+                    <div class="card-body">
+                        <div class="stat-label">Total Sales (KHR)</div>
+                        <div class="stat-value" style="font-size:1.5rem;"><c:out value="${not empty totalSalesKHR ? totalSalesKHR : '0'}"/> ៛</div>
+                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
+                            <i class="fas fa-coins me-1"></i> 1 USD = 4,000 ៛
+                        </div>
+                    </div>
+                    <i class="fas fa-coins stat-bg-icon"></i>
+                </div>
+            </div>
+
+        </div>
+
         <%-- Section 2: Quick Action Cards --%>
         <p class="section-label">Quick Navigation</p>
         <div class="row g-2 mb-3">
@@ -272,7 +310,7 @@
                         </div>
                         <h6 class="text-dark">Orders</h6>
                         <p>View all customer orders</p>
-                        <a href="${pageContext.request.contextPath}/admin/all_order.jsp" class="action-btn btn btn-warning text-dark">
+                        <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="action-btn btn btn-warning text-dark">
                             <i class="fas fa-truck me-1"></i> View Orders
                         </a>
                     </div>

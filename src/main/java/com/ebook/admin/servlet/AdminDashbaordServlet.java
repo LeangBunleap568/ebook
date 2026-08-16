@@ -31,6 +31,12 @@ public class AdminDashbaordServlet extends HttpServlet {
             request.setAttribute("totalUsers", userDao.countUsers());
             request.setAttribute("totalOrders", orderDao.countOrders());
 
+            // Total sales in USD and KHR (1 USD = 4000 KHR)
+            double totalUSD = orderDao.getTotalSalesUSD();
+            long totalKHR = Math.round(totalUSD * 4000);
+            request.setAttribute("totalSalesUSD", String.format("%.2f", totalUSD));
+            request.setAttribute("totalSalesKHR", String.format("%,d", totalKHR).replace(",", ","));
+
             // 3. Forward ទៅកាន់ admin/home.jsp (ដែលនៅក្នុង webapp/admin/home.jsp)
             request.getRequestDispatcher("/admin/home.jsp").forward(request, response);
 

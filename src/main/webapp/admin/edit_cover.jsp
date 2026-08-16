@@ -99,7 +99,7 @@
     </c:if>
 
     <%-- Highlight "All Books" sub-menu in Admin Navbar --%>
-    <c:set var="activePage" value="allBooks" scope="request" />
+    <c:set var="activePage" value="all_books" scope="request" />
     <%@include file="../component/navbar.jsp" %>
 
     <%-- Flash Messages --%>

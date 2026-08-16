@@ -114,19 +114,63 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Landmark</label>
-                                    <input type="text" name="landmark" class="form-control" required>
+                                    <select name="landmark" id="landmark" class="form-select" required>
+                                        <option value="" disabled selected>— Select Landmark —</option>
+                                        <optgroup label="Phnom Penh">
+                                            <option value="Tuol Tompoung Market">Tuol Tompoung Market</option>
+                                            <option value="Orussey Market">Orussey Market</option>
+                                            <option value="Central Market (Phsar Thmei)">Central Market (Phsar Thmei)</option>
+                                            <option value="Olympic Market">Olympic Market</option>
+                                            <option value="Boeng Keng Kang Market">Boeng Keng Kang Market</option>
+                                            <option value="Aeon Mall 1">Aeon Mall 1</option>
+                                            <option value="Aeon Mall 2">Aeon Mall 2</option>
+                                            <option value="Royal Palace Area">Royal Palace Area</option>
+                                        </optgroup>
+                                        <optgroup label="Siem Reap">
+                                            <option value="Angkor Wat Temple">Angkor Wat Temple</option>
+                                            <option value="Old Market (Phsar Chas)">Old Market (Phsar Chas)</option>
+                                            <option value="Pub Street Area">Pub Street Area</option>
+                                        </optgroup>
+                                        <optgroup label="Battambang">
+                                            <option value="Battambang Market">Battambang Market</option>
+                                            <option value="Bamboo Train Area">Bamboo Train Area</option>
+                                        </optgroup>
+                                        <optgroup label="Sihanoukville">
+                                            <option value="Serendipity Beach">Serendipity Beach</option>
+                                            <option value="Ochheuteal Beach">Ochheuteal Beach</option>
+                                        </optgroup>
+                                        <optgroup label="Kampot">
+                                            <option value="Kampot Riverside">Kampot Riverside</option>
+                                        </optgroup>
+                                    </select>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">City</label>
-                                    <input type="text" name="city" class="form-control" required>
+                                    <select name="city" id="city" class="form-select" required onchange="updateStateAndPincode()">
+                                        <option value="" disabled selected>— Select City —</option>
+                                        <option value="Phnom Penh" data-state="Phnom Penh" data-pincode="12000">Phnom Penh</option>
+                                        <option value="Siem Reap" data-state="Siem Reap" data-pincode="17000">Siem Reap</option>
+                                        <option value="Battambang" data-state="Battambang" data-pincode="02000">Battambang</option>
+                                        <option value="Sihanoukville" data-state="Preah Sihanouk" data-pincode="18000">Sihanoukville</option>
+                                        <option value="Kampot" data-state="Kampot" data-pincode="07000">Kampot</option>
+                                        <option value="Kampong Cham" data-state="Kampong Cham" data-pincode="04000">Kampong Cham</option>
+                                        <option value="Kampong Chhnang" data-state="Kampong Chhnang" data-pincode="05000">Kampong Chhnang</option>
+                                        <option value="Kampong Speu" data-state="Kampong Speu" data-pincode="06000">Kampong Speu</option>
+                                        <option value="Kandal" data-state="Kandal" data-pincode="10000">Kandal</option>
+                                        <option value="Takeo" data-state="Takeo" data-pincode="08000">Takeo</option>
+                                        <option value="Prey Veng" data-state="Prey Veng" data-pincode="12310">Prey Veng</option>
+                                        <option value="Svay Rieng" data-state="Svay Rieng" data-pincode="15000">Svay Rieng</option>
+                                        <option value="Pursat" data-state="Pursat" data-pincode="09000">Pursat</option>
+                                        <option value="Koh Kong" data-state="Koh Kong" data-pincode="16000">Koh Kong</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">State</label>
-                                    <input type="text" name="state" class="form-control" required>
+                                    <label class="form-label">Province / State</label>
+                                    <input type="text" name="state" id="state" class="form-control" placeholder="Auto-filled from City" readonly required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Pincode</label>
-                                    <input type="text" name="pincode" class="form-control" required>
+                                    <label class="form-label">Postal Code</label>
+                                    <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Auto-filled from City" readonly required>
                                 </div>
                                 <div class="col-12 mt-3">
                                     <label class="form-label d-block fw-bold">Payment Mode</label>
@@ -154,6 +198,15 @@
     </div>
     
     <%@include file="../component/footer.jsp" %>
+
+    <script>
+        function updateStateAndPincode() {
+            const citySelect = document.getElementById('city');
+            const selectedOption = citySelect.options[citySelect.selectedIndex];
+            document.getElementById('state').value   = selectedOption.getAttribute('data-state')   || '';
+            document.getElementById('pincode').value = selectedOption.getAttribute('data-pincode') || '';
+        }
+    </script>
 </body>
 </html>
 
