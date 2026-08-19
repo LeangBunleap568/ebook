@@ -16,35 +16,47 @@
             --color-coral-pink: #f05a66;   
             --color-emerald-green: #00b074; 
             --color-dark-slate: #2d404e;   
-            --color-light-bg: #f5f7fa;     
+            --color-light-bg: #f8fafc;     
             --color-card-white: #ffffff;   
-            --color-input-bg: #eef2f5;     
-            --color-input-border: #dcdfe3; 
-            --color-text-dark: #2d404e;    
-            --color-text-muted: #8c9ba5;   
+            --color-input-bg: #f1f5f9;     
+            --color-input-border: #e2e8f0; 
+            --color-text-dark: #1e293b;    
+            --color-text-muted: #64748b;   
             --color-text-light: #ffffff;   
         }
 
         body {
             background-color: var(--color-light-bg) !important;
             color: var(--color-text-dark);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .section-header {
+            border-bottom: 2px solid var(--color-input-border);
+            padding-bottom: 0.75rem;
         }
 
         .section-title {
             color: var(--color-dark-slate);
             font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.01em;
         }
         
         .btn-view-all {
-            border-color: var(--color-dark-slate);
+            border: 1px solid var(--color-dark-slate);
             color: var(--color-dark-slate);
-            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 0.825rem;
+            transition: all 0.25s ease;
+            background: transparent;
         }
 
         .btn-view-all:hover {
             background-color: var(--color-dark-slate);
             color: var(--color-text-light);
+            box-shadow: 0 4px 12px rgba(45, 64, 78, 0.15);
         }
 
         /* Horizontal Scroll Container */
@@ -52,10 +64,9 @@
             display: flex;
             flex-wrap: nowrap;
             overflow-x: auto;
-            scroll-behavior: auto; /* ដក smooth ចេញពេល drag ដើម្បីកុំឱ្យទាក់ */
+            scroll-behavior: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 1rem;
-            padding-top: 0.5rem;
+            padding: 0.75rem 0.25rem 1.25rem 0.25rem;
             gap: 1.25rem;
             cursor: grab;
             user-select: none;
@@ -65,76 +76,94 @@
             cursor: grabbing;
         }
 
-        /* Hide scrollbars */
+        /* Custom subtle scrollbar */
         .horizontal-scroll-container::-webkit-scrollbar {
-            display: none;
+            height: 6px;
         }
-        .horizontal-scroll-container {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .horizontal-scroll-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 10px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.12);
+            border-radius: 10px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.25);
         }
 
         .scroll-item {
-            flex: 0 0 240px;
-            max-width: 240px;
+            flex: 0 0 250px;
+            max-width: 250px;
         }
 
         .book-card {
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid var(--color-input-border) !important;
-            border-radius: 12px !important;
+            border-radius: 16px !important;
             background-color: var(--color-card-white) !important;
         }
 
         .book-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 12px 24px rgba(45, 64, 78, 0.12) !important;
+            box-shadow: 0 16px 32px rgba(45, 64, 78, 0.08) !important;
+            border-color: rgba(45, 64, 78, 0.2) !important;
         }
 
         .book-img-wrapper {
-            height: 220px;
+            height: 210px;
             overflow: hidden;
-            border-radius: 8px;
-            background-color: var(--color-input-bg);
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .book-img {
             height: 100%;
             width: 100%;
             object-fit: contain;
-            transition: transform 0.3s ease;
-            padding: 0.5rem;
-            pointer-events: none; /* ការពារកុំឱ្យ Drag រូបភាព */
+            transition: transform 0.35s ease;
+            padding: 0.75rem;
+            pointer-events: none;
         }
 
         .book-card:hover .book-img {
-            transform: scale(1.05);
+            transform: scale(1.06);
         }
 
         .price-text {
             color: var(--color-coral-pink);
-            font-size: 1.1rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .btn-add-cart {
             background-color: var(--color-coral-pink);
             border-color: var(--color-coral-pink);
             color: var(--color-text-light);
-            transition: background-color 0.2s ease;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
         }
 
         .btn-add-cart:hover {
             background-color: #d94854;
             border-color: #d94854;
             color: var(--color-text-light);
+            box-shadow: 0 4px 10px rgba(240, 90, 102, 0.25);
         }
 
         .btn-view-details {
-            border-color: var(--color-input-border);
+            border: 1px solid var(--color-input-border);
+            background-color: #ffffff;
             color: var(--color-text-dark);
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
         }
 
         .btn-view-details:hover {
@@ -142,25 +171,37 @@
             color: var(--color-text-dark);
         }
 
+        /* Category Badges */
+        .badge-custom {
+            font-size: 0.7rem;
+            padding: 0.35em 0.75em;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
         .badge-recent {
-            background-color: rgba(78, 115, 223, 0.15) !important;
-            color: #4e73df !important;
-            border-radius: 50px !important;
-            padding: 0.4em 0.8em !important;
+            background-color: rgba(78, 115, 223, 0.12) !important;
+            color: #3b82f6 !important;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
         .badge-new {
-            background-color: rgba(28, 200, 138, 0.15) !important;
-            color: #1cc88a !important;
-            border-radius: 50px !important;
-            padding: 0.4em 0.8em !important;
+            background-color: rgba(16, 185, 129, 0.12) !important;
+            color: #10b981 !important;
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .badge-old {
-            background-color: rgba(133, 135, 150, 0.15) !important;
-            color: #858796 !important;
-            border-radius: 50px !important;
-            padding: 0.4em 0.8em !important;
+            background-color: rgba(100, 116, 139, 0.12) !important;
+            color: #64748b !important;
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+
+        .empty-state-card {
+            background: #ffffff;
+            border: 2px dashed var(--color-input-border);
+            border-radius: 16px;
         }
     </style>
 </head>
@@ -172,11 +213,11 @@
 
         <!-- 1. Recent Books Section -->
         <section id="recent-books" class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <div class="d-flex justify-content-between align-items-center mb-3 section-header">
                 <h4 class="section-title mb-0 d-flex align-items-center">
                     <i class="fas fa-clock me-2" style="color: var(--color-amber-yellow);"></i> Recent Books
                 </h4>
-                <a href="${pageContext.request.contextPath}/user/all_recent_book.jsp" class="btn btn-sm btn-view-all rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="${pageContext.request.contextPath}/user/all_recent_book.jsp" class="btn btn-sm btn-view-all rounded-pill px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
 
             <div class="horizontal-scroll-container">
@@ -187,8 +228,8 @@
                     if (recentBooks == null) recentBooks = new java.util.ArrayList<>();
                 %>
                 <% if (recentBooks.isEmpty()) { %>
-                    <div class="text-center w-100 py-5">
-                        <i class="fas fa-book-open fa-2x text-muted mb-3 d-block"></i>
+                    <div class="text-center w-100 py-5 empty-state-card my-2">
+                        <i class="fas fa-book-open fa-2x text-muted mb-2 d-block"></i>
                         <p class="text-muted fw-semibold mb-0">No Recent Books Available At The Moment</p>
                     </div>
                 <% } else { %>
@@ -200,15 +241,15 @@
                             </div>
                             <div class="card-body p-0 d-flex flex-column justify-content-between">
                                 <div>
-                                    <span class="badge badge-recent rounded-1 mb-2 fw-semibold">Recent</span>
+                                    <span class="badge badge-custom badge-recent rounded-pill mb-2">Recent</span>
                                     <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
                                     <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
                                 </div>
                                 <div class="pt-2 border-top mt-2">
                                     <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
-                                    <div class="d-grid gap-1 d-flex">
-                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    <div class="d-flex gap-2">
+                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-3 w-50 d-inline-flex align-items-center justify-content-center"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-3 w-50 d-inline-flex align-items-center justify-content-center"><i class="fas fa-eye me-1"></i>View</a>
                                     </div>
                                 </div>
                             </div>
@@ -221,11 +262,11 @@
 
         <!-- 2. New Books Section -->
         <section id="new-books" class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <div class="d-flex justify-content-between align-items-center mb-3 section-header">
                 <h4 class="section-title mb-0 d-flex align-items-center">
                     <i class="fas fa-sparkles me-2" style="color: var(--color-emerald-green);"></i> New Books
                 </h4>
-                <a href="${pageContext.request.contextPath}/user/all_new_book.jsp" class="btn btn-sm btn-view-all rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="${pageContext.request.contextPath}/user/all_new_book.jsp" class="btn btn-sm btn-view-all rounded-pill px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
 
             <div class="horizontal-scroll-container">
@@ -234,8 +275,8 @@
                     if (newBooks == null) newBooks = new java.util.ArrayList<>();
                 %>
                 <% if (newBooks.isEmpty()) { %>
-                    <div class="text-center w-100 py-5">
-                        <i class="fas fa-book-open fa-2x text-muted mb-3 d-block"></i>
+                    <div class="text-center w-100 py-5 empty-state-card my-2">
+                        <i class="fas fa-book-open fa-2x text-muted mb-2 d-block"></i>
                         <p class="text-muted fw-semibold mb-0">No New Books Available At The Moment</p>
                     </div>
                 <% } else { %>
@@ -247,15 +288,15 @@
                             </div>
                             <div class="card-body p-0 d-flex flex-column justify-content-between">
                                 <div>
-                                    <span class="badge badge-new rounded-1 mb-2 fw-semibold">New</span>
+                                    <span class="badge badge-custom badge-new rounded-pill mb-2">New</span>
                                     <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
                                     <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
                                 </div>
                                 <div class="pt-2 border-top mt-2">
                                     <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
-                                    <div class="d-grid gap-1 d-flex">
-                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    <div class="d-flex gap-2">
+                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-3 w-50 d-inline-flex align-items-center justify-content-center"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-3 w-50 d-inline-flex align-items-center justify-content-center"><i class="fas fa-eye me-1"></i>View</a>
                                     </div>
                                 </div>
                             </div>
@@ -268,11 +309,11 @@
 
         <!-- 3. Old Books Section -->
         <section id="old-books" class="mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+            <div class="d-flex justify-content-between align-items-center mb-3 section-header">
                 <h4 class="section-title mb-0 d-flex align-items-center">
                     <i class="fas fa-history me-2" style="color: var(--color-text-muted);"></i> Old Books
                 </h4>
-                <a href="${pageContext.request.contextPath}/user/all_old_book.jsp" class="btn btn-sm btn-view-all rounded-2 px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="${pageContext.request.contextPath}/user/all_old_book.jsp" class="btn btn-sm btn-view-all rounded-pill px-3">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
 
             <div class="horizontal-scroll-container">
@@ -281,8 +322,8 @@
                     if (oldBooks == null) oldBooks = new java.util.ArrayList<>();
                 %>
                 <% if (oldBooks.isEmpty()) { %>
-                    <div class="text-center w-100 py-5">
-                        <i class="fas fa-book-open fa-2x text-muted mb-3 d-block"></i>
+                    <div class="text-center w-100 py-5 empty-state-card my-2">
+                        <i class="fas fa-book-open fa-2x text-muted mb-2 d-block"></i>
                         <p class="text-muted fw-semibold mb-0">No Old Books Available At The Moment</p>
                     </div>
                 <% } else { %>
@@ -294,15 +335,15 @@
                             </div>
                             <div class="card-body p-0 d-flex flex-column justify-content-between">
                                 <div>
-                                    <span class="badge badge-old rounded-1 mb-2 fw-semibold">Old</span>
+                                    <span class="badge badge-custom badge-old rounded-pill mb-2">Old</span>
                                     <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
                                     <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
                                 </div>
                                 <div class="pt-2 border-top mt-2">
                                     <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
-                                    <div class="d-grid gap-1 d-flex">
-                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    <div class="d-flex gap-2">
+                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-3 w-50 d-inline-flex align-items-center justify-content-center"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-3 w-50 d-inline-flex align-items-center justify-content-center"><i class="fas fa-eye me-1"></i>View</a>
                                     </div>
                                 </div>
                             </div>
@@ -377,4 +418,3 @@
     </script>
 </body>
 </html>
-

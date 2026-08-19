@@ -3,15 +3,15 @@
 
 <style>
     /* ========================================
-       WHITE ADMIN NAVBAR
+       CLOUD FOUNDRY ADMIN TOPBAR
        ======================================== */
 
     .custom-admin-nav {
-        background-color: #ffffff;
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-        padding: 10px 0;
+        background-color: #34495e;
+        border-bottom: 1px solid #2c3e50;
+        padding: 0 15px;
         z-index: 1030;
+        min-height: 48px;
     }
 
     /* ========================================
@@ -19,20 +19,21 @@
        ======================================== */
 
     .custom-admin-nav .navbar-brand {
-        color: #1f2937 !important;
-        font-size: 18px;
-        font-weight: 700;
+        color: #ffffff !important;
+        font-size: 15px;
+        font-weight: 600;
         letter-spacing: -0.2px;
-        transition: color 0.2s ease;
+        padding: 10px 0;
+        transition: opacity 0.2s ease;
     }
 
     .custom-admin-nav .navbar-brand:hover {
-        color: #0d6efd !important;
+        opacity: 0.9;
     }
 
     .custom-admin-nav .navbar-brand i {
-        color: #0d6efd;
-        font-size: 20px;
+        color: #f39c12;
+        font-size: 16px;
     }
 
     /* ========================================
@@ -40,29 +41,31 @@
        ======================================== */
 
     .custom-admin-nav .nav-link {
-        color: #4b5563 !important;
-        font-size: 14px;
+        color: #bdc3c7 !important;
+        font-size: 13px;
         font-weight: 500;
-        padding: 8px 14px !important;
-        border-radius: 8px;
+        padding: 12px 14px !important;
+        border-radius: 0;
+        border-bottom: 3px solid transparent;
         transition: all 0.2s ease;
     }
 
     /* Hover */
     .custom-admin-nav .nav-link:hover {
-        color: #0d6efd !important;
-        background-color: #f0f6ff;
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.05);
     }
 
     /* Active */
     .custom-admin-nav .nav-link.active {
-        color: #0d6efd !important;
-        background-color: #eaf3ff;
+        color: #ffffff !important;
+        background-color: #2c3846;
+        border-bottom-color: #f39c12;
         font-weight: 600;
     }
 
     .custom-admin-nav .nav-link i {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     /* ========================================
@@ -70,20 +73,20 @@
        ======================================== */
 
     .custom-admin-nav .logout-btn {
-        color: #dc3545;
+        color: #e74c3c;
         background-color: transparent;
-        border: 1px solid #dc3545;
-        font-size: 14px;
+        border: 1px solid #e74c3c;
+        font-size: 12px;
         font-weight: 500;
-        padding: 7px 16px;
+        padding: 4px 12px;
+        border-radius: 3px;
         transition: all 0.2s ease;
     }
 
     .custom-admin-nav .logout-btn:hover {
         color: #ffffff;
-        background-color: #dc3545;
-        border-color: #dc3545;
-        box-shadow: 0 3px 8px rgba(220, 53, 69, 0.2);
+        background-color: #e74c3c;
+        border-color: #e74c3c;
     }
 
     /* ========================================
@@ -91,29 +94,17 @@
        ======================================== */
 
     .custom-admin-nav .navbar-toggler {
-        border: 1px solid #d1d5db;
-        padding: 6px 9px;
-        border-radius: 7px;
-    }
-
-    .custom-admin-nav .navbar-toggler:hover {
-        background-color: #f3f4f6;
+        border: 1px solid #7f8c8d;
+        padding: 4px 8px;
+        border-radius: 3px;
     }
 
     .custom-admin-nav .navbar-toggler:focus {
-        box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.15);
+        box-shadow: none;
     }
 
     .custom-admin-nav .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2831, 41, 55, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-
-    /* ========================================
-       NAVBAR CONTAINER
-       ======================================== */
-
-    .custom-admin-nav .container-fluid {
-        min-height: 42px;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.85%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
 
     /* ========================================
@@ -121,51 +112,28 @@
        ======================================== */
 
     @media (max-width: 991px) {
-        .custom-admin-nav {
-            padding: 8px 0;
-        }
-
-        .custom-admin-nav .navbar-brand {
-            font-size: 17px;
-        }
-
         .custom-admin-nav .navbar-collapse {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .custom-admin-nav .navbar-nav {
-            gap: 4px !important;
+            background-color: #2c3846;
+            margin: 0 -15px;
+            padding: 10px 15px;
+            border-top: 1px solid #1a252f;
         }
 
         .custom-admin-nav .nav-link {
-            padding: 10px 14px !important;
+            border-bottom: none;
+            border-left: 3px solid transparent;
+            padding: 8px 12px !important;
+        }
+
+        .custom-admin-nav .nav-link.active {
+            border-bottom-color: transparent;
+            border-left-color: #f39c12;
         }
 
         .custom-admin-nav .logout-btn {
-            margin-top: 10px;
+            margin-top: 8px;
             width: 100%;
             text-align: center;
-        }
-    }
-
-    /* ========================================
-       SMALL MOBILE
-       ======================================== */
-
-    @media (max-width: 576px) {
-        .custom-admin-nav .container-fluid {
-            padding-left: 15px !important;
-            padding-right: 15px !important;
-        }
-
-        .custom-admin-nav .navbar-brand {
-            font-size: 16px;
-        }
-
-        .custom-admin-nav .navbar-brand i {
-            font-size: 18px;
         }
     }
 </style>
@@ -175,11 +143,11 @@
      ======================================== -->
 
 <nav class="navbar navbar-expand-lg custom-admin-nav sticky-top">
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-3">
 
         <!-- BRAND -->
         <a class="navbar-brand fw-bold me-4" href="${pageContext.request.contextPath}/admin/home.jsp">
-            <i class="fas fa-book-reader me-2"></i>Admin
+            <i class="fas fa-book-reader me-2"></i>Ebook Admin
         </a>
 
         <!-- MOBILE TOGGLER -->
@@ -189,7 +157,7 @@
 
         <!-- NAVIGATION CONTENT -->
         <div class="collapse navbar-collapse" id="adminNavbar">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                 <!-- HOME -->
                 <li class="nav-item">
@@ -198,7 +166,7 @@
                     </a>
                 </li>
 
-                <!-- ALL BOOKS (កែប្រែផ្លូវ Link ឲ្យត្រូវនឹង allBook.jsp) -->
+                <!-- ALL BOOKS -->
                 <li class="nav-item">
                     <a class="nav-link ${activePage == 'all_books' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/allBook.jsp">
                         <i class="fas fa-book me-1"></i> All Books
@@ -223,7 +191,7 @@
 
             <!-- LOGOUT BUTTON -->
             <div class="d-flex align-items-center">
-                <a href="${pageContext.request.contextPath}/logout" class="btn logout-btn rounded-pill">
+                <a href="${pageContext.request.contextPath}/logout" class="btn logout-btn">
                     <i class="fas fa-sign-out-alt me-1"></i> Logout
                 </a>
             </div>

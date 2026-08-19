@@ -4,120 +4,319 @@
 <%@ page import="com.ebook.entity.BookDtls" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <%-- Security Check --%>
 <c:if test="${empty userobj or userobj.email != 'admin@gmail.com'}">
     <c:redirect url="../login.jsp"/>
 </c:if>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin — Book Inventory</title>
+    <title>Ebook App — Book Inventory</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
-        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
-        .admin-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 0 28px; height: 64px;
-            display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-            position: sticky; top: 0; z-index: 100;
+        :root {
+            --sidebar-bg: #2c3846;
+            --sidebar-active: #232d38;
+            --brand-bg: #f39c12;
+            --topbar-bg: #34495e;
+            --body-bg: #eaedf1;
         }
-        .admin-header .brand { color: #fff; font-size: 1.15rem; font-weight: 700; }
-        .admin-header .brand span { opacity: 0.65; font-weight: 400; font-size: 0.88rem; }
-        .nav-link-pill {
-            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
-            color: #fff; padding: 5px 15px; border-radius: 50px;
-            font-size: 12px; font-weight: 500; text-decoration: none; transition: all 0.2s;
+
+        body {
+            background-color: var(--body-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+            color: #333;
         }
-        .nav-link-pill:hover { background: rgba(255,255,255,0.25); color: #fff; }
-        .nav-link-pill.active { background: rgba(255,255,255,0.3); font-weight: 700; }
-        .logout-btn {
-            background: rgba(231,74,59,0.8); border: 1px solid rgba(255,255,255,0.2);
-            color: #fff; border-radius: 50px; padding: 5px 16px;
-            font-size: 12px; text-decoration: none; transition: all 0.2s;
+
+        /* Layout Structure */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
         }
-        .logout-btn:hover { background: #e74a3b; color: #fff; }
-        .avatar {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: rgba(255,255,255,0.2); display: flex;
-            align-items: center; justify-content: center; color: #fff; font-size: 15px;
-            border: 2px solid rgba(255,255,255,0.3);
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: var(--sidebar-bg);
+            color: #95a5a6;
+            flex-shrink: 0;
         }
-        .inventory-card { border: none; border-radius: 16px; box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
-        .book-thumb { width: 44px; height: 58px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
-        .badge-category { font-size: 11px; padding: 4px 10px; border-radius: 50px; font-weight: 600; }
-        .btn-action { padding: 4px 12px; font-size: 12px; border-radius: 50px !important; font-weight: 500; }
-        .search-bar { border-radius: 50px; border: 1px solid #dee2e6; padding-left: 16px; }
+        .sidebar .brand-header {
+            background-color: var(--brand-bg);
+            color: #fff;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .sidebar .nav-section {
+            padding: 10px 0;
+        }
+        .sidebar .nav-item-title {
+            padding: 8px 20px;
+            color: #bdc3c7;
+            font-weight: 500;
+        }
+        .sidebar .nav-link-custom {
+            display: block;
+            padding: 8px 20px 8px 30px;
+            color: #95a5a6;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .sidebar .nav-link-custom:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar .nav-link-custom.active {
+            color: #fff;
+            background-color: var(--sidebar-active);
+        }
+
+        /* Main Container */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            height: 48px;
+            background-color: var(--topbar-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: #fff;
+        }
+
+        /* Breadcrumbs */
+        .breadcrumb-bar {
+            padding: 10px 20px;
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+
+        /* Content Body */
+        .content-body {
+            padding: 0 20px 20px 20px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* CF Dashboard Card */
+        .cf-card {
+            background: #fff;
+            border-radius: 4px;
+            border: 1px solid #dcdcdc;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .cf-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .cf-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge-count {
+            background: #7f8c8d;
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Tables Inside Panels */
+        .table-cf {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-cf th {
+            text-align: left;
+            font-size: 11px;
+            color: #7f8c8d;
+            padding: 8px 6px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+        }
+        .table-cf td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #f5f5f5;
+            vertical-align: middle;
+        }
+
+        .book-thumb {
+            width: 32px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+
+        .badge-status-running {
+            background-color: #5cb85c;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .badge-status-stopped {
+            background-color: #777;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .action-icon {
+            color: #333;
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0 3px;
+        }
+        .action-icon:hover {
+            color: #3498db;
+        }
+        .action-icon.text-danger:hover {
+            color: #d9534f !important;
+        }
+
+        .search-input-cf {
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 3px 8px;
+            font-size: 12px;
+            outline: none;
+        }
     </style>
 </head>
 <body>
 
-   <c:set var="activePage" value="all_books" scope="request" />
-<%@include file="../component/navbar.jsp" %>
+<div class="app-wrapper">
 
-    <%-- Flash Messages --%>
-    <%
-        String succMsg = (String) session.getAttribute("succMsg");
-        String failedMsg = (String) session.getAttribute("failedMsg");
-    %>
-    <% if (succMsg != null) { %>
-        <div class="container-fluid px-4 pt-3">
-            <div class="alert alert-success alert-dismissible fade show shadow-sm">
-                <i class="fas fa-check-circle me-1"></i> <%= succMsg %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+    <%-- Sidebar Navigation --%>
+    <div class="sidebar">
+        <div class="brand-header">
+            Ebook Admin
         </div>
-        <% session.removeAttribute("succMsg"); %>
-    <% } %>
-    <% if (failedMsg != null) { %>
-        <div class="container-fluid px-4 pt-3">
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm">
-                <i class="fas fa-exclamation-triangle me-1"></i> <%= failedMsg %>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+        <div class="nav-section">
+            <div class="nav-item-title">System Overview</div>
+            <a href="${pageContext.request.contextPath}/admin/home.jsp" class="nav-link-custom">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="nav-link-custom active">Book Catalog</a>
+            <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="nav-link-custom">Order Requests</a>
+            <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="nav-link-custom">Management</a>
         </div>
-        <% session.removeAttribute("failedMsg"); %>
-    <% } %>
+    </div>
 
-    <div class="container-fluid px-4 py-4">
+    <%-- Main Container --%>
+    <div class="main-container">
 
-        <%-- Header Row --%>
-        <div class="d-flex align-items-center justify-content-between mb-4">
+        <%-- Top Bar --%>
+        <div class="top-navbar">
+            <div><i class="fas fa-bars cursor-pointer"></i></div>
             <div>
-                <h4 class="fw-bold text-dark mb-0">
-                    <i class="fas fa-book-open text-success me-2"></i>Book Inventory
-                </h4>
-                <%
-                    BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
-                    List<BookDtls> list = dao.getAllBooks();
-                %>
-                <small class="text-muted"><%= list.size() %> book(s) in catalog</small>
+                <a href="${pageContext.request.contextPath}/logout" class="text-white text-decoration-none" title="Logout">
+                    <i class="fas fa-user me-1"></i> Admin Exit
+                </a>
             </div>
-            <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-primary rounded-pill px-4 fw-semibold">
-                <i class="fas fa-plus me-1"></i> Add New Book
-            </a>
         </div>
 
-        <%-- Table Card --%>
-        <div class="card inventory-card">
-            <div class="card-header bg-white border-bottom d-flex align-items-center justify-content-between py-3">
-                <span class="fw-bold text-dark"><i class="fas fa-table text-primary me-2"></i>All Books</span>
-                <input type="text" id="searchInput" class="form-control form-control-sm search-bar"
-                       style="max-width:240px;" placeholder="🔍  Search books…" onkeyup="filterTable()">
+        <%-- Breadcrumbs --%>
+        <div class="breadcrumb-bar">
+            Home &gt; Admin Console &gt; Book Catalog
+        </div>
+
+        <%-- Flash Messages --%>
+        <%
+            String succMsg = (String) session.getAttribute("succMsg");
+            String failedMsg = (String) session.getAttribute("failedMsg");
+        %>
+        <% if (succMsg != null) { %>
+            <div class="px-4 pt-2">
+                <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
+                    <i class="fas fa-check-circle me-1"></i> <%= succMsg %>
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0" id="bookTable">
-                    <thead class="table-light">
-                        <tr class="text-muted small text-uppercase fw-bold">
-                            <th class="ps-4">#</th>
-                            <th>Cover</th>
-                            <th>Title &amp; Author</th>
+            <% session.removeAttribute("succMsg"); %>
+        <% } %>
+        <% if (failedMsg != null) { %>
+            <div class="px-4 pt-2">
+                <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+                    <i class="fas fa-exclamation-triangle me-1"></i> <%= failedMsg %>
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+            <% session.removeAttribute("failedMsg"); %>
+        <% } %>
+
+        <%-- Data Processing --%>
+        <%
+            BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+            List<BookDtls> list = dao.getAllBooks();
+        %>
+
+        <%-- Content Body --%>
+        <div class="content-body">
+            
+            <div class="page-title">
+                <div>Catalog: Books Overview</div>
+                <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-success btn-sm text-white text-decoration-none" style="font-size: 11px;">
+                    + Add New Book
+                </a>
+            </div>
+
+            <%-- Main Table Panel --%>
+            <div class="cf-card">
+                <div class="cf-card-header">
+                    <div class="cf-card-title">
+                        Books Catalog <span class="badge-count"><%= list.size() %></span>
+                    </div>
+                    <div>
+                        <input type="text" id="searchInput" class="search-input-cf" placeholder="Filter books..." onkeyup="filterTable()">
+                    </div>
+                </div>
+
+                <table class="table-cf" id="bookTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th style="width: 50px;">Cover</th>
+                            <th>Book Title &amp; Author</th>
                             <th>Category</th>
                             <th>Price</th>
                             <th>Status</th>
-                            <th class="text-center pe-4">Actions</th>
+                            <th style="text-align: right; padding-right: 12px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,106 +334,88 @@
                             catch(Exception e2) { priceFormatted = b.getPrice(); }
                         %>
                         <tr>
-                            <td class="ps-4 text-muted small"><%= rowIdx++ %></td>
+                            <td class="text-muted"><%= rowIdx++ %></td>
                             <td>
                                 <img src="<%= imgSrc %>" class="book-thumb" alt="<%= b.getBookName() %>"
-                                     onerror="this.src='https://placehold.co/44x58?text=No+Img'">
+                                     onerror="this.src='https://placehold.co/32x42?text=No+Img'">
                             </td>
                             <td>
-                                <div class="fw-bold text-dark"><%= b.getBookName() %></div>
-                                <div class="text-muted small"><i class="fas fa-user-edit me-1 opacity-50"></i><%= b.getAuthor() %></div>
+                                <div class="fw-bold" style="color: #2c3e50;"><%= b.getBookName() %></div>
+                                <div class="text-muted" style="font-size: 10px;"><%= b.getAuthor() %></div>
                             </td>
                             <td>
-                                <%
-                                    String cat = b.getBookCategory();
-                                    String catColor = "Recent".equals(cat) ? "bg-primary-subtle text-primary"
-                                                    : "New".equals(cat)    ? "bg-success-subtle text-success"
-                                                    : "bg-secondary-subtle text-secondary";
-                                %>
-                                <span class="badge badge-category <%= catColor %>"><%= cat %></span>
+                                <span class="text-secondary" style="font-size: 11px;"><%= b.getBookCategory() %></span>
                             </td>
-                            <td class="fw-bold text-dark"><%= priceFormatted %> ៛</td>
+                            <td class="fw-bold"><%= priceFormatted %> ៛</td>
                             <td>
-                                <span class="badge rounded-pill <%= isActive ? "bg-success" : "bg-secondary" %> px-3 py-1">
-                                    <i class="fas fa-circle me-1" style="font-size:7px;"></i><%= b.getStatus() %>
-                                </span>
+                                <% if (isActive) { %>
+                                    <span class="badge-status-running">Active</span>
+                                <% } else { %>
+                                    <span class="badge-status-stopped"><%= b.getStatus() %></span>
+                                <% } %>
                             </td>
-                            <td class="text-center pe-4">
-                                <a href="${pageContext.request.contextPath}/admin/edit_books.jsp?id=<%= b.getBookId() %>"
-                                   class="btn btn-sm btn-outline-info btn-action me-1" title="Update Cover Image">
-                                    <i class="fas fa-image me-1"></i>Cover
+                            <td style="text-align: right; padding-right: 12px;">
+                                <a href="${pageContext.request.contextPath}/admin/edit_books.jsp?id=<%= b.getBookId() %>" 
+                                   class="action-icon me-2" title="Update Cover/Edit">
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <a href="${pageContext.request.contextPath}/admin/edit_books.jsp?id=<%= b.getBookId() %>"
-                                   class="btn btn-sm btn-outline-primary btn-action me-1">
-                                    <i class="fas fa-edit me-1"></i>Edit
-                                </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger btn-action"
-                                        onclick="showDeleteModal(<%= b.getBookId() %>)">
-                                    <i class="fas fa-trash-alt me-1"></i>Delete
+                                <button type="button" class="action-icon text-danger" 
+                                        onclick="showDeleteModal(<%= b.getBookId() %>)" title="Delete Book">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
                         <% } %>
                     </tbody>
                 </table>
-            </div>
-            <% if (list.isEmpty()) { %>
-                <div class="text-center py-5">
-                    <span style="display:inline-flex;align-items:center;justify-content:center;
-                                 width:90px;height:90px;border-radius:50%;
-                                 background:rgba(40,167,69,0.08);margin-bottom:1.2rem;">
-                        <i class="fas fa-book-open fa-2x text-success"></i>
-                    </span>
-                    <h5 class="fw-bold text-secondary mb-1">No Books In Catalog Yet</h5>
-                    <p class="text-muted small mb-4">
-                        Your inventory is empty. Add your first book to get started!
-                    </p>
-                    <a href="${pageContext.request.contextPath}/admin/add_books.jsp"
-                       class="btn btn-primary rounded-pill px-4">
-                        <i class="fas fa-plus me-2"></i>Add First Book
-                    </a>
-                </div>
-            <% } %>
-        </div>
-    </div>
 
-    <%-- Delete Modal --%>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-                <div class="modal-body p-5 text-center">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle mb-4"
-                         style="width:72px;height:72px;">
-                        <i class="fas fa-exclamation-triangle fa-2x"></i>
-                    </div>
-                    <h5 class="fw-bold mb-2">Delete this book?</h5>
-                    <p class="text-muted mb-4">This action is permanent and cannot be undone.</p>
-                    <div class="d-flex justify-content-center gap-3">
-                        <button class="btn btn-light px-4 fw-semibold rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                        <a href="#" id="confirmDeleteBtn" class="btn btn-danger px-4 fw-semibold rounded-pill">
-                            <i class="fas fa-trash-alt me-1"></i> Yes, Delete
+                <% if (list.isEmpty()) { %>
+                    <div class="text-center py-4">
+                        <p class="text-muted mb-2">No books found in the catalog.</p>
+                        <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-outline-primary btn-sm py-1 px-3" style="font-size: 11px;">
+                            Add First Book
                         </a>
                     </div>
+                <% } %>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%-- Delete Confirmation Modal --%>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <i class="fas fa-exclamation-circle text-danger mb-2" style="font-size: 2rem;"></i>
+                <h6 class="fw-bold">Delete this book?</h6>
+                <p class="text-muted" style="font-size: 11px;">This record will be permanently deleted.</p>
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" style="font-size: 11px;">Cancel</button>
+                    <a href="#" id="confirmDeleteBtn" class="btn btn-danger btn-sm px-3" style="font-size: 11px;">
+                        Delete
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        function showDeleteModal(bookId) {
-            document.getElementById('confirmDeleteBtn').href =
-                '${pageContext.request.contextPath}/admin/deleteBook?id=' + bookId;
-            new bootstrap.Modal(document.getElementById('deleteModal')).show();
-        }
-        function filterTable() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('#bookTable tbody tr').forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
-            });
-        }
-    </script>
+<script>
+    function showDeleteModal(bookId) {
+        document.getElementById('confirmDeleteBtn').href =
+            '${pageContext.request.contextPath}/admin/deleteBook?id=' + bookId;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
 
-    <%@include file="../component/footer.jsp" %>
+    function filterTable() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('#bookTable tbody tr').forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
+        });
+    }
+</script>
+
 </body>
 </html>
-

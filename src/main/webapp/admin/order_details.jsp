@@ -4,180 +4,368 @@
 <%@ page import="com.ebook.entity.Book_Order" %>
 <%@ page import="java.util.*" %>
 <%@ page import="com.ebook.db.DBconnect" %>
+
+<%-- Security Check --%>
+<c:if test="${empty userobj or userobj.email != 'admin@gmail.com'}">
+    <c:redirect url="../login.jsp" />
+</c:if>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — User Order Details</title>
+<title>Ebook App — Order Details</title>
 <%@include file="../component/rootCss.jsp" %>
 <style>
-    .order-card { 
-        border-left: 4px solid #198754 !important; 
+    :root {
+        --sidebar-bg: #2c3846;
+        --sidebar-active: #232d38;
+        --brand-bg: #f39c12;
+        --topbar-bg: #34495e;
+        --body-bg: #eaedf1;
     }
-    .order-id-badge { 
-        font-family: monospace; 
-        font-size: 13px; 
+
+    body {
+        background-color: var(--body-bg);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        font-size: 13px;
+        color: #333;
+    }
+
+    /* Layout Structure */
+    .app-wrapper {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 220px;
+        background-color: var(--sidebar-bg);
+        color: #95a5a6;
+        flex-shrink: 0;
+    }
+    .sidebar .brand-header {
+        background-color: var(--brand-bg);
+        color: #fff;
+        padding: 14px 20px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .sidebar .nav-section {
+        padding: 10px 0;
+    }
+    .sidebar .nav-item-title {
+        padding: 8px 20px;
+        color: #bdc3c7;
+        font-weight: 500;
+    }
+    .sidebar .nav-link-custom {
+        display: block;
+        padding: 8px 20px 8px 30px;
+        color: #95a5a6;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .sidebar .nav-link-custom:hover {
+        color: #fff;
+        background: rgba(255,255,255,0.05);
+    }
+    .sidebar .nav-link-custom.active {
+        color: #fff;
+        background-color: var(--sidebar-active);
+    }
+
+    /* Main Container */
+    .main-container {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Top Navbar */
+    .top-navbar {
+        height: 48px;
+        background-color: var(--topbar-bg);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        color: #fff;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumb-bar {
+        padding: 10px 20px;
+        font-size: 11px;
+        color: #7f8c8d;
+    }
+
+    /* Content Body */
+    .content-body {
+        padding: 0 20px 20px 20px;
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* CF Dashboard Card */
+    .cf-card {
+        background: #fff;
+        border-radius: 4px;
+        border: 1px solid #dcdcdc;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    .cf-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+    }
+    .cf-card-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* CF Tables */
+    .table-cf {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .table-cf th {
+        text-align: left;
+        font-size: 11px;
+        color: #7f8c8d;
+        padding: 8px 6px;
+        border-bottom: 1px solid #eee;
+        font-weight: 600;
+    }
+    .table-cf td {
+        padding: 8px 6px;
+        border-bottom: 1px solid #f5f5f5;
+        vertical-align: middle;
+    }
+
+    /* Custom Badges */
+    .badge-order-id {
+        font-family: monospace;
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 11px;
+    }
+    .badge-status-completed {
+        background-color: #5cb85c;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+    .badge-payment {
+        background: #f8f9fa;
+        color: #495057;
+        border: 1px solid #ced4da;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 10px;
     }
 </style>
 </head>
-<body class="bg-light">
-    <%-- Security Check --%>
-    <c:if test="${empty userobj or userobj.email != 'admin@gmail.com'}">
-        <c:redirect url="../login.jsp" />
-    </c:if>
+<body>
 
-    <%-- Set active nav header highlight --%>
-    <c:set var="activePage" value="orders" scope="request" />
-    <%@include file="../component/navbar.jsp" %>
+<%
+    String email = request.getParameter("email");
+    BookOrderDAOImpl dao = new BookOrderDAOImpl(DBconnect.getConn());
+    List<Book_Order> list = dao.getBookOrder(email);
 
-    <%
-        String email = request.getParameter("email");
-        BookOrderDAOImpl dao = new BookOrderDAOImpl(DBconnect.getConn());
-        List<Book_Order> list = dao.getBookOrder(email);
-
-        // Group by orderNo
-        Map<String, List<Book_Order>> grouped = new LinkedHashMap<>();
-        if (list != null) {
-            for (Book_Order bo : list) {
-                grouped.computeIfAbsent(bo.getOrderNo(), k -> new ArrayList<>()).add(bo);
-            }
+    // Group by orderNo
+    Map<String, List<Book_Order>> grouped = new LinkedHashMap<>();
+    if (list != null) {
+        for (Book_Order bo : list) {
+            grouped.computeIfAbsent(bo.getOrderNo(), k -> new ArrayList<>()).add(bo);
         }
-        java.text.DecimalFormat fmt = new java.text.DecimalFormat("#,###");
-        Book_Order firstEver = (list != null && !list.isEmpty()) ? list.get(0) : null;
-    %>
+    }
+    java.text.DecimalFormat fmt = new java.text.DecimalFormat("#,###");
+    Book_Order firstEver = (list != null && !list.isEmpty()) ? list.get(0) : null;
+%>
 
-    <div class="container-fluid px-4 py-4">
+<div class="app-wrapper">
 
-        <!-- Top Breadcrumb/Title Navigation -->
-        <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
-            <div class="d-flex align-items-center gap-3">
-                <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
-                    <i class="fas fa-arrow-left me-1"></i> Back to Orders
+    <%-- Sidebar Navigation --%>
+    <div class="sidebar">
+        <div class="brand-header">
+            Ebook Admin
+        </div>
+        <div class="nav-section">
+            <div class="nav-item-title">System Overview</div>
+            <a href="${pageContext.request.contextPath}/admin/home.jsp" class="nav-link-custom">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="nav-link-custom">Book Catalog</a>
+            <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="nav-link-custom active">Order Requests</a>
+            <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="nav-link-custom">Management</a>
+        </div>
+    </div>
+
+    <%-- Main Container --%>
+    <div class="main-container">
+
+        <%-- Top Bar --%>
+        <div class="top-navbar">
+            <div><i class="fas fa-bars cursor-pointer"></i></div>
+            <div>
+                <a href="${pageContext.request.contextPath}/logout" class="text-white text-decoration-none" title="Logout">
+                    <i class="fas fa-user me-1"></i> Admin Exit
                 </a>
-                <h4 class="fw-bold mb-0 text-dark">
-                    <i class="fas fa-user-circle text-primary me-2"></i>
-                    Orders for: <%= firstEver != null ? firstEver.getName() : (email != null ? email : "Customer") %>
-                </h4>
             </div>
-            <% if (list != null && !list.isEmpty()) { %>
-                <span class="badge bg-primary fs-6 fw-normal px-3 py-2 rounded-pill">
-                    Total <%= grouped.size() %> Order(s)
-                </span>
-            <% } %>
         </div>
 
-        <% if (list == null || list.isEmpty()) { %>
-            <!-- Empty State -->
-            <div class="card border-0 shadow-sm text-center p-5 my-4">
-                <div class="card-body">
-                    <i class="fas fa-inbox fa-4x text-muted mb-3 opacity-50"></i>
-                    <h5 class="fw-bold text-secondary">No orders found for this customer</h5>
-                    <p class="text-muted small mb-4">This account hasn't placed any orders yet or the email address is invalid.</p>
-                    <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="btn btn-primary btn-sm rounded-pill px-4">
-                        <i class="fas fa-arrow-left me-1"></i> Back to All Orders
+        <%-- Breadcrumbs --%>
+        <div class="breadcrumb-bar">
+            Home &gt; Admin Console &gt; Orders &gt; Customer Details
+        </div>
+
+        <%-- Content Body --%>
+        <div class="content-body">
+            
+            <div class="page-title">
+                <div class="d-flex align-items-center gap-2">
+                    <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="btn btn-outline-secondary btn-sm py-1 px-2" style="font-size: 11px;">
+                        &larr; Back
+                    </a>
+                    <span>Orders for: <%= firstEver != null ? firstEver.getName() : (email != null ? email : "Customer") %></span>
+                </div>
+                <% if (list != null && !list.isEmpty()) { %>
+                    <span class="badge bg-secondary" style="font-size: 10px; font-weight: normal;">
+                        Total <%= grouped.size() %> Order(s)
+                    </span>
+                <% } %>
+            </div>
+
+            <% if (list == null || list.isEmpty()) { %>
+                <%-- Empty State --%>
+                <div class="cf-card text-center py-5">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3 opacity-50"></i>
+                    <h6 class="fw-bold text-secondary">No orders found for this customer</h6>
+                    <p class="text-muted small mb-3">This account hasn't placed any orders yet or the email address is invalid.</p>
+                    <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="btn btn-primary btn-sm px-3" style="font-size: 11px;">
+                        Back to All Orders
                     </a>
                 </div>
-            </div>
-        <% } else { %>
+            <% } else { %>
 
-            <!-- Customer Info Card -->
-            <div class="card border-0 shadow-sm rounded-3 mb-4">
-                <div class="card-header bg-dark text-white fw-bold py-3">
-                    <i class="fas fa-id-card me-2"></i> Customer Details
-                </div>
-                <div class="card-body bg-white">
-                    <div class="row g-3 text-secondary small">
+                <%-- Customer Info Panel --%>
+                <div class="cf-card">
+                    <div class="cf-card-header">
+                        <div class="cf-card-title">
+                            <i class="fas fa-id-card text-secondary"></i> Customer Info
+                        </div>
+                    </div>
+                    <div class="row g-2 text-secondary" style="font-size: 12px;">
                         <div class="col-md-4">
-                            <i class="fas fa-user text-primary me-2"></i><strong>Name:</strong> 
-                            <span class="text-dark fw-semibold"><%= firstEver.getName() %></span>
+                            <strong>Name:</strong> <span class="text-dark"><%= firstEver.getName() %></span>
                         </div>
                         <div class="col-md-4">
-                            <i class="fas fa-envelope text-primary me-2"></i><strong>Email:</strong> 
-                            <span class="text-dark fw-semibold"><%= firstEver.getEmail() %></span>
+                            <strong>Email:</strong> <span class="text-dark"><%= firstEver.getEmail() %></span>
                         </div>
                         <div class="col-md-4">
-                            <i class="fas fa-phone text-primary me-2"></i><strong>Phone:</strong> 
-                            <span class="text-dark fw-semibold"><%= firstEver.getPhone() %></span>
+                            <strong>Phone:</strong> <span class="text-dark"><%= firstEver.getPhone() %></span>
                         </div>
-                        <div class="col-12">
-                            <i class="fas fa-map-marker-alt text-danger me-2"></i><strong>Address:</strong>
+                        <div class="col-12 mt-1">
+                            <strong>Address:</strong>
                             <span class="text-dark">
                                 <%= firstEver.getAddress() %>, <%= firstEver.getLandmark() %>, <%= firstEver.getCity() %>, <%= firstEver.getState() %> <%= firstEver.getPincode() %>
                             </span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <p class="text-muted small mb-3 fw-semibold">
-                Showing <%= grouped.size() %> order(s) containing <%= list.size() %> total book item(s)
-            </p>
-
-            <!-- Order Cards Loop -->
-            <% for (Map.Entry<String, List<Book_Order>> entry : grouped.entrySet()) {
-                String orderNo = entry.getKey();
-                List<Book_Order> items = entry.getValue();
-                Book_Order first = items.get(0);
-                double orderTotal = 0;
-                for (Book_Order item : items) {
-                    try { orderTotal += Double.parseDouble(item.getPrice()); } catch(Exception ex) {}
-                }
-            %>
-            <div class="card border-0 shadow-sm rounded-3 mb-4 order-card">
-                <div class="card-header bg-white border-bottom d-flex flex-wrap justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center mb-2 mb-md-0">
-                        <span class="badge bg-success-subtle text-success border border-success-subtle order-id-badge px-3 py-2 me-2">
-                            <i class="fas fa-hashtag me-1"></i><%= orderNo %>
-                        </span>
-                        <span class="badge bg-success px-2 py-1"><i class="fas fa-check-circle me-1"></i>Completed</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="text-muted small"><%= items.size() %> book(s)</span>
-                        <span class="text-muted small">|</span>
-                        <span class="fw-bold text-danger fs-6"><%= fmt.format(orderTotal) %> ៛</span>
-                        <span class="badge bg-light text-dark border ms-2"><%= first.getPaymentType() %></span>
-                    </div>
+                <div class="text-muted mb-2" style="font-size: 11px;">
+                    Showing <%= grouped.size() %> order(s) containing <%= list.size() %> total item(s)
                 </div>
 
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-light text-muted small">
-                                <tr>
-                                    <th class="ps-4" style="width: 50px;">#</th>
-                                    <th>Book Name</th>
-                                    <th>Author</th>
-                                    <th class="text-end pe-4">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% int i = 1; for (Book_Order item : items) {
-                                    double p = 0;
-                                    try { p = Double.parseDouble(item.getPrice()); } catch(Exception ex) {}
-                                %>
-                                <tr>
-                                    <td class="ps-4 text-muted"><%= i++ %></td>
-                                    <td class="fw-semibold text-dark"><%= item.getBookName() %></td>
-                                    <td class="text-muted small"><%= item.getAuthor() %></td>
-                                    <td class="text-end pe-4 text-danger fw-bold"><%= fmt.format(p) %> ៛</td>
-                                </tr>
-                                <% } %>
-                                <tr class="table-light fw-bold">
-                                    <td colspan="3" class="text-end pe-3 text-secondary">Order Total:</td>
-                                    <td class="text-end pe-4 text-success fs-6"><%= fmt.format(orderTotal) %> ៛</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <%-- Order Cards Loop --%>
+                <% for (Map.Entry<String, List<Book_Order>> entry : grouped.entrySet()) {
+                    String orderNo = entry.getKey();
+                    List<Book_Order> items = entry.getValue();
+                    Book_Order first = items.get(0);
+                    double orderTotal = 0;
+                    for (Book_Order item : items) {
+                        try { orderTotal += Double.parseDouble(item.getPrice()); } catch(Exception ex) {}
+                    }
+                %>
+                <div class="cf-card">
+                    <div class="cf-card-header">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge-order-id">#<%= orderNo %></span>
+                            <span class="badge-status-completed">Completed</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="text-muted" style="font-size: 11px;"><%= items.size() %> book(s)</span>
+                            <span class="text-muted">|</span>
+                            <span class="fw-bold text-danger"><%= fmt.format(orderTotal) %> ៛</span>
+                            <span class="badge-payment"><%= first.getPaymentType() %></span>
+                        </div>
                     </div>
+
+                    <table class="table-cf">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">#</th>
+                                <th>Book Name</th>
+                                <th>Author</th>
+                                <th style="text-align: right; padding-right: 12px;">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% int i = 1; for (Book_Order item : items) {
+                                double p = 0;
+                                try { p = Double.parseDouble(item.getPrice()); } catch(Exception ex) {}
+                            %>
+                            <tr>
+                                <td class="text-muted"><%= i++ %></td>
+                                <td class="fw-bold" style="color: #2c3e50;"><%= item.getBookName() %></td>
+                                <td class="text-muted" style="font-size: 11px;"><%= item.getAuthor() %></td>
+                                <td style="text-align: right; padding-right: 12px;" class="text-danger fw-bold">
+                                    <%= fmt.format(p) %> ៛
+                                </td>
+                            </tr>
+                            <% } %>
+                            <tr style="background-color: #fafafa;">
+                                <td colspan="3" style="text-align: right; font-weight: 600; color: #555;">Order Total:</td>
+                                <td style="text-align: right; padding-right: 12px;" class="text-success fw-bold">
+                                    <%= fmt.format(orderTotal) %> ៛
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+                <% } %>
+
             <% } %>
-
-        <% } %>
+        </div>
     </div>
+</div>
 
-    <%@include file="../component/footer.jsp" %>
 </body>
 </html>
-
