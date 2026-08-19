@@ -71,13 +71,31 @@
                     <div class="card shadow border-0 p-4 mb-4">
                         <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                             <div class="d-flex align-items-center gap-2">
-                                <div style="width:40px;height:40px;border-radius:50%;background:rgba(25,135,84,0.1);display:flex;align-items:center;justify-content:center;">
-                                    <i class="fas fa-check-circle text-success"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0 text-success">Order Completed</h6>
-                                    <small class="text-muted"><%= items.size() %> item(s)</small>
-                                </div>
+                                <% if ("Cancelled".equals(first.getStatus())) { %>
+                                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(220,53,69,0.1);display:flex;align-items:center;justify-content:center;">
+                                        <i class="fas fa-times-circle text-danger"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-danger">Order Cancelled</h6>
+                                        <small class="text-muted"><%= items.size() %> item(s)</small>
+                                    </div>
+                                <% } else if ("Pending".equals(first.getStatus()) || "Processing".equals(first.getStatus())) { %>
+                                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,193,7,0.1);display:flex;align-items:center;justify-content:center;">
+                                        <i class="fas fa-clock text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-warning">Order <%= first.getStatus() %></h6>
+                                        <small class="text-muted"><%= items.size() %> item(s)</small>
+                                    </div>
+                                <% } else { %>
+                                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(25,135,84,0.1);display:flex;align-items:center;justify-content:center;">
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-success">Order Completed</h6>
+                                        <small class="text-muted"><%= items.size() %> item(s)</small>
+                                    </div>
+                                <% } %>
                             </div>
                             <span class="badge bg-info text-dark font-monospace">ID: <%= orderNo %></span>
                         </div>
@@ -119,8 +137,15 @@
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center pt-3 mt-2 border-top">
-                            <span class="fw-bold text-muted">Total Paid</span>
-                            <span class="fw-bold text-success fs-5"><%= fmt.format(orderTotal) %> ៛</span>
+                            <div>
+                                <% if ("Pending".equals(first.getStatus()) || "Processing".equals(first.getStatus())) { %>
+                                    <a href="${pageContext.request.contextPath}/cancel_order?orderNo=<%= orderNo %>" class="btn btn-sm btn-outline-danger">Cancel Order</a>
+                                <% } %>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-muted me-2">Total Paid</span>
+                                <span class="fw-bold text-success fs-5"><%= fmt.format(orderTotal) %> ៛</span>
+                            </div>
                         </div>
                     </div>
                     <% } %>

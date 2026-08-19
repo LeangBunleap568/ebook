@@ -184,29 +184,37 @@
                     BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
                     // ប្រើ Method ដែលមិនបាច់ LIMIT 4 (ឧ. getAllRecentBook)
                     List<BookDtls> recentBooks = dao.getAllRecentBook();
-                    for (BookDtls b : recentBooks) { 
+                    if (recentBooks == null) recentBooks = new java.util.ArrayList<>();
                 %>
-                <div class="scroll-item">
-                    <div class="card h-100 book-card p-3 shadow-sm">
-                        <div class="book-img-wrapper mb-3">
-                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
-                        </div>
-                        <div class="card-body p-0 d-flex flex-column justify-content-between">
-                            <div>
-                                <span class="badge badge-recent rounded-1 mb-2 fw-semibold">Recent</span>
-                                <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
-                                <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
+                <% if (recentBooks.isEmpty()) { %>
+                    <div class="text-center w-100 py-5">
+                        <i class="fas fa-book-open fa-2x text-muted mb-3 d-block"></i>
+                        <p class="text-muted fw-semibold mb-0">No Recent Books Available At The Moment</p>
+                    </div>
+                <% } else { %>
+                    <% for (BookDtls b : recentBooks) { %>
+                    <div class="scroll-item">
+                        <div class="card h-100 book-card p-3 shadow-sm">
+                            <div class="book-img-wrapper mb-3">
+                                <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
                             </div>
-                            <div class="pt-2 border-top mt-2">
-                                <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
-                                <div class="d-grid gap-1 d-flex">
-                                    <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                    <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                            <div class="card-body p-0 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="badge badge-recent rounded-1 mb-2 fw-semibold">Recent</span>
+                                    <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
+                                    <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
+                                </div>
+                                <div class="pt-2 border-top mt-2">
+                                    <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
+                                    <div class="d-grid gap-1 d-flex">
+                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <% } %>
                 <% } %>
             </div>
         </section>
@@ -223,29 +231,37 @@
             <div class="horizontal-scroll-container">
                 <% 
                     List<BookDtls> newBooks = dao.getAllNewBook();
-                    for (BookDtls b : newBooks) { 
+                    if (newBooks == null) newBooks = new java.util.ArrayList<>();
                 %>
-                <div class="scroll-item">
-                    <div class="card h-100 book-card p-3 shadow-sm">
-                        <div class="book-img-wrapper mb-3">
-                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
-                        </div>
-                        <div class="card-body p-0 d-flex flex-column justify-content-between">
-                            <div>
-                                <span class="badge badge-new rounded-1 mb-2 fw-semibold">New</span>
-                                <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
-                                <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
+                <% if (newBooks.isEmpty()) { %>
+                    <div class="text-center w-100 py-5">
+                        <i class="fas fa-book-open fa-2x text-muted mb-3 d-block"></i>
+                        <p class="text-muted fw-semibold mb-0">No New Books Available At The Moment</p>
+                    </div>
+                <% } else { %>
+                    <% for (BookDtls b : newBooks) { %>
+                    <div class="scroll-item">
+                        <div class="card h-100 book-card p-3 shadow-sm">
+                            <div class="book-img-wrapper mb-3">
+                                <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
                             </div>
-                            <div class="pt-2 border-top mt-2">
-                                <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
-                                <div class="d-grid gap-1 d-flex">
-                                    <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                    <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                            <div class="card-body p-0 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="badge badge-new rounded-1 mb-2 fw-semibold">New</span>
+                                    <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
+                                    <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
+                                </div>
+                                <div class="pt-2 border-top mt-2">
+                                    <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
+                                    <div class="d-grid gap-1 d-flex">
+                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <% } %>
                 <% } %>
             </div>
         </section>
@@ -262,29 +278,37 @@
             <div class="horizontal-scroll-container">
                 <% 
                     List<BookDtls> oldBooks = dao.getAllOldBook();
-                    for (BookDtls b : oldBooks) { 
+                    if (oldBooks == null) oldBooks = new java.util.ArrayList<>();
                 %>
-                <div class="scroll-item">
-                    <div class="card h-100 book-card p-3 shadow-sm">
-                        <div class="book-img-wrapper mb-3">
-                            <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
-                        </div>
-                        <div class="card-body p-0 d-flex flex-column justify-content-between">
-                            <div>
-                                <span class="badge badge-old rounded-1 mb-2 fw-semibold">Old</span>
-                                <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
-                                <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
+                <% if (oldBooks.isEmpty()) { %>
+                    <div class="text-center w-100 py-5">
+                        <i class="fas fa-book-open fa-2x text-muted mb-3 d-block"></i>
+                        <p class="text-muted fw-semibold mb-0">No Old Books Available At The Moment</p>
+                    </div>
+                <% } else { %>
+                    <% for (BookDtls b : oldBooks) { %>
+                    <div class="scroll-item">
+                        <div class="card h-100 book-card p-3 shadow-sm">
+                            <div class="book-img-wrapper mb-3">
+                                <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
                             </div>
-                            <div class="pt-2 border-top mt-2">
-                                <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
-                                <div class="d-grid gap-1 d-flex">
-                                    <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
-                                    <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                            <div class="card-body p-0 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="badge badge-old rounded-1 mb-2 fw-semibold">Old</span>
+                                    <h6 class="card-title text-truncate fw-bold mb-1" style="color: var(--color-text-dark);"><%= b.getBookName() %></h6>
+                                    <p class="small text-truncate mb-2" style="color: var(--color-text-muted);">Author: <%= b.getAuthor() %></p>
+                                </div>
+                                <div class="pt-2 border-top mt-2">
+                                    <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
+                                    <div class="d-grid gap-1 d-flex">
+                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm rounded-2 w-50"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm rounded-2 w-50"><i class="fas fa-eye me-1"></i>View</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <% } %>
                 <% } %>
             </div>
         </section>

@@ -37,7 +37,8 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                         + " city VARCHAR(100),"
                         + " state VARCHAR(100),"
                         + " pincode VARCHAR(20),"
-                        + " paymentType VARCHAR(50)"
+                        + " paymentType VARCHAR(50),"
+                        + " order_status VARCHAR(50) DEFAULT 'Pending'"
                         + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
                 Statement stmt = conn.createStatement();
                 stmt.execute(sql);
@@ -52,8 +53,8 @@ public class BookOrderDAOImpl implements BookOrderDAO {
     public boolean saveOrder(List<Book_Order> blist) {
         boolean f = false;
         try {
-            String sql = "INSERT INTO book_order (orderNo, bookName, author, price, name, email, phone, address, landmark, city, state, pincode, paymentType)"
-                    + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO book_order (orderNo, bookName, author, price, name, email, phone, address, landmark, city, state, pincode, paymentType, order_status)"
+                    + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             for (Book_Order bo : blist) {
                 ps.setString(1, bo.getOrderNo());
@@ -69,6 +70,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 ps.setString(11, bo.getState());
                 ps.setString(12, bo.getPincode());
                 ps.setString(13, bo.getPaymentType());
+                ps.setString(14, "Pending");
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -136,6 +138,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
         bo.setState(rs.getString("state"));
         bo.setPincode(rs.getString("pincode"));
         bo.setPaymentType(rs.getString("paymentType"));
+        bo.setStatus(rs.getString("order_status"));
         return bo;
     }
 
@@ -158,7 +161,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
     public int countActiveTransactions() {
         int count = 0;
         try {
-            String sql = "SELECT COUNT(DISTINCT orderNo) FROM book_order";
+            String sql = "SELECT COUNT(DISTINCT orderNo) FROM book_order WHERE order_status != 'Cancelled'";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -175,7 +178,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
     public double getTotalSalesUSD() {
         double total = 0.0;
         try {
-            String sql = "SELECT price FROM book_order";
+            String sql = "SELECT price FROM book_order WHERE order_status != 'Cancelled'";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -191,6 +194,24 @@ public class BookOrderDAOImpl implements BookOrderDAO {
             System.out.println("BookOrderDAOImpl getTotalSalesUSD Exception: " + e.getMessage());
         }
         return total;
+    }
+
+    @Override
+    public boolean cancelOrder(String orderNo) {
+        boolean f = false;
+        try {
+            String sql = "UPDATE book_order SET order_status='Cancelled' WHERE orderNo=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, orderNo);
+            int i = ps.executeUpdate();
+            if (i > 0) {
+                f = true;
+            }
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }
 

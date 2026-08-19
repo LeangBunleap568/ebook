@@ -114,12 +114,39 @@
             </h4>
         </div>
 
+        <% 
+            BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+            List<BookDtls> list = dao.getAllNewBook();
+            if (list == null) list = new java.util.ArrayList<>();
+        %>
+
+        <% if (list.isEmpty()) { %>
+            <%-- Empty State: No new books --%>
+            <div class="row justify-content-center my-5">
+                <div class="col-md-5 col-sm-8">
+                    <div class="card border-0 shadow-sm rounded-4 p-5 text-center">
+                        <div class="mb-3">
+                            <span style="display:inline-flex;align-items:center;justify-content:center;
+                                         width:80px;height:80px;border-radius:50%;
+                                         background:rgba(0,176,116,0.1);">
+                                <i class="fas fa-book-open fa-2x" style="color:var(--color-emerald-green);"></i>
+                            </span>
+                        </div>
+                        <h5 class="fw-bold text-secondary mb-1">No New Books Available</h5>
+                        <p class="text-muted small mb-4">
+                            We haven't added any new books yet.<br>
+                            Check back soon for fresh arrivals!
+                        </p>
+                        <a href="${pageContext.request.contextPath}/index.jsp"
+                           class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
         <div class="row g-4">
-            <% 
-                BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
-                List<BookDtls> list = dao.getAllNewBook();
-                for (BookDtls b : list) { 
-            %>
+            <% for (BookDtls b : list) { %>
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100 book-card p-3 shadow-sm">
                     <div class="book-img-wrapper mb-3">
@@ -146,6 +173,7 @@
             </div>
             <% } %>
         </div>
+        <% } %>
     </div>
 
     <%@include file="../component/footer.jsp" %>

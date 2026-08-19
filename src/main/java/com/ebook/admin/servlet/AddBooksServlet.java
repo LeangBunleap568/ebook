@@ -36,7 +36,7 @@ public class AddBooksServlet extends HttpServlet {
             // Validate image existence
             if (part == null || fileName == null || fileName.trim().isEmpty() || part.getSize() == 0) {
                 session.setAttribute("failedMsg", "Please select a book image!");
-                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/add_books.jsp");
                 return;
             }
 
@@ -50,7 +50,7 @@ public class AddBooksServlet extends HttpServlet {
 
             if (priceVal < 10000) {
                 session.setAttribute("failedMsg", "Invalid price! Must be at least 10,000.");
-                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/add_books.jsp");
                 return;
             }
 
@@ -70,17 +70,17 @@ public class AddBooksServlet extends HttpServlet {
                 part.write(path + File.separator + fileName);
 
                 session.setAttribute("succMsg", "Book Added Successfully!");
-                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/add_books.jsp");
             } else {
                 session.setAttribute("failedMsg", "Failed to Add Book. Please try again.");
-                response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin/add_books.jsp");
             }
 
         } catch (Exception e) {
             System.out.println("BooksAdd Exception: " + e.getMessage());
             e.printStackTrace();
             session.setAttribute("failedMsg", "Error: " + e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/admin/addBook.jsp");
+            response.sendRedirect(request.getContextPath() + "/admin/add_books.jsp");
         }
     }
 }

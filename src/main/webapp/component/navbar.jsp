@@ -199,10 +199,12 @@
                 </a>
             </div>
             <div class="col-md-5">
-                <form class="d-flex" role="search" action="${pageContext.request.contextPath}/user/search.jsp" method="GET">
-                    <input class="form-control search-input rounded-pill me-2 px-3 shadow-none" type="search" name="ch" placeholder="Search books..." aria-label="Search">
-                    <button class="btn btn-search rounded-pill px-4 shadow-sm" type="submit">Search</button>
-                </form>
+                <c:if test="${not ((not empty userobj and userobj.email == 'admin@gmail.com') or pageContext.request.requestURI.contains('/admin/'))}">
+                    <form class="d-flex" role="search" action="${pageContext.request.contextPath}/user/search.jsp" method="GET">
+                        <input class="form-control search-input rounded-pill me-2 px-3 shadow-none" type="search" name="ch" placeholder="Search books..." aria-label="Search">
+                        <button class="btn btn-search rounded-pill px-4 shadow-sm" type="submit">Search</button>
+                    </form>
+                </c:if>
             </div>
             <div class="col-md-4 text-end">
                 <c:choose>

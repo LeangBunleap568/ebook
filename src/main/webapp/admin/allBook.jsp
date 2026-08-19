@@ -179,11 +179,19 @@
                 </table>
             </div>
             <% if (list.isEmpty()) { %>
-                <div class="text-center py-5 text-muted">
-                    <i class="fas fa-inbox fa-3x mb-3"></i>
-                    <p class="fw-semibold">No books found in the catalog.</p>
-                    <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-primary btn-sm rounded-pill px-4">
-                        <i class="fas fa-plus me-1"></i> Add First Book
+                <div class="text-center py-5">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;
+                                 width:90px;height:90px;border-radius:50%;
+                                 background:rgba(40,167,69,0.08);margin-bottom:1.2rem;">
+                        <i class="fas fa-book-open fa-2x text-success"></i>
+                    </span>
+                    <h5 class="fw-bold text-secondary mb-1">No Books In Catalog Yet</h5>
+                    <p class="text-muted small mb-4">
+                        Your inventory is empty. Add your first book to get started!
+                    </p>
+                    <a href="${pageContext.request.contextPath}/admin/add_books.jsp"
+                       class="btn btn-primary rounded-pill px-4">
+                        <i class="fas fa-plus me-2"></i>Add First Book
                     </a>
                 </div>
             <% } %>

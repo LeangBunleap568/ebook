@@ -10,5 +10,6 @@ public interface BookOrderDAO {
     public int countOrders();
     public int countActiveTransactions();
     public double getTotalSalesUSD();
+    public boolean cancelOrder(String orderNo);
 }
 

@@ -43,301 +43,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ebook App — Admin Dashboard</title>
+    <title>Ebook App — Admin Console</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
         :root {
-            --primary: #4e73df;
-            --success: #1cc88a;
-            --info:    #36b9cc;
-            --warning: #f6c23e;
-            --danger:  #e74a3b;
+            --sidebar-bg: #2c3846;
+            --sidebar-active: #232d38;
+            --brand-bg: #f39c12;
+            --topbar-bg: #34495e;
+            --body-bg: #eaedf1;
         }
 
-        body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        body {
+            background-color: var(--body-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+            color: #333;
+        }
 
-        /* ── Admin Header (White Navbar) ── */
-        .admin-header {
-            background: #ffffff;
-            padding: 0 24px;
-            height: 56px;
+        /* App Wrapper Layout */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 220px;
+            background-color: var(--sidebar-bg);
+            color: #95a5a6;
+            flex-shrink: 0;
+        }
+        .sidebar .brand-header {
+            background-color: var(--brand-bg);
+            color: #fff;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .sidebar .nav-section {
+            padding: 10px 0;
+        }
+        .sidebar .nav-item-title {
+            padding: 8px 20px;
+            color: #bdc3c7;
+            font-weight: 500;
+        }
+        .sidebar .nav-link-custom {
+            display: block;
+            padding: 8px 20px 8px 30px;
+            color: #95a5a6;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .sidebar .nav-link-custom:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar .nav-link-custom.active {
+            color: #fff;
+            background-color: var(--sidebar-active);
+        }
+
+        /* Main Content Container */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navigation Header */
+        .top-navbar {
+            height: 48px;
+            background-color: var(--topbar-bg);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-            border-bottom: 1px solid #e3e6f0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 0 20px;
+            color: #fff;
         }
-        .admin-header .brand { color: #2e59d9; font-size: 1.15rem; font-weight: 700; }
-        .logout-btn {
-            background: var(--danger);
-            color: #fff; border-radius: 50px; padding: 4px 14px;
-            font-size: 12px; text-decoration: none; transition: all 0.2s;
-        }
-        .logout-btn:hover { background: #c0392b; color: #fff; }
 
-        /* ── Stat Cards (Reduced Padding) ── */
-        .stat-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            overflow: hidden;
-            transition: transform 0.2s;
-            position: relative;
+        /* Breadcrumb Bar */
+        .breadcrumb-bar {
+            padding: 10px 20px;
+            font-size: 11px;
+            color: #7f8c8d;
         }
-        .stat-card:hover { transform: translateY(-3px); }
-        .stat-card .card-body { padding: 14px 18px; }
-        .stat-card .stat-label {
-            font-size: 11px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.5px; opacity: 0.8; margin-bottom: 2px;
-        }
-        .stat-card .stat-value { font-size: 1.8rem; font-weight: 800; line-height: 1.1; }
-        .stat-card .stat-bg-icon {
-            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-            font-size: 2.8rem; opacity: 0.15;
-        }
-        .sc-primary { background: linear-gradient(135deg, #4e73df, #3a5fca); color: #fff; }
-        .sc-success { background: linear-gradient(135deg, #1cc88a, #15a97a); color: #fff; }
-        .sc-warning { background: linear-gradient(135deg, #f6c23e, #e0a800); color: #fff; }
-        .sc-info    { background: linear-gradient(135deg, #36b9cc, #1da6b9); color: #fff; }
 
-        /* ── Quick Action Cards (Compact Layout) ── */
-        .action-card {
-            border: 1px solid #e3e6f0;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s;
-            text-align: center;
+        /* Content Area */
+        .content-body {
+            padding: 0 20px 20px 20px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        /* Panel Cards Matching Image Layout */
+        .cf-card {
             background: #fff;
+            border-radius: 4px;
+            border: 1px solid #dcdcdc;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            padding: 15px;
+            margin-bottom: 15px;
         }
-        .action-card:hover { transform: translateY(-3px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
-        .action-card .icon-circle {
-            width: 48px; height: 48px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; margin: 0 auto 8px;
+        .cf-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
-        .action-card .card-body { padding: 16px 12px; }
-        .action-card h6 { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
-        .action-card p { font-size: 11px; color: #777; margin-bottom: 10px; }
-        .action-card .action-btn {
-            border-radius: 50px; padding: 4px 16px;
-            font-weight: 600; font-size: 12px; text-decoration: none; display: inline-block;
+        .cf-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge-count {
+            background: #7f8c8d;
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
         }
 
-        /* ── Section Label (Compact Spacing) ── */
-        .section-label {
-            font-size: 11px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.5px; color: #666; margin-bottom: 8px;
+        /* Tables Inside Cards */
+        .table-cf {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-cf th {
+            text-align: left;
+            font-size: 11px;
+            color: #7f8c8d;
+            padding: 8px 6px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+        }
+        .table-cf td {
+            padding: 10px 6px;
+            border-bottom: 1px solid #f5f5f5;
+            vertical-align: middle;
+        }
+        
+        .badge-status-running {
+            background-color: #5cb85c;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .action-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .action-link:hover {
+            color: #3498db;
         }
     </style>
 </head>
 <body>
 
-    <%-- Admin Top Header --%>
-    <c:set var="activePage" value="home" scope="request" />
-    <%@include file="../component/navbar.jsp" %>
-    
-    <%-- Flash Messages --%>
-    <c:if test="${not empty succMsg}">
-        <div class="container-fluid px-3 pt-2">
-            <div class="alert alert-success alert-dismissible fade show shadow-sm py-2 mb-0" role="alert">
-                <i class="fas fa-check-circle me-1"></i> ${succMsg}
-                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+<div class="app-wrapper">
+
+    <%-- Sidebar Navigation --%>
+    <div class="sidebar">
+        <div class="brand-header">
+            Ebook Admin
+        </div>
+        <div class="nav-section">
+            <div class="nav-item-title">System Overview</div>
+            <a href="#" class="nav-link-custom active">Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="nav-link-custom">Book Catalog</a>
+            <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="nav-link-custom">Order Requests</a>
+            <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="nav-link-custom">Management</a>
+        </div>
+    </div>
+
+    <%-- Main Content Container --%>
+    <div class="main-container">
+
+        <%-- Top Bar Header --%>
+        <div class="top-navbar">
+            <div><i class="fas fa-bars cursor-pointer"></i></div>
+            <div>
+                <a href="${pageContext.request.contextPath}/logout" class="text-white text-decoration-none" title="Logout">
+                    <i class="fas fa-user me-1"></i> Admin Exit
+                </a>
             </div>
         </div>
-        <c:remove var="succMsg" scope="session"/>
-    </c:if>
-    <c:if test="${not empty failedMsg}">
-        <div class="container-fluid px-3 pt-2">
-            <div class="alert alert-danger alert-dismissible fade show shadow-sm py-2 mb-0" role="alert">
-                <i class="fas fa-exclamation-triangle me-1"></i> ${failedMsg}
-                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
-        <c:remove var="failedMsg" scope="session"/>
-    </c:if>
 
-    <%-- Page Body --%>
-    <div class="container-fluid px-3 py-3">
-
-        <%-- Page Title --%>
-        <div class="mb-3">
-            <h5 class="fw-bold text-dark mb-0">Dashboard Overview</h5>
+        <%-- Breadcrumbs --%>
+        <div class="breadcrumb-bar">
+            Home &gt; Admin Console &gt; Dashboard
         </div>
 
-        <%-- Section 1: Real-Time Stat Cards --%>
-        <p class="section-label">Live Statistics</p>
-        <div class="row g-2 mb-3">
-
-            <div class="col-xl-3 col-sm-6">
-                <div class="card stat-card sc-primary">
-                    <div class="card-body">
-                        <div class="stat-label">Total Books</div>
-                        <div class="stat-value">
-                            <c:out value="${not empty totalBooks ? totalBooks : '0'}"/>
-                        </div>
-                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
-                            <i class="fas fa-arrow-up me-1"></i> In catalog
-                        </div>
-                    </div>
-                    <i class="fas fa-book stat-bg-icon"></i>
+        <%-- Flash Messages --%>
+        <c:if test="${not empty succMsg}">
+            <div class="px-4">
+                <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
+                    <i class="fas fa-check-circle me-1"></i> ${succMsg}
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
                 </div>
             </div>
-
-            <div class="col-xl-3 col-sm-6">
-                <div class="card stat-card sc-success">
-                    <div class="card-body">
-                        <div class="stat-label">Total Users</div>
-                        <div class="stat-value">
-                            <c:out value="${not empty totalUsers ? totalUsers : '0'}"/>
-                        </div>
-                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
-                            <i class="fas fa-users me-1"></i> Registered
-                        </div>
-                    </div>
-                    <i class="fas fa-users stat-bg-icon"></i>
+            <c:remove var="succMsg" scope="session"/>
+        </c:if>
+        <c:if test="${not empty failedMsg}">
+            <div class="px-4">
+                <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+                    <i class="fas fa-exclamation-triangle me-1"></i> ${failedMsg}
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
                 </div>
             </div>
+            <c:remove var="failedMsg" scope="session"/>
+        </c:if>
 
-            <div class="col-xl-3 col-sm-6">
-                <div class="card stat-card sc-warning">
-                    <div class="card-body">
-                        <div class="stat-label">Total Orders</div>
-                        <div class="stat-value">
-                            <c:out value="${not empty totalOrders ? totalOrders : '0'}"/>
-                        </div>
-                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
-                            <i class="fas fa-shopping-bag me-1"></i> All time
-                        </div>
-                    </div>
-                    <i class="fas fa-box-open stat-bg-icon"></i>
-                </div>
+        <%-- Content Body --%>
+        <div class="content-body">
+            <div class="page-title">
+                Overview Status
             </div>
 
-            <div class="col-xl-3 col-sm-6">
-                <div class="card stat-card sc-info">
-                    <div class="card-body">
-                        <div class="stat-label">Active Transactions</div>
-                        <div class="stat-value">
-                            <c:out value="${not empty activeTransactions ? activeTransactions : '0'}"/>
+            <div class="row">
+                <%-- Left Column Panels --%>
+                <div class="col-lg-7">
+                    
+                    <%-- System Catalog Panel --%>
+                    <div class="cf-card">
+                        <div class="cf-card-header">
+                            <div class="cf-card-title">
+                                System Metrics <span class="badge-count">2</span>
+                            </div>
                         </div>
-                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
-                            <i class="fas fa-exchange-alt me-1"></i> Processing
-                        </div>
+                        <table class="table-cf">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Metric Category</th>
+                                    <th>Total Records</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge-status-running">active</span></td>
+                                    <td>
+                                        <div class="fw-bold">Total Books Catalog</div>
+                                        <div class="text-muted" style="font-size:10px;">book_order & inventory database</div>
+                                    </td>
+                                    <td>
+                                        <c:out value="${not empty totalBooks ? totalBooks : '0'}"/> Items
+                                    </td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="action-link me-2" title="View"><i class="fas fa-eye"></i></a>
+                                        <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="action-link" title="Add Book"><i class="fas fa-plus-circle"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-status-running">active</span></td>
+                                    <td>
+                                        <div class="fw-bold">Registered Users</div>
+                                        <div class="text-muted" style="font-size:10px;">user_dtls database</div>
+                                    </td>
+                                    <td>
+                                        <c:out value="${not empty totalUsers ? totalUsers : '0'}"/> Accounts
+                                    </td>
+                                    <td>
+                                        <a href="#" class="action-link" title="User Details"><i class="fas fa-eye"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <i class="fas fa-exchange-alt stat-bg-icon"></i>
+
+                    <%-- Orders Summary Panel --%>
+                    <div class="cf-card">
+                        <div class="cf-card-header">
+                            <div class="cf-card-title">
+                                Order Activity <span class="badge-count">2</span>
+                            </div>
+                        </div>
+                        <table class="table-cf">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Count</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Total Book Orders</strong></td>
+                                    <td><c:out value="${not empty totalOrders ? totalOrders : '0'}"/></td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="action-link"><i class="fas fa-list-alt"></i> Manage</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Active Transactions</strong></td>
+                                    <td><c:out value="${not empty activeTransactions ? activeTransactions : '0'}"/></td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="action-link"><i class="fas fa-exchange-alt"></i> Review</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-            </div>
 
-        </div>
-
-        <%-- Section 1b: Total Revenue --%>
-        <p class="section-label">Total Revenue</p>
-        <div class="row g-2 mb-3">
-
-            <div class="col-xl-6 col-sm-12">
-                <div class="card stat-card" style="background: linear-gradient(135deg, #6f42c1, #5a32a3); color:#fff;">
-                    <div class="card-body">
-                        <div class="stat-label">Total Sales (USD)</div>
-                        <div class="stat-value">$<c:out value="${not empty totalSalesUSD ? totalSalesUSD : '0.00'}"/></div>
-                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
-                            <i class="fas fa-dollar-sign me-1"></i> Cumulative revenue
+                <%-- Right Column Panels --%>
+                <div class="col-lg-5">
+                    
+                    <%-- Revenue Financial Panel --%>
+                    <div class="cf-card">
+                        <div class="cf-card-header">
+                            <div class="cf-card-title">
+                                Sales Revenue Summary
+                            </div>
+                            <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-success btn-sm text-white text-decoration-none px-2 py-1" style="font-size:11px;">
+                                + Add Book
+                            </a>
                         </div>
+                        <table class="table-cf">
+                            <thead>
+                                <tr>
+                                    <th>Currency</th>
+                                    <th>Total Generated</th>
+                                    <th>Exchange Context</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>USD Revenue</strong></td>
+                                    <td><span class="text-success fw-bold">$<c:out value="${not empty totalSalesUSD ? totalSalesUSD : '0.00'}"/></span></td>
+                                    <td>Cumulative</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>KHR Revenue</strong></td>
+                                    <td><span class="text-warning fw-bold"><c:out value="${not empty totalSalesKHR ? totalSalesKHR : '0'}"/> ៛</span></td>
+                                    <td>1 USD = 4,000 ៛</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <i class="fas fa-dollar-sign stat-bg-icon"></i>
-                </div>
-            </div>
 
-            <div class="col-xl-6 col-sm-12">
-                <div class="card stat-card" style="background: linear-gradient(135deg, #fd7e14, #e06000); color:#fff;">
-                    <div class="card-body">
-                        <div class="stat-label">Total Sales (KHR)</div>
-                        <div class="stat-value" style="font-size:1.5rem;"><c:out value="${not empty totalSalesKHR ? totalSalesKHR : '0'}"/> ៛</div>
-                        <div class="mt-1" style="font-size:11px; opacity:0.85;">
-                            <i class="fas fa-coins me-1"></i> 1 USD = 4,000 ៛
+                    <%-- Management Quick Links Panel --%>
+                    <div class="cf-card">
+                        <div class="cf-card-header">
+                            <div class="cf-card-title">
+                                Quick Administrative Actions
+                            </div>
                         </div>
+                        <table class="table-cf">
+                            <thead>
+                                <tr>
+                                    <th>Module</th>
+                                    <th>Shortcut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Create New Book Item</td>
+                                    <td><a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="btn btn-outline-primary btn-sm py-0" style="font-size:11px;">Form</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Manage All Books</td>
+                                    <td><a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="btn btn-outline-secondary btn-sm py-0" style="font-size:11px;">Open Catalog</a></td>
+                                </tr>
+                                <tr>
+                                    <td>View Orders Log</td>
+                                    <td><a href="${pageContext.request.contextPath}/admin/orders.jsp" class="btn btn-outline-info btn-sm py-0" style="font-size:11px;">Orders</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <i class="fas fa-coins stat-bg-icon"></i>
-                </div>
-            </div>
 
-        </div>
-
-        <%-- Section 2: Quick Action Cards --%>
-        <p class="section-label">Quick Navigation</p>
-        <div class="row g-2 mb-3">
-
-            <%-- Add Books --%>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card action-card">
-                    <div class="card-body">
-                        <div class="icon-circle bg-primary bg-opacity-10">
-                            <i class="fas fa-plus-circle text-primary"></i>
-                        </div>
-                        <h6 class="text-dark">Add Books</h6>
-                        <p>Create new book listings</p>
-                        <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="action-btn btn btn-primary">
-                            <i class="fas fa-plus me-1"></i> Open Form
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <%-- All Books --%>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card action-card">
-                    <div class="card-body">
-                        <div class="icon-circle bg-success bg-opacity-10">
-                            <i class="fas fa-book-open text-success"></i>
-                        </div>
-                        <h6 class="text-dark">All Books</h6>
-                        <p>Manage, update & delete books</p>
-                        <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="action-btn btn btn-success">
-                            <i class="fas fa-list me-1"></i> View All
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <%-- Orders --%>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card action-card">
-                    <div class="card-body">
-                        <div class="icon-circle bg-warning bg-opacity-10">
-                            <i class="fas fa-box-open text-warning"></i>
-                        </div>
-                        <h6 class="text-dark">Orders</h6>
-                        <p>View all customer orders</p>
-                        <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="action-btn btn btn-warning text-dark">
-                            <i class="fas fa-truck me-1"></i> View Orders
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <%-- Logout --%>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card action-card">
-                    <div class="card-body">
-                        <div class="icon-circle bg-danger bg-opacity-10">
-                            <i class="fas fa-sign-out-alt text-danger"></i>
-                        </div>
-                        <h6 class="text-dark">Logout</h6>
-                        <p>End the current admin session</p>
-                        <a href="${pageContext.request.contextPath}/logout" class="action-btn btn btn-danger">
-                            <i class="fas fa-power-off me-1"></i> Exit Admin
-                        </a>
-                    </div>
                 </div>
             </div>
 
         </div>
     </div>
-
-    <%@include file="../component/footer.jsp" %>
+</div>
 
 </body>
 </html>
-

@@ -39,6 +39,7 @@
                             user u = (user) session.getAttribute("userobj");
                             CartDAOImpl dao = new CartDAOImpl(DBconnect.getConn());
                             List<Cart> cartList = dao.getCartByUser(u.getId());
+                            if (cartList == null) cartList = new java.util.ArrayList<>();
                             Double totalPrice = 0.0;
                             for(Cart c : cartList){
                                 totalPrice += c.getPrice();
@@ -46,9 +47,22 @@
                         %>
 
                         <% if(cartList.isEmpty()) { %>
-                            <div class="alert alert-warning text-center my-4">
-                                <h5><i class="fas fa-exclamation-circle me-2"></i> Your cart is empty.</h5>
-                                <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary mt-3">Start Shopping</a>
+                            <%-- Empty State: Cart is empty --%>
+                            <div class="text-center py-5">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;
+                                             width:90px;height:90px;border-radius:50%;
+                                             background:rgba(108,117,125,0.1);margin-bottom:1.2rem;">
+                                    <i class="fas fa-shopping-cart fa-2x text-muted"></i>
+                                </span>
+                                <h5 class="fw-bold text-secondary mb-1">Your Cart is Empty</h5>
+                                <p class="text-muted small mb-4">
+                                    Looks like you haven't added any books yet.<br>
+                                    Start browsing and add something you'll love!
+                                </p>
+                                <a href="${pageContext.request.contextPath}/index.jsp"
+                                   class="btn btn-primary rounded-pill px-4">
+                                    <i class="fas fa-home me-2"></i>Back to Home
+                                </a>
                             </div>
                         <% } else { %>
                             <table class="table table-striped table-hover align-middle">

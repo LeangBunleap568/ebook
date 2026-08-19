@@ -15,6 +15,7 @@ public class Book_Order {
     private String state;
     private String pincode;
     private String paymentType;
+    private String status;
 
     public Book_Order() {}
 
@@ -59,5 +60,8 @@ public class Book_Order {
 
     public String getPaymentType() { return paymentType; }
     public void setPaymentType(String paymentType) { this.paymentType = paymentType; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
 

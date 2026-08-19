@@ -19,6 +19,15 @@ if ($LASTEXITCODE -ne 0) {
 if (Test-Path $targetExploded) {
     Write-Host "2. Deploying new files to Tomcat webapps..." -ForegroundColor Yellow
     
+    # Backup uploaded book images before wiping old deployment
+    $bookImagesPath = "$tomcatWebapps\book"
+    $tempBackup = "$env:TEMP\ebook_book_backup"
+    if (Test-Path $bookImagesPath) {
+        Write-Host "   Backing up uploaded book images..." -ForegroundColor Cyan
+        if (Test-Path $tempBackup) { Remove-Item -Path $tempBackup -Recurse -Force }
+        Copy-Item -Path $bookImagesPath -Destination $tempBackup -Recurse -Force
+    }
+
     # Remove old tomcat deployment if exists
     if (Test-Path $tomcatWebapps) {
         Remove-Item -Path $tomcatWebapps -Recurse -Force
@@ -26,6 +35,13 @@ if (Test-Path $targetExploded) {
 
     # Copy new build folder to webapps and rename to 'ebook'
     Copy-Item -Path $targetExploded -Destination $tomcatWebapps -Recurse -Force
+
+    # Restore backed-up book images
+    if (Test-Path $tempBackup) {
+        Write-Host "   Restoring uploaded book images..." -ForegroundColor Cyan
+        Copy-Item -Path $tempBackup -Destination $bookImagesPath -Recurse -Force
+        Remove-Item -Path $tempBackup -Recurse -Force
+    }
     
     Write-Host "========================================" -ForegroundColor Green
     Write-Host " SUCCESS! Project Deployed to Tomcat." -ForegroundColor Green

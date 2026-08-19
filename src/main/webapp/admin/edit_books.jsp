@@ -27,7 +27,7 @@
         <!-- Header / Breadcrumb Navigation -->
         <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
             <div class="d-flex align-items-center gap-3">
-                <a href="${pageContext.request.contextPath}/allBook.jsp" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
                     <i class="fas fa-arrow-left me-1"></i> Back to Books
                 </a>
                 <h4 class="fw-bold mb-0 text-dark">

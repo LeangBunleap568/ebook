@@ -29,10 +29,29 @@
             List<BookDtls> books = dao.getBookBySearch(ch);
         %>
 
-        <% if (books.isEmpty()) { %>
-            <div class="alert alert-warning text-center my-5">
-                <h5><i class="fas fa-exclamation-circle me-2"></i> No books found for "<%= ch %>".</h5>
-                <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-primary mt-3">Back to Home</a>
+        <% if (books == null || books.isEmpty()) { %>
+            <%-- Empty State: No search results --%>
+            <div class="row justify-content-center my-5">
+                <div class="col-md-5 col-sm-8">
+                    <div class="card border-0 shadow-sm rounded-4 p-5 text-center">
+                        <div class="mb-3">
+                            <span style="display:inline-flex;align-items:center;justify-content:center;
+                                         width:80px;height:80px;border-radius:50%;
+                                         background:rgba(108,117,125,0.1);">
+                                <i class="fas fa-search fa-2x text-muted"></i>
+                            </span>
+                        </div>
+                        <h5 class="fw-bold text-secondary mb-1">No Results Found</h5>
+                        <p class="text-muted small mb-4">
+                            No books matched &ldquo;<strong><%= ch %></strong>&rdquo;.<br>
+                            Try a different keyword or browse our catalog.
+                        </p>
+                        <a href="${pageContext.request.contextPath}/index.jsp"
+                           class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
             </div>
         <% } else { %>
             <div class="row g-4">
