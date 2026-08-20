@@ -4,307 +4,186 @@
 <%@ page import="com.ebook.dao.impl.CartDAOImpl" %>
 <%@ page import="com.ebook.db.DBconnect" %>
 
-<%-- Determine active URI dynamically --%>
-<c:set var="currentUri" value="${requestScope['jakarta.servlet.include.request_uri']}" />
-<c:if test="${empty currentUri}">
-    <c:set var="currentUri" value="${pageContext.request.requestURI}" />
-</c:if>
+<c:set var="currentUri" value="${not empty requestScope['jakarta.servlet.include.request_uri'] ? requestScope['jakarta.servlet.include.request_uri'] : pageContext.request.requestURI}" />
 
-<!-- Custom Palette & Navbar Styling -->
 <style>
+    /* Global Reset & High-Contrast Classic Palette */
     :root {
-        --color-amber-yellow: #f5a623; 
-        --color-coral-pink: #f05a66;   
-        --color-emerald-green: #00b074; 
-        --color-dark-slate: #2d404e;   
-        --color-light-bg: #f5f7fa;     
-        --color-card-white: #ffffff;   
-        --color-input-bg: #eef2f5;     
-        --color-input-border: #dcdfe3; 
-        --color-text-dark: #2d404e;    
-        --color-text-muted: #8c9ba5;   
-        --color-text-light: #ffffff;   
+        --c-bg: #f4f6f8;             /* Background ប្រផេះស្រាល */
+        --c-surface: #ffffff;        /* Surface សច្បាស់ */
+        --c-border: #cbd5e1;         /* Border ប្រផេះច្បាស់ */
+        --c-text: #1e293b;           /* អក្សរខ្មៅប្រផេះចាស់ (High Contrast) */
+        --c-muted: #64748b;          /* អក្សររងច្បាស់ល្មម */
+        --c-accent: #2d6a4f;         /* Deep Forest Green (ច្បាស់ មិនស្លេក) */
+        --c-accent-hover: #1b4332;   /* Green ដិតពេល Hover */
+        --c-input-border: #94a3b8;   /* ព្រំប្រទល់ Input ច្បាស់ */
     }
 
-    .sticky-top-navbar {
+    *, *::before, *::after {
+        border-radius: 0 !important; /* បុរាណជ្រុងៗ 100% */
+    }
+
+    body { background-color: var(--c-bg) !important; color: var(--c-text); }
+
+    .header-nav {
+        background: var(--c-surface);
+        border-bottom: 2px solid var(--c-border);
         position: sticky;
         top: 0;
-        z-index: 1030;
+        z-index: 1000;
     }
 
-    .top-header-bar {
-        background-color: var(--color-card-white) !important;
-        border-bottom: 1px solid var(--color-input-border);
+    .top-bar {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+        border-bottom: 1px solid var(--c-border);
     }
 
-    .brand-title {
-        color: var(--color-dark-slate);
+    .brand-logo {
         font-weight: 800;
-        letter-spacing: -0.5px;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+        color: var(--c-text);
+        text-decoration: none;
+        text-transform: uppercase;
     }
 
-    .brand-icon {
-        color: var(--color-amber-yellow);
-    }
-
+    .search-box { display: flex; width: 280px; }
     .search-input {
-        background-color: var(--color-input-bg) !important;
-        border: 1px solid var(--color-input-border) !important;
-        color: var(--color-text-dark) !important;
-    }
-
-    .search-input:focus {
-        border-color: var(--color-amber-yellow) !important;
-        box-shadow: 0 0 0 0.25rem rgba(245, 166, 35, 0.25) !important;
-    }
-
-    .btn-search {
-        background-color: var(--color-amber-yellow) !important;
-        border-color: var(--color-amber-yellow) !important;
-        color: var(--color-text-dark) !important;
-        font-weight: 600;
-    }
-
-    .btn-search:hover {
-        background-color: #e0951c !important;
-        border-color: #e0951c !important;
-    }
-
-    .btn-user-profile {
-        background-color: rgba(0, 176, 116, 0.15) !important;
-        color: var(--color-emerald-green) !important;
-        border: 1px solid var(--color-emerald-green) !important;
-        font-weight: 600;
-    }
-
-    .btn-user-profile:hover {
-        background-color: var(--color-emerald-green) !important;
-        color: var(--color-text-light) !important;
-    }
-
-    .btn-cart-custom {
-        border: 1px solid var(--color-input-border) !important;
-        color: var(--color-dark-slate) !important;
-        background-color: var(--color-card-white);
-        font-weight: 600;
-    }
-
-    .btn-cart-custom:hover {
-        background-color: var(--color-input-bg) !important;
-        color: var(--color-dark-slate) !important;
-    }
-
-    .btn-logout-custom {
-        background-color: var(--color-coral-pink) !important;
-        border-color: var(--color-coral-pink) !important;
-        color: var(--color-text-light) !important;
-        font-weight: 600;
-    }
-
-    .btn-logout-custom:hover {
-        background-color: #d94854 !important;
-        border-color: #d94854 !important;
-    }
-
-    .btn-signin-custom {
-        background-color: var(--color-amber-yellow) !important;
-        border-color: var(--color-amber-yellow) !important;
-        color: var(--color-text-dark) !important;
-        font-weight: 600;
-    }
-
-    .btn-signin-custom:hover {
-        background-color: #e0951c !important;
-    }
-
-    .btn-signup-custom {
-        background-color: var(--color-coral-pink) !important;
-        border-color: var(--color-coral-pink) !important;
-        color: var(--color-text-light) !important;
-        font-weight: 600;
-    }
-
-    .btn-signup-custom:hover {
-        background-color: #d94854 !important;
-    }
-
-    .main-navbar {
-        background-color: var(--color-dark-slate) !important;
-        box-shadow: 0 4px 12px rgba(45, 64, 78, 0.15);
-    }
-
-    .navbar-nav .nav-link {
-        position: relative;
-        opacity: 0.85;
-        color: var(--color-text-light) !important;
-        font-weight: 500;
-        transition: all 0.25s ease;
-    }
-
-    .navbar-nav .nav-link:hover,
-    .navbar-nav .nav-link.active {
-        opacity: 1;
-        color: var(--color-amber-yellow) !important;
-        font-weight: 600;
-    }
-
-    .navbar-nav .nav-link::after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 3px;
-        bottom: 2px;
-        left: 50%;
-        background-color: var(--color-amber-yellow);
-        border-radius: 2px;
-        transition: all 0.3s ease-in-out;
-        transform: translateX(-50%);
-    }
-
-    .navbar-nav .nav-link:hover::after,
-    .navbar-nav .nav-link.active::after {
+        background: #ffffff;
+        border: 1px solid var(--c-input-border);
+        padding: 6px 12px;
+        font-size: 0.85rem;
         width: 100%;
+        color: var(--c-text);
+        font-weight: 500;
     }
-
-    .btn-contact-custom {
-        background-color: var(--color-card-white) !important;
-        color: var(--color-dark-slate) !important;
+    .search-input:focus {
+        outline: none;
+        border-color: var(--c-accent);
+    }
+    .search-btn {
+        background: var(--c-text);
+        color: #fff;
         border: none;
+        padding: 0 14px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    .search-btn:hover {
+        background: var(--c-accent);
     }
 
-    .btn-contact-custom:hover {
-        background-color: var(--color-input-bg) !important;
+    .nav-actions { display: flex; gap: 8px; }
+    .btn-classic {
+        background: #ffffff;
+        border: 1px solid var(--c-input-border);
+        color: var(--c-text);
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+    }
+    .btn-classic:hover { 
+        background: var(--c-accent); 
+        color: #ffffff; 
+        border-color: var(--c-accent);
     }
 
-    .btn-setting-custom {
-        background-color: var(--color-amber-yellow) !important;
-        color: var(--color-text-dark) !important;
-        border: none;
+    .menu-bar {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 2rem;
+        background: var(--c-surface);
     }
-
-    .btn-setting-custom:hover {
-        background-color: #e0951c !important;
+    .menu-bar a {
+        padding: 12px 16px;
+        color: var(--c-muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 3px solid transparent;
+        transition: all 0.2s ease;
+    }
+    .menu-bar a:hover {
+        color: var(--c-text);
+        border-bottom-color: var(--c-input-border);
+    }
+    .menu-bar a.active {
+        color: var(--c-accent);
+        border-bottom-color: var(--c-accent);
     }
 </style>
 
-<div class="sticky-top-navbar shadow-sm">
-    <!-- Top Header Bar -->
-    <div class="container-fluid px-4 py-3 top-header-bar">
-        <div class="row align-items-center">
-            <div class="col-md-3">
-                <a href="${pageContext.request.contextPath}/index.jsp" class="text-decoration-none">
-                    <h4 class="brand-title mb-0">
-                        <i class="fas fa-book-open brand-icon me-2"></i>Ebook Store
-                    </h4>
-                </a>
-            </div>
-            <div class="col-md-5">
-                <c:if test="${not ((not empty userobj and userobj.email == 'admin@gmail.com') or pageContext.request.requestURI.contains('/admin/'))}">
-                    <form class="d-flex" role="search" action="${pageContext.request.contextPath}/user/search.jsp" method="GET">
-                        <input class="form-control search-input rounded-pill me-2 px-3 shadow-none" type="search" name="ch" placeholder="Search books..." aria-label="Search">
-                        <button class="btn btn-search rounded-pill px-4 shadow-sm" type="submit">Search</button>
-                    </form>
-                </c:if>
-            </div>
-            <div class="col-md-4 text-end">
-                <c:choose>
-                    <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or pageContext.request.requestURI.contains('/admin/')}">
-                        <a href="#" class="btn btn-user-profile btn-sm rounded-pill px-3 me-1">
-                            <i class="fas fa-user-shield me-1"></i>Admin
-                        </a>
-                        <a href="${pageContext.request.contextPath}/logout" class="btn btn-logout-custom btn-sm rounded-pill px-3">
-                            <i class="fas fa-sign-out-alt me-1"></i>Logout
-                        </a>
-                    </c:when>
+<div class="header-nav">
+    <div class="top-bar">
+        <a href="${pageContext.request.contextPath}/index.jsp" class="brand-logo">
+            <i class="fas fa-book-open me-2" style="color: var(--c-accent);"></i>eBook
+        </a>
 
-                    <c:when test="${not empty userobj}">
-                        <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn btn-user-profile btn-sm rounded-pill px-3 me-1">
-                            <i class="fas fa-user me-1"></i>${userobj.name}
-                        </a>
-                        <%
-                            int cartCount = 0;
-                            user navUser = (user) session.getAttribute("userobj");
-                            if(navUser != null) {
-                                CartDAOImpl cartDao = new CartDAOImpl(DBconnect.getConn());
-                                cartCount = cartDao.countCart(navUser.getId());
-                            }
-                        %>
-                        <a href="${pageContext.request.contextPath}/user/cart.jsp" class="btn btn-cart-custom btn-sm rounded-pill px-3 me-1 shadow-sm">
-                            <i class="fas fa-shopping-cart me-1" style="color: var(--color-coral-pink);"></i>Cart (<%= cartCount %>)
-                        </a>
-                        <a href="${pageContext.request.contextPath}/logout" class="btn btn-logout-custom btn-sm rounded-pill px-3">
-                            <i class="fas fa-sign-out-alt me-1"></i>Logout
-                        </a>
-                    </c:when>
+        <c:if test="${not ((not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/'))}">
+            <form class="search-box" action="${pageContext.request.contextPath}/user/search.jsp" method="GET">
+                <input class="search-input" type="search" name="ch" placeholder="Search book..." required>
+                <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </c:if>
 
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/login.jsp" class="btn btn-signin-custom btn-sm rounded-pill px-3 me-1 shadow-sm">
-                            <i class="fas fa-sign-in-alt me-1"></i>Sign In
-                        </a>
-                        <a href="${pageContext.request.contextPath}/register.jsp" class="btn btn-signup-custom btn-sm rounded-pill px-3 shadow-sm">
-                            <i class="fas fa-user-plus me-1"></i>Register
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+        <div class="nav-actions">
+            <c:choose>
+                <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/')}">
+                    <span class="btn-classic"><i class="fas fa-user-shield me-1"></i>Admin</span>
+                    <a href="${pageContext.request.contextPath}/logout" class="btn-classic"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                </c:when>
+                <c:when test="${not empty userobj}">
+                    <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn-classic"><i class="fas fa-user"></i>${userobj.name}</a>
+                    <%
+                        user navUser = (user) session.getAttribute("userobj");
+                        int cartCount = (navUser != null) ? new CartDAOImpl(DBconnect.getConn()).countCart(navUser.getId()) : 0;
+                    %>
+                    <a href="${pageContext.request.contextPath}/user/cart.jsp" class="btn-classic">
+                        <i class="fas fa-shopping-cart"></i>Cart (<%= cartCount %>)
+                    </a>
+                    <a href="${pageContext.request.contextPath}/logout" class="btn-classic"><i class="fas fa-sign-out-alt"></i></a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/login.jsp" class="btn-classic"><i class="fas fa-sign-in-alt"></i>Sign In</a>
+                    <a href="${pageContext.request.contextPath}/register.jsp" class="btn-classic"><i class="fas fa-user-plus"></i>Register</a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 
-    <!-- Main Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark main-navbar">
-        <div class="container-fluid px-4">
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarMain">
-                <c:choose>
-                    <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or pageContext.request.requestURI.contains('/admin/')}">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/admin/home.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/home.jsp">
-                                    <i class="fas fa-home me-1"></i>Home
-                                </a>
-                            </li>
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/admin/add_books.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/add_books.jsp">
-                                    <i class="fas fa-plus-circle me-1"></i>Add Books
-                                </a>
-                            </li>
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/admin/allBook.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/allBook.jsp">
-                                    <i class="fas fa-book-open me-1"></i>All Books
-                                </a>
-                            </li>
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/admin/orders.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/orders.jsp">
-                                    <i class="fas fa-box-open me-1"></i>Orders
-                                </a>
-                            </li>
-                        </ul>
-                    </c:when>
-
-                    <c:otherwise>
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/index.jsp') or currentUri.endsWith('/') ? 'active' : ''}" href="${pageContext.request.contextPath}/index.jsp">Home</a>
-                            </li>
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/user/all_recent_book.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/all_recent_book.jsp">Recent Book</a>
-                            </li>
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/user/all_new_book.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/all_new_book.jsp">New Book</a>
-                            </li>
-                            <li class="nav-item me-2">
-                                <a class="nav-link ${currentUri.endsWith('/user/all_old_book.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/all_old_book.jsp">Old Book</a>
-                            </li>
-                        </ul>
-                        <div class="d-flex align-items-center gap-2">
-                            <a href="${pageContext.request.contextPath}/user/contact.jsp" class="btn btn-contact-custom btn-sm rounded-pill px-3 fw-bold">Contact Us</a>
-                            <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn btn-setting-custom btn-sm rounded-pill px-3 fw-bold">Setting</a>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+    <div class="menu-bar">
+        <div class="d-flex">
+            <c:choose>
+                <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/')}">
+                    <a class="${currentUri.endsWith('/admin/home.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/home.jsp">Overview</a>
+                    <a class="${currentUri.endsWith('/admin/add_books.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/add_books.jsp">Add Books</a>
+                    <a class="${currentUri.endsWith('/admin/allBook.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/allBook.jsp">Inventory</a>
+                    <a class="${currentUri.endsWith('/admin/orders.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/orders.jsp">Orders</a>
+                </c:when>
+                <c:otherwise>
+                    <a class="${currentUri.endsWith('/index.jsp') or currentUri.endsWith('/') ? 'active' : ''}" href="${pageContext.request.contextPath}/index.jsp">Home</a>
+                    <a class="${currentUri.endsWith('/user/all_recent_book.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/all_recent_book.jsp">Recent</a>
+                    <a class="${currentUri.endsWith('/user/all_new_book.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/all_new_book.jsp">New Books</a>
+                    <a class="${currentUri.endsWith('/user/all_old_book.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/all_old_book.jsp">Old Books</a>
+                </c:otherwise>
+            </c:choose>
         </div>
-    </nav>
+        <c:if test="${not ((not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/'))}">
+            <div class="d-flex">
+                <a class="${currentUri.endsWith('/user/contact.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/contact.jsp">Contact</a>
+                <a class="${currentUri.endsWith('/user/setting.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/user/setting.jsp">Settings</a>
+            </div>
+        </c:if>
+    </div>
 </div>
