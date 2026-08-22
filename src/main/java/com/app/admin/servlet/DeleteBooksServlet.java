@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import com.app.dao.impl.BookDAOImpl;
 import com.app.db.DBconnect;
 
-@WebServlet("/admin/deleteBook")
+@WebServlet({"/admin/deleteBook", "/admin/delete_book"})
 public class DeleteBooksServlet extends HttpServlet {
 
     @Override

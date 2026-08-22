@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
-@WebServlet("/admin/add_books")
+@WebServlet({"/admin/add_books", "/admin/add_book"})
 @MultipartConfig
 public class AddBooksServlet extends HttpServlet {
 

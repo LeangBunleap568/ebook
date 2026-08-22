@@ -16,11 +16,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ebook App — Customer Orders</title>
-<%@include file="../component/rootCss.jsp" %>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ebook App — Customer Orders</title>
+    <%@include file="../component/rootCss.jsp" %>
     <style>
         .content-body {
             padding: 0 20px 20px 20px;
@@ -143,6 +142,43 @@
 
         <%-- Content Body --%>
         <div class="content-body">
+
+            <%-- Flash Messages --%>
+            <c:if test="${not empty succMsg}">
+                <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                    <i class="fas fa-check-circle me-1"></i> ${succMsg}
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                </div>
+                <c:remove var="succMsg" scope="session"/>
+            </c:if>
+            <c:if test="${not empty failedMsg}">
+                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                    <i class="fas fa-exclamation-triangle me-1"></i> ${failedMsg}
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                </div>
+                <c:remove var="failedMsg" scope="session"/>
+            </c:if>
+
+            <div class="row g-2 mb-3">
+                <div class="col-md-4">
+                    <div class="p-3 bg-white border rounded">
+                        <div class="text-muted small text-uppercase fw-bold">Total Customers</div>
+                        <div class="fs-5 fw-bold text-dark"><%= grouped.size() %></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white border rounded">
+                        <div class="text-muted small text-uppercase fw-bold">Active Transactions</div>
+                        <div class="fs-5 fw-bold text-primary"><%= dao.countActiveTransactions() %></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white border rounded">
+                        <div class="text-muted small text-uppercase fw-bold">Total Revenue (USD)</div>
+                        <div class="fs-5 fw-bold text-success">$<%= String.format("%.2f", dao.getTotalSalesUSD()) %></div>
+                    </div>
+                </div>
+            </div>
 
             <div class="page-title">
                 <span>Customer Order Directory</span>

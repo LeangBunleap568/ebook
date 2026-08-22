@@ -464,5 +464,24 @@ public class BookDAOImpl implements BookDAO {
         }
         return f;
     }
+
+    @Override
+    public boolean deleteBooksByEmail(String email) {
+        boolean f = false;
+        try {
+            String sql = "DELETE FROM book_dtls WHERE email=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            int i = ps.executeUpdate();
+            if (i >= 0) {
+                f = true;
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookDAOImpl deleteBooksByEmail Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return f;
+    }
 }
 

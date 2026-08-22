@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import com.app.dao.impl.CartDAOImpl;
 import com.app.db.DBconnect;
 
-@WebServlet("/user/remove_cart")
+@WebServlet({"/remove_cart", "/user/remove_cart"})
 public class RemoveCartServlet extends HttpServlet {
 
     @Override

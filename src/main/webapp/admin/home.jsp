@@ -216,7 +216,7 @@
                                     <td><span class="tag-active">Active</span></td>
                                     <td><strong>Registered User Accounts</strong></td>
                                     <td><c:out value="${not empty totalUsers ? totalUsers : '0'}"/> Users</td>
-                                    <td><span class="text-muted">—</span></td>
+                                    <td><a href="${pageContext.request.contextPath}/admin/users" class="link-btn">Manage</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -242,7 +242,7 @@
                                 <tr>
                                     <td><strong>Active Transactions</strong></td>
                                     <td><c:out value="${not empty activeTransactions ? activeTransactions : '0'}"/></td>
-                                    <td><a href="${pageContext.request.contextPath}/admin/orders.jsp" class="link-btn">Review</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/admin/active_transactions.jsp" class="link-btn">Review</a></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<c:if test="${empty userobj}">
+    <c:redirect url="../login.jsp" />
+</c:if>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,10 +85,6 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <%@include file="../component/navbar.jsp" %>
-    
-    <c:if test="${empty userobj}">
-        <c:redirect url="../login.jsp" />
-    </c:if>
 
     <div class="container p-3 p-md-4 my-auto flex-grow-1 d-flex align-items-center justify-content-center">
         <div class="row w-100 justify-content-center">

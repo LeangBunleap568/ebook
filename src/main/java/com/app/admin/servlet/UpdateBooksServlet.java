@@ -14,7 +14,7 @@ import com.app.dao.impl.BookDAOImpl;
 import com.app.db.DBconnect;
 import com.app.entity.BookDtls;
 
-@WebServlet("/admin/updateBook")
+@WebServlet({"/admin/updateBook", "/admin/update_book"})
 public class UpdateBooksServlet extends HttpServlet {
 
     @Override

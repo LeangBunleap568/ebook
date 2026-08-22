@@ -10,6 +10,7 @@ public interface UserDAO {
 	public boolean updateProfile(user us);
 	public boolean checkUser(String email);
 	public int countUsers();
+	public user getUserById(int id);
 	public List<user> getAllUsers();
 	public boolean deleteUser(int id);
 }

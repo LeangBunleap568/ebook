@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
-<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
-<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
-<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
-<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%-- Security Check --%>
+<c:if test="${empty userobj}">
+    <c:redirect url="../login.jsp" />
+</c:if>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,12 +129,13 @@
 <body class="d-flex flex-column min-vh-100">
     <%@include file="../component/navbar.jsp" %>
 
-    <c:if test="${empty userobj}">
-        <c:redirect url="../login.jsp" />
-    </c:if>
-
     <%
         user u = (user) session.getAttribute("userobj");
+        if (u == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
         java.sql.Connection conn = DBconnect.getConn();
         if (conn == null) {
             response.sendRedirect(request.getContextPath() + "/error.jsp");

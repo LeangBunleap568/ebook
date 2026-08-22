@@ -37,5 +37,7 @@ public interface BookDAO {
     public int countBooks();
 
     public boolean updateBookImage(int bookId, String photoName);
+
+    public boolean deleteBooksByEmail(String email);
 }
 

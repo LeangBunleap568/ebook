@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/user/register")
+@WebServlet({"/register", "/user/register"})
 public class RegisterServlet extends HttpServlet {
 
     @Override
@@ -26,13 +26,32 @@ public class RegisterServlet extends HttpServlet {
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
             String password = request.getParameter("password");
+            String confirmPassword = request.getParameter("confirm_password");
+
+            name = (name != null) ? name.trim() : "";
+            email = (email != null) ? email.trim() : "";
+            phone = (phone != null) ? phone.trim() : "";
+            password = (password != null) ? password.trim() : "";
+            confirmPassword = (confirmPassword != null) ? confirmPassword.trim() : "";
+
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                session.setAttribute("error", "Please fill in all required fields (Name, Email, Password).");
+                response.sendRedirect(request.getContextPath() + "/register.jsp");
+                return;
+            }
+
+            if (!confirmPassword.isEmpty() && !password.equals(confirmPassword)) {
+                session.setAttribute("error", "Passwords do not match. Please verify and try again.");
+                response.sendRedirect(request.getContextPath() + "/register.jsp");
+                return;
+            }
 
             // Build user entity
             user us = new user();
-            us.setName(name != null ? name.trim() : "");
-            us.setEmail(email != null ? email.trim() : "");
-            us.setPhone(phone != null ? phone.trim() : "");
-            us.setPassword(password != null ? password : "");
+            us.setName(name);
+            us.setEmail(email);
+            us.setPhone(phone);
+            us.setPassword(password);
 
             Connection conn = DBconnect.getConn();
             if (conn == null) {
@@ -42,22 +61,27 @@ public class RegisterServlet extends HttpServlet {
             }
             UserDAOImpl dao = new UserDAOImpl(conn);
 
-            if (dao.checkUser(email != null ? email.trim() : "")) {
-                session.setAttribute("error", "This email is already registered. Please use a different email or login.");
+            if (dao.checkUser(email)) {
+                session.setAttribute("error", "This email (" + email + ") is already registered. Please use a different email or sign in.");
                 response.sendRedirect(request.getContextPath() + "/register.jsp");
                 return;
             }
 
             dao.userRegistre(us);
 
-            session.setAttribute("succMsg", "Registration successful! Please log in.");
+            session.setAttribute("succMsg", "Registration successful! Welcome, " + name + ". Please sign in.");
             response.sendRedirect(request.getContextPath() + "/login.jsp");
 
         } catch (Exception e) {
             e.printStackTrace();
             String msg = (e.getMessage() != null) ? e.getMessage() : e.getClass().getName();
-            session.setAttribute("error", msg);
+            session.setAttribute("error", "Registration error: " + msg);
             response.sendRedirect(request.getContextPath() + "/register.jsp");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/register.jsp");
     }
 }

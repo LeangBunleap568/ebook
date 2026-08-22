@@ -213,5 +213,43 @@ public class BookOrderDAOImpl implements BookOrderDAO {
         }
         return f;
     }
+
+    @Override
+    public boolean deleteOrdersByEmail(String email) {
+        boolean f = false;
+        try {
+            String sql = "DELETE FROM book_order WHERE email=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            int i = ps.executeUpdate();
+            if (i >= 0) {
+                f = true;
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookOrderDAOImpl deleteOrdersByEmail Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return f;
+    }
+
+    @Override
+    public boolean deleteOrderByOrderNo(String orderNo) {
+        boolean f = false;
+        try {
+            String sql = "DELETE FROM book_order WHERE orderNo=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, orderNo);
+            int i = ps.executeUpdate();
+            if (i > 0) {
+                f = true;
+            }
+            ps.close();
+        } catch (Exception e) {
+            System.out.println("BookOrderDAOImpl deleteOrderByOrderNo Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return f;
+    }
 }
 

@@ -17,7 +17,7 @@ import com.app.entity.BookDtls;
 import com.app.entity.Cart;
 import com.app.entity.user;
 
-@WebServlet("/user/cart")
+@WebServlet({"/cart", "/user/cart"})
 public class CartServlet extends HttpServlet {
 
     @Override

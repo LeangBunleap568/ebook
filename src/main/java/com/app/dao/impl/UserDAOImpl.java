@@ -187,6 +187,36 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public user getUserById(int id) {
+        if (conn == null) return null;
+        try {
+            String sql = "SELECT * FROM `user` WHERE id=?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        user us = new user();
+                        us.setId(rs.getInt("id"));
+                        us.setName(rs.getString("name"));
+                        us.setEmail(rs.getString("email"));
+                        us.setPhone(rs.getString("phone"));
+                        us.setPassword(rs.getString("password"));
+                        us.setAddress(rs.getString("address"));
+                        us.setLandmark(rs.getString("landmark"));
+                        us.setCity(rs.getString("city"));
+                        us.setState(rs.getString("state"));
+                        us.setPincode(rs.getString("pincode"));
+                        return us;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("getUserById error: " + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
     public List<user> getAllUsers() {
         List<user> users = new ArrayList<>();
         if (conn == null) return users;

@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
+
+<%-- Security Check --%>
+<c:if test="${empty userobj}">
+    <c:redirect url="../login.jsp" />
+</c:if>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,6 +203,10 @@
 
                         <% 
                             user u = (user) session.getAttribute("userobj");
+                            if (u == null) {
+                                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                                return;
+                            }
                             java.sql.Connection conn = DBconnect.getConn();
                             if (conn == null) {
                                 response.sendRedirect(request.getContextPath() + "/error.jsp");
@@ -205,7 +214,7 @@
                             }
                             CartDAOImpl dao = new CartDAOImpl(conn);
                             List<Cart> cartList = dao.getCartByUser(u.getId());
-            if (cartList == null) cartList = new java.util.ArrayList<>();
+                            if (cartList == null) cartList = new java.util.ArrayList<>();
                             Double totalPrice = 0.0;
                             java.text.DecimalFormat formatter = new java.text.DecimalFormat("#,###");
                             for(Cart c : cartList){

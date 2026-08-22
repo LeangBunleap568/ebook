@@ -23,20 +23,39 @@ public class UpdateBookImageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        int id = 0;
 
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            Part bimg = request.getPart("bimg");
+            String idStr = request.getParameter("id");
+            if (idStr == null || idStr.trim().isEmpty()) {
+                session.setAttribute("failedMsg", "Invalid book ID.");
+                response.sendRedirect(request.getContextPath() + "/admin/all_books.jsp");
+                return;
+            }
+            id = Integer.parseInt(idStr.trim());
+
+            Part bimg = null;
+            try {
+                bimg = request.getPart("bimg");
+            } catch (Exception ignored) {}
+
             String fileName = (bimg != null) ? bimg.getSubmittedFileName() : "";
 
-            // Validate that an image file was actually selected
+            // If no new image is selected, keep old image
             if (bimg == null || fileName == null || fileName.trim().isEmpty() || bimg.getSize() == 0) {
-                session.setAttribute("failedMsg", "Please select a new cover image!");
+                session.setAttribute("warnMsg", "No new image was selected. Existing book cover was retained.");
                 response.sendRedirect(request.getContextPath() + "/admin/edit_books.jsp?id=" + id);
                 return;
             }
 
-            // Update the photo column in the database
+            // Sanitize filename
+            File uploadFile = new File(fileName);
+            String cleanFileName = uploadFile.getName().replaceAll("[^a-zA-Z0-9._-]", "_");
+            if (cleanFileName.isEmpty()) {
+                cleanFileName = "book_" + id + "_" + System.currentTimeMillis() + ".jpg";
+            }
+
+            // Update database
             Connection conn = DBconnect.getConn();
             if (conn == null) {
                 session.setAttribute("failedMsg", "Database connection failed.");
@@ -44,30 +63,51 @@ public class UpdateBookImageServlet extends HttpServlet {
                 return;
             }
             BookDAOImpl dao = new BookDAOImpl(conn);
-            boolean success = dao.updateBookImage(id, fileName);
+            boolean success = dao.updateBookImage(id, cleanFileName);
 
             if (success) {
-                // Save the uploaded image file to the webapp /book/ directory
-                String path = getServletContext().getRealPath("") + "book";
-                File dir = new File(path);
-                if (!dir.exists()) {
-                    dir.mkdirs();
+                // Save to runtime webapp folder
+                String webappPath = getServletContext().getRealPath("") + File.separator + "book";
+                File webappDir = new File(webappPath);
+                if (!webappDir.exists()) {
+                    webappDir.mkdirs();
                 }
-                bimg.write(path + File.separator + fileName);
+                bimg.write(webappPath + File.separator + cleanFileName);
+
+                // Also try saving to source directory if running locally
+                try {
+                    String baseDir = System.getProperty("user.dir");
+                    if (baseDir != null) {
+                        File srcBookDir = new File(baseDir, "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "book");
+                        if (srcBookDir.exists()) {
+                            java.nio.file.Files.copy(
+                                new File(webappPath, cleanFileName).toPath(),
+                                new File(srcBookDir, cleanFileName).toPath(),
+                                java.nio.file.StandardCopyOption.REPLACE_EXISTING
+                            );
+                        }
+                    }
+                } catch (Exception ignored) {}
 
                 session.setAttribute("succMsg", "Book cover image updated successfully!");
+                response.sendRedirect(request.getContextPath() + "/admin/edit_books.jsp?id=" + id);
+                return;
             } else {
-                session.setAttribute("failedMsg", "Failed to update book cover image. Please try again.");
+                session.setAttribute("failedMsg", "Failed to update cover image in database.");
             }
 
         } catch (NumberFormatException e) {
-            session.setAttribute("failedMsg", "Invalid book ID.");
+            session.setAttribute("failedMsg", "Invalid book ID format.");
         } catch (Exception e) {
             System.out.println("UpdateBookImageServlet Exception: " + e.getMessage());
             e.printStackTrace();
-            session.setAttribute("failedMsg", "Error: " + e.getMessage());
+            session.setAttribute("failedMsg", "Error updating cover: " + e.getMessage());
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/all_books.jsp");
+        if (id > 0) {
+            response.sendRedirect(request.getContextPath() + "/admin/edit_books.jsp?id=" + id);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/all_books.jsp");
+        }
     }
 }

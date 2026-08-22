@@ -1,6 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%-- Security Check before output buffer starts --%>
+<c:if test="${empty userobj}">
+    <c:redirect url="../login.jsp" />
+</c:if>
+
+<%
+    user u = (user) session.getAttribute("userobj");
+    if (u == null) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+
+    java.sql.Connection conn = DBconnect.getConn();
+    if (conn == null) {
+        response.sendRedirect(request.getContextPath() + "/error.jsp");
+        return;
+    }
+    BookDAOImpl dao = new BookDAOImpl(conn);
+    List<BookDtls> books = dao.getBookByOld(u.getEmail(), "Old");
+    if (books == null) books = new java.util.ArrayList<>();
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,10 +138,6 @@
 <body class="d-flex flex-column min-vh-100">
     <%@include file="../component/navbar.jsp" %>
 
-    <c:if test="${empty userobj}">
-        <c:redirect url="../login.jsp" />
-    </c:if>
-
     <div class="container p-3 p-md-4 my-auto flex-grow-1">
         <div class="ui-card p-4">
             
@@ -130,7 +149,7 @@
                     </h5>
                     <div class="small text-muted mt-1" style="font-size: 0.75rem;">Manage your old books currently listed for sale</div>
                 </div>
-                <a href="${pageContext.request.contextPath}/sell_book.jsp" class="btn-ui-primary">
+                <a href="${pageContext.request.contextPath}/user/sell_book.jsp" class="btn-ui-primary">
                     <i class="fas fa-plus me-1"></i> Sell Another Book
                 </a>
             </div>
@@ -145,26 +164,13 @@
                 <c:remove var="failedMsg" scope="session"/>
             </c:if>
 
-            <%
-                user u = (user) session.getAttribute("userobj");
-                java.sql.Connection conn = DBconnect.getConn();
-                if (conn == null) {
-                    response.sendRedirect(request.getContextPath() + "/error.jsp");
-                    return;
-                }
-                BookDAOImpl dao = new BookDAOImpl(conn);
-                List<BookDtls> books = dao.getBookByOld(u.getEmail(), "Old");
-         
-            if (books == null) books = new java.util.ArrayList<>();
-            %>
-
             <c:choose>
                 <c:when test="<%= books.isEmpty() %>">
                     <div class="text-center py-5">
                         <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
                         <h6 class="fw-bold text-uppercase" style="color: var(--ui-navy);">No books listed yet</h6>
                         <p class="small text-muted mb-4">You have not listed any old books for sale on the platform.</p>
-                        <a href="${pageContext.request.contextPath}/sell_book.jsp" class="btn-ui-primary">
+                        <a href="${pageContext.request.contextPath}/user/sell_book.jsp" class="btn-ui-primary">
                             Sell Your First Book
                         </a>
                     </div>
@@ -194,7 +200,7 @@
                                             <span class="tag-badge"><%= b.getBookCategory() %></span>
                                         </td>
                                         <td class="text-end">
-                                            <a href="${pageContext.request.contextPath}/delete_old_book?em=<%= b.getEmail() %>&id=<%= b.getBookId() %>"
+                                            <a href="${pageContext.request.contextPath}/user/delete_old_book?em=<%= b.getEmail() %>&id=<%= b.getBookId() %>"
                                                class="btn-ui-danger"
                                                onclick="return confirm('Are you sure you want to delete this book?')">
                                                 <i class="fas fa-trash-alt me-1"></i> Delete

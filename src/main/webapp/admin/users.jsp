@@ -105,6 +105,22 @@
     </div>
 
     <div class="content-body">
+        <%-- Flash Messages --%>
+        <c:if test="${not empty succMsg}">
+            <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-check-circle me-1"></i> ${succMsg}
+                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+            </div>
+            <c:remove var="succMsg" scope="session"/>
+        </c:if>
+        <c:if test="${not empty failedMsg}">
+            <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                <i class="fas fa-exclamation-triangle me-1"></i> ${failedMsg}
+                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+            </div>
+            <c:remove var="failedMsg" scope="session"/>
+        </c:if>
+
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h2 class="page-title mb-0">System Users</h2>
             <div class="d-flex gap-2">

@@ -14,7 +14,7 @@ import com.app.dao.impl.UserDAOImpl;
 import com.app.db.DBconnect;
 import com.app.entity.user;
 
-@WebServlet("/user/update_profile")
+@WebServlet({"/update_profile", "/user/update_profile"})
 public class UpdateProfileServlet extends HttpServlet {
 
     @Override

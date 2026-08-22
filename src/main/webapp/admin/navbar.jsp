@@ -204,6 +204,13 @@
                     </a>
                 </li>
 
+                <!-- ACTIVE TRANSACTIONS -->
+                <li class="nav-item">
+                    <a class="nav-link ${activePage == 'transactions' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/active_transactions.jsp">
+                        <i class="fas fa-bolt me-2"></i> Active Transactions
+                    </a>
+                </li>
+
                 <!-- USERS -->
                 <li class="nav-item">
                     <a class="nav-link ${activePage == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">

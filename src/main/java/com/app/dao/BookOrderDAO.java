@@ -11,5 +11,7 @@ public interface BookOrderDAO {
     public int countActiveTransactions();
     public double getTotalSalesUSD();
     public boolean cancelOrder(String orderNo);
+    public boolean deleteOrdersByEmail(String email);
+    public boolean deleteOrderByOrderNo(String orderNo);
 }
 

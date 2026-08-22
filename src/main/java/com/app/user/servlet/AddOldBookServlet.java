@@ -17,7 +17,7 @@ import com.app.dao.impl.BookDAOImpl;
 import com.app.db.DBconnect;
 import com.app.entity.BookDtls;
 
-@WebServlet("/user/add_old_book")
+@WebServlet({"/add_old_book", "/user/add_old_book"})
 @MultipartConfig
 public class AddOldBookServlet extends HttpServlet {
     @Override
