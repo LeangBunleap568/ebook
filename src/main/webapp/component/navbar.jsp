@@ -149,9 +149,9 @@
                         user navUser = (user) session.getAttribute("userobj");
                         int cartCount = 0;
                         if (navUser != null) {
-                            java.sql.Connection conn = DBconnect.getConn();
-                            if (conn != null) {
-                                cartCount = new CartDAOImpl(conn).countCart(navUser.getId());
+                            java.sql.Connection navbarConn = DBconnect.getConn();
+                            if (navbarConn != null) {
+                                cartCount = new CartDAOImpl(navbarConn).countCart(navUser.getId());
                             }
                         }
                     %>
