@@ -1,3 +1,0 @@
-- craete feacher update and delete
-- dynamic navbar with user
-- get data from database to display in page user

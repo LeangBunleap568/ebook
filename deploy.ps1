@@ -33,8 +33,11 @@ if (Test-Path $targetExploded) {
         Remove-Item -Path $tomcatWebapps -Recurse -Force
     }
 
-    # Copy new build folder to webapps and rename to 'ebook'
-    Copy-Item -Path $targetExploded -Destination $tomcatWebapps -Recurse -Force
+    # Copy new build folder contents to webapps/ebook
+    if (!(Test-Path $tomcatWebapps)) {
+        New-Item -ItemType Directory -Force -Path $tomcatWebapps
+    }
+    Copy-Item -Path "$targetExploded\*" -Destination $tomcatWebapps -Recurse -Force
 
     # Restore backed-up book images
     if (Test-Path $tempBackup) {

@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
-<%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.ebook.db.DBconnect" %>
-<%@ page import="com.ebook.entity.BookDtls" %>
-<%@ page import="java.util.List" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
@@ -14,9 +11,15 @@
     pageContext.setAttribute("searchQuery", ch);
 
     try {
-        BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+        java.sql.Connection conn = DBconnect.getConn();
+        if (conn == null) {
+            response.sendRedirect(request.getContextPath() + "/error.jsp");
+            return;
+        }
+        BookDAOImpl dao = new BookDAOImpl(conn);
         List<BookDtls> books = dao.getBookBySearch(ch);
-        pageContext.setAttribute("bookList", books);
+            if (books == null) books = new java.util.ArrayList<>();
+pageContext.setAttribute("bookList", books);
     } catch (Exception e) {
         pageContext.setAttribute("bookList", null);
     }
@@ -202,7 +205,7 @@
 
                                     <%-- Declarative Currency Formatting via JSTL --%>
                                     <p class="fw-bold fs-6 mb-3 text-header-slate">
-                                        <fmt:formatNumber value="${not empty b.price ? b.price : 0}" type="number" pattern="#,##0" /> ៛
+                                        $<fmt:formatNumber value="${not empty b.price ? b.price : 0}" type="number" pattern="#,##0.00" />
                                     </p>
 
                                     <div class="mt-auto d-flex gap-2">
@@ -214,7 +217,7 @@
                                         <%-- Auth Check before Adding to Cart --%>
                                         <c:choose>
                                             <c:when test="${not empty sessionScope.userobj}">
-                                                <a href="${pageContext.request.contextPath}/cart?bid=${b.bookId}&uid=${sessionScope.userobj.id}" 
+                                                <a href="${pageContext.request.contextPath}/user/cart?bid=${b.bookId}&uid=${sessionScope.userobj.id}" 
                                                    class="btn btn-sm btn-cf-primary flex-fill">
                                                     <i class="fas fa-cart-plus me-1"></i>Cart
                                                 </a>

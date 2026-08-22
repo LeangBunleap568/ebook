@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ebook.dao.impl.BookDAOImpl, com.ebook.db.DBconnect, com.ebook.entity.BookDtls, java.util.List" %>
+<%@ page import="com.app.dao.impl.BookDAOImpl, com.app.db.DBconnect, com.app.entity.BookDtls, java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ebook Store — Classic Modern</title>
+    <title>Ebook Store Classic Modern</title>
     <%@include file="component/rootCss.jsp" %>
     <style>
         :root { --c-bg: #f4f6f8; --c-surface: #ffffff; --c-border: #cbd5e1; --c-text: #1e293b; --c-muted: #64748b; --c-accent: #2d6a4f; --c-accent-hover: #1b4332; --c-price: #b91c1c; }
@@ -32,7 +32,14 @@
 </head>
 <body>
     <%@include file="component/navbar.jsp" %>
-    <% BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn()); %>
+    <% 
+        java.sql.Connection conn = DBconnect.getConn();
+        if (conn == null) {
+            response.sendRedirect(request.getContextPath() + "/error.jsp");
+            return;
+        }
+        BookDAOImpl dao = new BookDAOImpl(conn); 
+    %>
 
     <div class="container my-5">
         <!-- 1. Recent Books -->
@@ -52,7 +59,7 @@
                             <div class="card-body p-0 d-flex flex-column justify-content-between">
                                 <div><span class="badge badge-custom mb-2" style="background:#d97706;">Recent</span><h6 class="card-title text-truncate fw-bold mb-1"><%= b.getBookName() %></h6><p class="small text-truncate mb-2 text-muted">Author: <%= b.getAuthor() %></p></div>
                                 <div class="pt-2 border-top mt-2">
-                                    <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
+                                    <div class="fw-bold price-text mb-2">$<%= new java.text.DecimalFormat("#,##0.00").format(Double.parseDouble(b.getPrice())) %></div>
                                     <div class="d-flex gap-2">
                                         <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                         <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm w-50 py-1.5"><i class="fas fa-eye me-1"></i>View</a>
@@ -82,9 +89,11 @@
                             <div class="card-body p-0 d-flex flex-column justify-content-between">
                                 <div><span class="badge badge-custom mb-2" style="background:var(--c-accent);">New</span><h6 class="card-title text-truncate fw-bold mb-1"><%= b.getBookName() %></h6><p class="small text-truncate mb-2 text-muted">Author: <%= b.getAuthor() %></p></div>
                                 <div class="pt-2 border-top mt-2">
-                                    <div class="fw-bold price-text mb-2"><%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛</div>
+                                    <div class="fw-bold price-text mb-2">$<%= new java.text.DecimalFormat("#,##0.00").format(Double.parseDouble(b.getPrice())) %></div>
                                     <div class="d-flex gap-2">
-                                        <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                      <a href="${pageContext.request.contextPath}/user/cart?bid=<%= b.getBookId() %>" class="btn btn-add-cart btn-sm w-50 py-1.5">
+    <i class="fas fa-cart-plus me-1"></i>Add
+</a>
                                         <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm w-50 py-1.5"><i class="fas fa-eye me-1"></i>View</a>
                                     </div>
                                 </div>

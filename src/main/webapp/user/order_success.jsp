@@ -81,7 +81,7 @@
     <%@include file="../component/navbar.jsp" %>
 
     <c:if test="${empty userobj}">
-        <c:redirect url="login.jsp" />
+        <c:redirect url="../login.jsp" />
     </c:if>
 
     <div class="container p-3 p-md-4 my-auto flex-grow-1 d-flex align-items-center justify-content-center">

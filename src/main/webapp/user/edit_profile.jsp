@@ -83,7 +83,7 @@
     <%@include file="../component/navbar.jsp" %>
     
     <c:if test="${empty userobj}">
-        <c:redirect url="login.jsp" />
+        <c:redirect url="../login.jsp" />
     </c:if>
 
     <div class="container p-3 p-md-4 my-auto flex-grow-1 d-flex align-items-center justify-content-center">
@@ -110,7 +110,7 @@
                     </c:if>
 
                     <!-- Profile Form -->
-                    <form action="${pageContext.request.contextPath}/update_profile" method="POST" class="row g-3">
+                    <form action="${pageContext.request.contextPath}/user/update_profile" method="POST" class="row g-3">
                         <input type="hidden" name="id" value="${userobj.id}">
 
                         <div class="col-12">

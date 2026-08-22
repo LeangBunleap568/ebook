@@ -1,16 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.ebook.db.DBconnect" %>
-<%@ page import="com.ebook.entity.BookDtls" %>
-<%@ page import="com.ebook.entity.user" %>
-<%@ page import="java.util.List" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Old Books — Ebook Store</title>
+    <title>My Old Books - Ebook Store</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
         :root { 
@@ -120,7 +116,7 @@
     <%@include file="../component/navbar.jsp" %>
 
     <c:if test="${empty userobj}">
-        <c:redirect url="login.jsp" />
+        <c:redirect url="../login.jsp" />
     </c:if>
 
     <div class="container p-3 p-md-4 my-auto flex-grow-1">
@@ -151,8 +147,15 @@
 
             <%
                 user u = (user) session.getAttribute("userobj");
-                BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+                java.sql.Connection conn = DBconnect.getConn();
+                if (conn == null) {
+                    response.sendRedirect(request.getContextPath() + "/error.jsp");
+                    return;
+                }
+                BookDAOImpl dao = new BookDAOImpl(conn);
                 List<BookDtls> books = dao.getBookByOld(u.getEmail(), "Old");
+         
+            if (books == null) books = new java.util.ArrayList<>();
             %>
 
             <c:choose>

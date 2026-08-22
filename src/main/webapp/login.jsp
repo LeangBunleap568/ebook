@@ -194,7 +194,7 @@
                         }
                     %>
 
-                    <form action="${pageContext.request.contextPath}/login" method="post" autocomplete="off">
+                  <form action="${pageContext.request.contextPath}/user/login" method="post">
                         <div class="mb-3">
                             <label class="form-label" for="emailExampleInput">Email Address</label>
                             <input type="email" name="email" id="emailExampleInput" class="form-control" placeholder="name@example.com" required autocomplete="off">

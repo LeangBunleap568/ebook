@@ -1,0 +1,52 @@
+package com.app.admin.servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import com.app.dao.impl.BookDAOImpl;
+import com.app.db.DBconnect;
+
+@WebServlet("/admin/deleteBook")
+public class DeleteBooksServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            Connection conn = DBconnect.getConn();
+            if (conn == null) {
+                session.setAttribute("failedMsg", "Database connection failed.");
+                response.sendRedirect(request.getContextPath() + "/error.jsp");
+                return;
+            }
+            BookDAOImpl dao = new BookDAOImpl(conn);
+            boolean f = dao.deleteBooks(id);
+            
+            if (f) {
+                session.setAttribute("succMsg", "Book Deleted Successfully!");
+            } else {
+                session.setAttribute("failedMsg", "Failed to delete the book!");
+            }
+            response.sendRedirect(request.getContextPath() + "/admin/all_books.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("failedMsg", "An unexpected error occurred while deleting.");
+            response.sendRedirect(request.getContextPath() + "/admin/all_books.jsp");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
+}

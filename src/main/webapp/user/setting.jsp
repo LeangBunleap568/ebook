@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +72,7 @@
     <%@include file="../component/navbar.jsp" %>
 
     <c:if test="${empty userobj}">
-        <c:redirect url="login.jsp" />
+        <c:redirect url="../login.jsp" />
     </c:if>
 
     <div class="container py-4 flex-grow-1" style="max-width: 800px;">

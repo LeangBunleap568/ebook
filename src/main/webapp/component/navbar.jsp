@@ -1,26 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.ebook.entity.user" %>
-<%@ page import="com.ebook.dao.impl.CartDAOImpl" %>
-<%@ page import="com.ebook.db.DBconnect" %>
+<%@ page import="com.app.entity.user" %>
+<%@ page import="com.app.dao.impl.CartDAOImpl" %>
+<%@ page import="com.app.db.DBconnect" %>
 
 <c:set var="currentUri" value="${not empty requestScope['jakarta.servlet.include.request_uri'] ? requestScope['jakarta.servlet.include.request_uri'] : pageContext.request.requestURI}" />
 
 <style>
     /* Global Reset & High-Contrast Classic Palette */
     :root {
-        --c-bg: #f4f6f8;             /* Background ប្រផេះស្រាល */
-        --c-surface: #ffffff;        /* Surface សច្បាស់ */
-        --c-border: #cbd5e1;         /* Border ប្រផេះច្បាស់ */
-        --c-text: #1e293b;           /* អក្សរខ្មៅប្រផេះចាស់ (High Contrast) */
-        --c-muted: #64748b;          /* អក្សររងច្បាស់ល្មម */
-        --c-accent: #2d6a4f;         /* Deep Forest Green (ច្បាស់ មិនស្លេក) */
-        --c-accent-hover: #1b4332;   /* Green ដិតពេល Hover */
-        --c-input-border: #94a3b8;   /* ព្រំប្រទល់ Input ច្បាស់ */
+        --c-bg: #f4f6f8;             /* Background áž”áŸ’ážšáž•áŸáŸ‡ážŸáŸ’ážšáž¶áž› */
+        --c-surface: #ffffff;        /* Surface ážŸáž…áŸ’áž”áž¶ážŸáŸ‹ */
+        --c-border: #cbd5e1;         /* Border áž”áŸ’ážšáž•áŸáŸ‡áž…áŸ’áž”áž¶ážŸáŸ‹ */
+        --c-text: #1e293b;           /* áž¢áž€áŸ’ážŸážšážáŸ’áž˜áŸ…áž”áŸ’ážšáž•áŸáŸ‡áž…áž¶ážŸáŸ‹ (High Contrast) */
+        --c-muted: #64748b;          /* áž¢áž€áŸ’ážŸážšážšáž„áž…áŸ’áž”áž¶ážŸáŸ‹áž›áŸ’áž˜áž˜ */
+        --c-accent: #2d6a4f;         /* Deep Forest Green (áž…áŸ’áž”áž¶ážŸáŸ‹ áž˜áž·áž“ážŸáŸ’áž›áŸáž€) */
+        --c-accent-hover: #1b4332;   /* Green ážŠáž·ážáž–áŸáž› Hover */
+        --c-input-border: #94a3b8;   /* áž–áŸ’ážšáŸ†áž”áŸ’ážšáž‘áž›áŸ‹ Input áž…áŸ’áž”áž¶ážŸáŸ‹ */
     }
 
     *, *::before, *::after {
-        border-radius: 0 !important; /* បុរាណជ្រុងៗ 100% */
+        border-radius: 0 !important; /* áž”áž»ážšáž¶ážŽáž‡áŸ’ážšáž»áž„áŸ— 100% */
     }
 
     body { background-color: var(--c-bg) !important; color: var(--c-text); }
@@ -147,7 +147,13 @@
                     <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn-classic"><i class="fas fa-user"></i>${userobj.name}</a>
                     <%
                         user navUser = (user) session.getAttribute("userobj");
-                        int cartCount = (navUser != null) ? new CartDAOImpl(DBconnect.getConn()).countCart(navUser.getId()) : 0;
+                        int cartCount = 0;
+                        if (navUser != null) {
+                            java.sql.Connection conn = DBconnect.getConn();
+                            if (conn != null) {
+                                cartCount = new CartDAOImpl(conn).countCart(navUser.getId());
+                            }
+                        }
                     %>
                     <a href="${pageContext.request.contextPath}/user/cart.jsp" class="btn-classic">
                         <i class="fas fa-shopping-cart"></i>Cart (<%= cartCount %>)
@@ -168,7 +174,7 @@
                 <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/')}">
                     <a class="${currentUri.endsWith('/admin/home.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/home.jsp">Overview</a>
                     <a class="${currentUri.endsWith('/admin/add_books.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/add_books.jsp">Add Books</a>
-                    <a class="${currentUri.endsWith('/admin/allBook.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/allBook.jsp">Inventory</a>
+                    <a class="${currentUri.endsWith('/admin/all_books.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/all_books.jsp">Inventory</a>
                     <a class="${currentUri.endsWith('/admin/orders.jsp') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/orders.jsp">Orders</a>
                 </c:when>
                 <c:otherwise>

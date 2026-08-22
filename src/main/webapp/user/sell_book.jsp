@@ -105,7 +105,7 @@
     <%@include file="../component/navbar.jsp" %>
 
     <c:if test="${empty userobj}">
-        <c:redirect url="login.jsp" />
+        <c:redirect url="../login.jsp" />
     </c:if>
 
     <div class="container p-3 p-md-4 my-auto flex-grow-1">
@@ -140,7 +140,7 @@
                     </c:if>
 
                     <%-- Form --%>
-                    <form action="${pageContext.request.contextPath}/add_old_book" method="POST" enctype="multipart/form-data">
+                    <form action="${pageContext.request.contextPath}/user/add_old_book" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="email" value="${userobj.email}">
                         <input type="hidden" name="categories" value="Old">
                         <input type="hidden" name="status" value="Active">
@@ -170,11 +170,11 @@
                         <%-- Price in KHR --%>
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-uppercase text-muted" style="font-size: 0.75rem;">
-                                Price (KHR) <span class="text-danger">*</span>
+                                Price (USD) <span class="text-danger">*</span>
                             </label>
                             <div class="input-group">
-                                <span class="input-group-text fw-bold">៛</span>
-                                <input type="number" name="price" class="form-control" placeholder="e.g. 20000" min="0" required>
+                                <span class="input-group-text fw-bold">$</span>
+                                <input type="number" step="0.01" name="price" class="form-control" placeholder="e.g. 5.00" min="0" required>
                             </div>
                         </div>
 

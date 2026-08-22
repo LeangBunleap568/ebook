@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ page import="com.ebook.dao.impl.BookDAOImpl"%>
-<%@ page import="com.ebook.db.DBconnect"%>
-<%@ page import="com.ebook.entity.BookDtls"%>
+<%@ page import="com.app.dao.impl.BookDAOImpl"%>
+<%@ page import="com.app.db.DBconnect"%>
+<%@ page import="com.app.entity.BookDtls"%>
 
 <%-- Data Retrieval --%>
 <%
@@ -11,7 +11,12 @@
     if (idParam != null && !idParam.isEmpty()) {
         try {
             int id = Integer.parseInt(idParam);
-            BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+            java.sql.Connection conn = DBconnect.getConn();
+            if (conn == null) {
+                response.sendRedirect(request.getContextPath() + "/error.jsp");
+                return;
+            }
+            BookDAOImpl dao = new BookDAOImpl(conn);
             book = dao.getBookById(id);
         } catch (Exception e) {
             book = null;
@@ -28,55 +33,10 @@
     <title>Admin Dashboard — Edit Book</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
-        body {
-            background-color: #eaeded;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        .content-body {
+            padding: 0 20px 20px 20px;
         }
-        /* Top Navigation Header */
-        .top-navbar {
-            background-color: #343a40;
-            color: #fff;
-            height: 50px;
-        }
-        .brand-box {
-            background-color: #f0ad4e;
-            color: #fff;
-            width: 220px;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        /* Sidebar Navigation */
-        .sidebar {
-            width: 220px;
-            min-height: calc(100vh - 50px);
-            background-color: #2c3e50;
-        }
-        .sidebar-section {
-            color: #8a98a5;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            padding: 12px 20px 4px;
-        }
-        .sidebar-link {
-            color: #bdc3c7;
-            padding: 10px 20px;
-            display: block;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .sidebar-link:hover, .sidebar-link.active {
-            background-color: #1a252f;
-            color: #fff;
-        }
-        /* Content Area */
-        .main-content {
-            flex: 1;
-            padding: 20px 30px;
-        }
-        .breadcrumb-text {
-            color: #7f8c8d;
-            font-size: 0.85rem;
-        }
+
         .page-title {
             font-size: 1.6rem;
             color: #2c3e50;
@@ -129,51 +89,20 @@
         <c:redirect url="../login.jsp" />
     </c:if>
 
-    <!-- Top Horizontal Navigation -->
-    <div class="top-navbar d-flex align-items-center justify-content-between px-0">
-        <div class="d-flex align-items-center h-100">
-            <div class="brand-box d-flex align-items-center px-3 h-100">
-                Ebook Admin
-            </div>
-            <button class="btn btn-link text-white ms-2"><i class="fas fa-bars"></i></button>
-        </div>
-        <div class="pe-3 text-white">
-            <i class="fas fa-user-circle fa-lg"></i>
-        </div>
-    </div>
+<%@include file="navbar.jsp" %>
 
-    <div class="d-flex">
-        
-        <!-- Left Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-section">Store Management</div>
-            <a href="${pageContext.request.contextPath}/admin/home.jsp" class="sidebar-link">
-                <i class="fas fa-tachometer-alt me-2"></i> Overview
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="sidebar-link active">
-                <i class="fas fa-book me-2"></i> Books Inventory
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/addBook.jsp" class="sidebar-link">
-                <i class="fas fa-plus-circle me-2"></i> Add Book
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="sidebar-link">
-                <i class="fas fa-shopping-cart me-2"></i> Orders
-            </a>
+<main class="admin-main">
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb-text mb-2 bg-white px-4 py-2 border-bottom">
+            Home &gt; Books &gt; Edit Details
         </div>
-
-        <!-- Main Workspace -->
-        <div class="main-content">
-            
-            <!-- Breadcrumb Navigation -->
-            <div class="breadcrumb-text mb-2">
-                Home &gt; Books &gt; Edit Details
-            </div>
+        <div class="content-body">
 
             <!-- Header Section -->
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h2 class="page-title mb-0">Book: ${not empty book ? book.bookName : 'Not Found'}</h2>
                 <div class="d-flex gap-2">
-                    <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="btn btn-sm btn-outline-secondary">
+                    <a href="${pageContext.request.contextPath}/admin/all_books.jsp" class="btn btn-sm btn-outline-secondary">
                         <i class="fas fa-arrow-left"></i> Back to Catalog
                     </a>
                 </div>
@@ -191,7 +120,8 @@
                                     <span class="counter-badge">ID ${book.bookId}</span>
                                 </div>
                                 <div class="p-3">
-                                    <form action="${pageContext.request.contextPath}/admin/updateBook" method="post">
+                                    <form action="${pageContext.request.contextPath}/admin/updateBook" method="post" onsubmit="return validateEditBookForm()">
+                                        <div id="editPriceError" class="alert alert-warning d-none mb-3 py-2 px-3" style="font-size: 12px;"></div>
                                         <input type="hidden" name="id" value="${book.bookId}">
 
                                         <div class="mb-3">
@@ -206,8 +136,12 @@
 
                                         <div class="row g-2 mb-3">
                                             <div class="col-6">
-                                                <label class="form-label small fw-bold text-secondary">Price (៛ Riel)</label>
-                                                <input type="number" step="100" class="form-control form-control-sm" name="price" value="${book.price}" required>
+                                                <label class="form-label small fw-bold text-secondary">Price (USD)</label>
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="number" step="0.01" min="2.50" id="editBookPrice" class="form-control" name="price" value="${book.price}" required>
+                                                </div>
+                                                <div class="text-muted mt-1" style="font-size: 10px;">Min: $2.50</div>
                                             </div>
                                             <div class="col-6">
                                                 <label class="form-label small fw-bold text-secondary">Status</label>
@@ -303,6 +237,27 @@
         </div>
     </div>
 
-    <%@include file="../component/footer.jsp" %>
+</main>
+
+    <%@include file="footer.jsp" %>
+
+<script>
+    function validateEditBookForm() {
+        const priceInput = document.getElementById('editBookPrice');
+        const errorBox   = document.getElementById('editPriceError');
+        if (!priceInput) return true;
+        const price = parseFloat(priceInput.value);
+        errorBox.classList.add('d-none');
+        errorBox.innerText = '';
+        if (isNaN(price) || price < 2.50) {
+            errorBox.innerText = '⚠️ Price must be at least $2.50 USD!';
+            errorBox.classList.remove('d-none');
+            priceInput.focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+
 </body>
 </html>

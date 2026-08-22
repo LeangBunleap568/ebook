@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ebook.dao.impl.BookOrderDAOImpl" %>
-<%@ page import="com.ebook.db.DBconnect" %>
-<%@ page import="com.ebook.entity.Book_Order" %>
-<%@ page import="com.ebook.entity.user" %>
-<%@ page import="java.util.*" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Orders — Ebook Store</title>
+    <title>My Orders - Ebook Store</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
         :root { 
@@ -134,8 +134,14 @@
 
     <%
         user u = (user) session.getAttribute("userobj");
-        BookOrderDAOImpl dao = new BookOrderDAOImpl(DBconnect.getConn());
+        java.sql.Connection conn = DBconnect.getConn();
+        if (conn == null) {
+            response.sendRedirect(request.getContextPath() + "/error.jsp");
+            return;
+        }
+        BookOrderDAOImpl dao = new BookOrderDAOImpl(conn);
         List<Book_Order> allOrders = dao.getBookOrder(u.getEmail());
+        if (allOrders == null) allOrders = new java.util.ArrayList<>();
 
         // Group by orderNo
         Map<String, List<Book_Order>> grouped = new LinkedHashMap<>();
@@ -233,7 +239,7 @@
                                         <td class="text-muted fw-bold small"><%= i++ %></td>
                                         <td class="fw-bold" style="color: var(--ui-navy);"><%= item.getBookName() %></td>
                                         <td class="text-muted"><%= item.getAuthor() %></td>
-                                        <td class="text-end fw-bold" style="color: var(--ui-navy);"><%= fmt.format(p) %> ៛</td>
+                                        <td class="text-end fw-bold" style="color: var(--ui-navy);">$<%= fmt.format(p) %></td>
                                     </tr>
                                     <% } %>
                                 </tbody>
@@ -244,7 +250,7 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-center pt-2">
                             <div>
                                 <% if ("Pending".equals(first.getStatus()) || "Processing".equals(first.getStatus())) { %>
-                                    <a href="${pageContext.request.contextPath}/cancel_order?orderNo=<%= orderNo %>" 
+                                    <a href="${pageContext.request.contextPath}/user/cancel_order?orderNo=<%= orderNo %>" 
                                        class="btn-ui-danger"
                                        onclick="return confirm('Are you sure you want to cancel this order?')">
                                         <i class="fas fa-ban me-1"></i> Cancel Order
@@ -253,7 +259,7 @@
                             </div>
                             <div class="text-end">
                                 <span class="small text-uppercase text-muted fw-bold me-2">Total Amount:</span>
-                                <span class="fw-bold fs-6" style="color: var(--ui-green);"><%= fmt.format(orderTotal) %> ៛</span>
+                                <span class="fw-bold fs-6" style="color: var(--ui-green);">$<%= fmt.format(orderTotal) %></span>
                             </div>
                         </div>
 

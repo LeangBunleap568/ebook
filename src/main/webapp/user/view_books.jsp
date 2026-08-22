@@ -1,13 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ebook.db.DBconnect" %>
-<%@ page import="com.ebook.dao.impl.BookDAOImpl" %>
-<%@ page import="com.ebook.entity.BookDtls" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<c:if test="${empty userobj}">
+    <c:redirect url="../login.jsp" />
+</c:if>
+
 <!DOCTYPE html>
 <html lang="km">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Book Details — Ebook Store</title>
+    <title>View Book Details - Ebook Store</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
         :root { 
@@ -67,9 +71,7 @@
             display: inline-block;
             text-decoration: none;
         }
-        .btn-ui-primary:hover { 
-            background: #0f172a; 
-        }
+        .btn-ui-primary:hover { background: #0f172a; }
         .btn-ui-outline { 
             background: #fff; 
             color: var(--ui-navy) !important; 
@@ -110,9 +112,31 @@
     <%@include file="../component/navbar.jsp" %>
 
     <%
-        int id = Integer.parseInt(request.getParameter("id"));
-        BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
-        BookDtls b = dao.getBookById(id);
+        String idParam = request.getParameter("id");
+        int id = 0;
+        if (idParam != null && !idParam.trim().isEmpty()) {
+            try { 
+                id = Integer.parseInt(idParam); 
+            } catch(Exception e) {
+                id = 0;
+            }
+        }
+        
+        BookDtls b = null;
+        try {
+            java.sql.Connection conn = DBconnect.getConn();
+            if (conn != null && id > 0) {
+                BookDAOImpl dao = new BookDAOImpl(conn);
+                b = dao.getBookById(id);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        if (b == null) {
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
+        }
     %>
 
     <div class="container p-3 p-md-4 my-auto flex-grow-1">
@@ -181,14 +205,14 @@
                                     <i class="fas fa-arrow-left me-1"></i> Back to Store
                                 </a>
                                 <div class="price-tag">
-                                    <%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛
+                                    $<%= b.getPrice() %>
                                 </div>
                             <% } else { %>
-                                <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn-ui-primary">
+                                <a href="${pageContext.request.contextPath}/user/cart?bid=<%= b.getBookId() %>" class="btn-ui-primary">
                                     <i class="fas fa-cart-plus me-1"></i> Add to Cart
                                 </a>
                                 <div class="price-tag">
-                                    <%= new java.text.DecimalFormat("#,###").format(Double.parseDouble(b.getPrice())) %> ៛
+                                    $<%= b.getPrice() %>
                                 </div>
                             <% } %>
                         </div>

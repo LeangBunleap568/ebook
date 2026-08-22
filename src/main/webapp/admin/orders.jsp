@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ page import="com.ebook.dao.impl.BookOrderDAOImpl" %>
-<%@ page import="com.ebook.entity.Book_Order" %>
+<%@ page import="com.app.dao.impl.BookOrderDAOImpl" %>
+<%@ page import="com.app.entity.Book_Order" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.LinkedHashMap" %>
-<%@ page import="com.ebook.db.DBconnect" %>
+<%@ page import="com.app.db.DBconnect" %>
 
 <%-- Security Check --%>
 <c:if test="${empty userobj or userobj.email != 'admin@gmail.com'}">
@@ -21,106 +21,20 @@
 <title>Ebook App — Customer Orders</title>
 <%@include file="../component/rootCss.jsp" %>
 <style>
-    :root {
-        --sidebar-bg: #2c3846;
-        --sidebar-active: #232d38;
-        --brand-bg: #f39c12;
-        --topbar-bg: #34495e;
-        --body-bg: #eaedf1;
-    }
+    <style>
+        .content-body {
+            padding: 0 20px 20px 20px;
+        }
 
-    body {
-        background-color: var(--body-bg);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        font-size: 13px;
-        color: #333;
-    }
-
-    /* Layout Structure */
-    .app-wrapper {
-        display: flex;
-        min-height: 100vh;
-    }
-
-    /* Sidebar Navigation */
-    .sidebar {
-        width: 220px;
-        background-color: var(--sidebar-bg);
-        color: #95a5a6;
-        flex-shrink: 0;
-    }
-    .sidebar .brand-header {
-        background-color: var(--brand-bg);
-        color: #fff;
-        padding: 14px 20px;
-        font-size: 16px;
-        font-weight: 600;
-    }
-    .sidebar .nav-section {
-        padding: 10px 0;
-    }
-    .sidebar .nav-item-title {
-        padding: 8px 20px;
-        color: #bdc3c7;
-        font-weight: 500;
-    }
-    .sidebar .nav-link-custom {
-        display: block;
-        padding: 8px 20px 8px 30px;
-        color: #95a5a6;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-    .sidebar .nav-link-custom:hover {
-        color: #fff;
-        background: rgba(255,255,255,0.05);
-    }
-    .sidebar .nav-link-custom.active {
-        color: #fff;
-        background-color: var(--sidebar-active);
-    }
-
-    /* Main Container */
-    .main-container {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Top Navbar */
-    .top-navbar {
-        height: 48px;
-        background-color: var(--topbar-bg);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 20px;
-        color: #fff;
-    }
-
-    /* Breadcrumbs */
-    .breadcrumb-bar {
-        padding: 10px 20px;
-        font-size: 11px;
-        color: #7f8c8d;
-    }
-
-    /* Content Body */
-    .content-body {
-        padding: 0 20px 20px 20px;
-    }
-
-    .page-title {
-        font-size: 18px;
-        font-weight: 500;
-        margin-bottom: 15px;
-        color: #2c3e50;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+        .page-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
     /* CF Card Component */
     .cf-card {
@@ -205,7 +119,12 @@
 <body>
 
 <%
-    BookOrderDAOImpl dao = new BookOrderDAOImpl(DBconnect.getConn());
+    java.sql.Connection conn = DBconnect.getConn();
+    if (conn == null) {
+        response.sendRedirect(request.getContextPath() + "/error.jsp");
+        return;
+    }
+    BookOrderDAOImpl dao = new BookOrderDAOImpl(conn);
     List<Book_Order> list = dao.getAllOrder();
     Map<String, List<Book_Order>> grouped = new LinkedHashMap<>();
 
@@ -216,37 +135,9 @@
     }
 %>
 
-<div class="app-wrapper">
-
-    <%-- Sidebar Navigation --%>
-    <div class="sidebar">
-        <div class="brand-header">
-            Ebook Admin
-        </div>
-        <div class="nav-section">
-            <div class="nav-item-title">System Overview</div>
-            <a href="${pageContext.request.contextPath}/admin/home.jsp" class="nav-link-custom">Dashboard</a>
-            <a href="${pageContext.request.contextPath}/admin/allBook.jsp" class="nav-link-custom">Book Catalog</a>
-            <a href="${pageContext.request.contextPath}/admin/orders.jsp" class="nav-link-custom active">Order Requests</a>
-            <a href="${pageContext.request.contextPath}/admin/add_books.jsp" class="nav-link-custom">Management</a>
-        </div>
-    </div>
-
-    <%-- Main Content Area --%>
-    <div class="main-container">
-
-        <%-- Top Bar --%>
-        <div class="top-navbar">
-            <div><i class="fas fa-bars cursor-pointer"></i></div>
-            <div>
-                <a href="${pageContext.request.contextPath}/logout" class="text-white text-decoration-none" title="Logout">
-                    <i class="fas fa-user me-1"></i> Admin Exit
-                </a>
-            </div>
-        </div>
-
+<%@include file="navbar.jsp" %>
         <%-- Breadcrumbs --%>
-        <div class="breadcrumb-bar">
+        <div class="breadcrumb-bar bg-white px-4 py-2 border-bottom mb-3 text-muted" style="font-size: 11px;">
             Home &gt; Admin Console &gt; Customer Orders Overview
         </div>
 

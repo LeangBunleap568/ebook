@@ -1,5 +1,6 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ebook.dao.impl.BookDAOImpl, com.ebook.db.DBconnect, com.ebook.entity.BookDtls, java.util.List" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,12 +40,18 @@
         </div>
 
         <% 
-            BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+            java.sql.Connection conn = DBconnect.getConn();
+            if (conn == null) {
+                response.sendRedirect(request.getContextPath() + "/error.jsp");
+                return;
+            }
+            BookDAOImpl dao = new BookDAOImpl(conn);
             List<BookDtls> list = dao.getAllNewBook();
+            if (list == null) list = new java.util.ArrayList<>();
             java.text.DecimalFormat formatter = new java.text.DecimalFormat("#,###");
         %>
 
-        <% if (list == null || list.isEmpty()) { %>
+        <% if (list.isEmpty()) { %>
             <div class="row justify-content-center my-5">
                 <div class="col-md-6 text-center">
                     <div class="p-5 border border-2 bg-white" style="border-color: var(--c-border) !important;">
@@ -77,9 +84,9 @@
                                 <p class="small text-truncate mb-2 text-muted">Author: <%= b.getAuthor() %></p>
                             </div>
                             <div class="pt-2 border-top mt-2">
-                                <div class="fw-bold price-text mb-2"><%= price %> ៛</div>
+                                <div class="fw-bold price-text mb-2">$<%= price %></div>
                                 <div class="d-flex gap-2">
-                                    <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="${pageContext.request.contextPath}/user/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                     <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm w-50 py-1.5"><i class="fas fa-eye me-1"></i>View</a>
                                 </div>
                             </div>

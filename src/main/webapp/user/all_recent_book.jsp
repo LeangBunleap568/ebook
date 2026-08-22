@@ -1,11 +1,12 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ebook.dao.impl.BookDAOImpl, com.ebook.db.DBconnect, com.ebook.entity.BookDtls, java.util.List" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Recent Books — Classic Modern</title>
+    <title>All Recent Books - Classic Modern</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
         :root { --c-bg: #f4f6f8; --c-surface: #ffffff; --c-border: #cbd5e1; --c-text: #1e293b; --c-muted: #64748b; --c-accent: #2d6a4f; --c-accent-hover: #1b4332; --c-price: #b91c1c; --c-recent-badge: #3b82f6; }
@@ -39,8 +40,14 @@
         </div>
 
         <% 
-            BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+            java.sql.Connection conn = DBconnect.getConn();
+            if (conn == null) {
+                response.sendRedirect(request.getContextPath() + "/error.jsp");
+                return;
+            }
+            BookDAOImpl dao = new BookDAOImpl(conn);
             List<BookDtls> list = dao.getAllRecentBook();
+            if (list == null) list = new java.util.ArrayList<>();
             java.text.DecimalFormat formatter = new java.text.DecimalFormat("#,###");
         %>
 
@@ -77,9 +84,9 @@
                                 <p class="small text-truncate mb-2 text-muted">Author: <%= b.getAuthor() %></p>
                             </div>
                             <div class="pt-2 border-top mt-2">
-                                <div class="fw-bold price-text mb-2"><%= price %> ៛</div>
+                                <div class="fw-bold price-text mb-2">$<%= price %></div>
                                 <div class="d-flex gap-2">
-                                    <a href="${pageContext.request.contextPath}/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
+                                    <a href="${pageContext.request.contextPath}/user/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                     <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm w-50 py-1.5"><i class="fas fa-eye me-1"></i>View</a>
                                 </div>
                             </div>

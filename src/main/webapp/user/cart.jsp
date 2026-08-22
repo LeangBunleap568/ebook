@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page import="com.ebook.dao.impl.CartDAOImpl, com.ebook.db.DBconnect, com.ebook.entity.Cart, com.ebook.entity.user, java.util.List" %>
+<%@ page import="com.app.entity.*, com.app.dao.impl.*, com.app.db.*, java.util.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart & Checkout — Classic Modern</title>
+    <title>Shopping Cart & Checkout - Classic Modern</title>
     <%@include file="../component/rootCss.jsp" %>
     <style>
         :root {
@@ -170,7 +170,7 @@
     <%@include file="../component/navbar.jsp" %>
     
     <c:if test="${empty userobj}">
-        <c:redirect url="login.jsp"></c:redirect>
+        <c:redirect url="../login.jsp"></c:redirect>
     </c:if>
 
     <div class="container p-3 p-md-4 my-2 my-md-3 flex-grow-1">
@@ -198,9 +198,14 @@
 
                         <% 
                             user u = (user) session.getAttribute("userobj");
-                            CartDAOImpl dao = new CartDAOImpl(DBconnect.getConn());
+                            java.sql.Connection conn = DBconnect.getConn();
+                            if (conn == null) {
+                                response.sendRedirect(request.getContextPath() + "/error.jsp");
+                                return;
+                            }
+                            CartDAOImpl dao = new CartDAOImpl(conn);
                             List<Cart> cartList = dao.getCartByUser(u.getId());
-                            if (cartList == null) cartList = new java.util.ArrayList<>();
+            if (cartList == null) cartList = new java.util.ArrayList<>();
                             Double totalPrice = 0.0;
                             java.text.DecimalFormat formatter = new java.text.DecimalFormat("#,###");
                             for(Cart c : cartList){
@@ -239,9 +244,9 @@
                                                 <%= c.getBookName() %>
                                             </td>
                                             <td style="color: var(--ui-text-muted);"><%= c.getAuthor() %></td>
-                                            <td class="text-center fw-bold" style="color: var(--ui-green-accent);"><%= formatter.format(c.getPrice()) %> ៛</td>
+                                            <td class="text-center fw-bold" style="color: var(--ui-green-accent);">$<%= formatter.format(c.getPrice()) %></td>
                                             <td class="text-end">
-                                                <a href="${pageContext.request.contextPath}/remove_cart?cid=<%= c.getCid() %>&uid=<%= c.getUid() %>" class="btn btn-ui-remove">
+                                                <a href="${pageContext.request.contextPath}/user/remove_cart?cid=<%= c.getCid() %>&uid=<%= c.getUid() %>" class="btn btn-ui-remove">
                                                     Remove
                                                 </a>
                                             </td>
@@ -253,7 +258,7 @@
 
                             <div class="summary-box p-3 my-3 d-flex justify-content-between align-items-center">
                                 <span class="fw-bold small text-uppercase" style="color: var(--ui-text-muted);">Total Amount</span>
-                                <span class="fw-bold fs-5" style="color: var(--ui-navy-heading);"><%= formatter.format(totalPrice) %> ៛</span>
+                                <span class="fw-bold fs-5" style="color: var(--ui-navy-heading);">$<%= formatter.format(totalPrice) %></span>
                             </div>
                         <% } %>
                     </div>
@@ -276,7 +281,7 @@
                         <span class="badge badge-status">Checkout</span>
                     </div>
 
-                    <form action="${pageContext.request.contextPath}/order" method="post">
+                    <form action="${pageContext.request.contextPath}/user/order" method="post">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label mb-1">Full Name</label>
@@ -297,7 +302,7 @@
                             <div class="col-12">
                                 <label class="form-label mb-1">Landmark / Area</label>
                                 <select name="landmark" id="landmark" class="form-select" required>
-                                    <option value="" disabled selected>— Select Landmark —</option>
+                                    <option value="" disabled selected>- Select Landmark -</option>
                                     <optgroup label="Phnom Penh">
                                         <option value="Tuol Tompoung Market">Tuol Tompoung Market</option>
                                         <option value="Orussey Market">Orussey Market</option>
@@ -313,7 +318,7 @@
                             <div class="col-md-12">
                                 <label class="form-label mb-1">City / Region</label>
                                 <select name="city" id="city" class="form-select" required onchange="updateStateAndPincode()">
-                                    <option value="" disabled selected>— Select City —</option>
+                                    <option value="" disabled selected>- Select City -</option>
                                     <option value="Phnom Penh" data-state="Phnom Penh" data-pincode="12000">Phnom Penh</option>
                                     <option value="Siem Reap" data-state="Siem Reap" data-pincode="17000">Siem Reap</option>
                                     <option value="Battambang" data-state="Battambang" data-pincode="02000">Battambang</option>
