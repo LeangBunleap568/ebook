@@ -159,7 +159,7 @@
             <div class="px-4 pt-2">
                 <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
                     <i class="fas fa-check-circle me-1"></i> <%= succMsg %>
-                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert" data-dismiss="alert"></button>
                 </div>
             </div>
             <% session.removeAttribute("succMsg"); %>
@@ -168,7 +168,7 @@
             <div class="px-4 pt-2">
                 <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
                     <i class="fas fa-exclamation-triangle me-1"></i> <%= failedMsg %>
-                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert" data-dismiss="alert"></button>
                 </div>
             </div>
             <% session.removeAttribute("failedMsg"); %>
@@ -258,7 +258,7 @@
                                    class="action-icon me-2" title="Update Cover/Edit">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <button type="button" class="action-icon text-danger" 
+                                <button type="button" class="action-icon text-danger" style="border:none; background:none;"
                                         onclick="showDeleteModal(<%= b.getBookId() %>)" title="Delete Book">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -291,10 +291,10 @@
                 <h6 class="fw-bold">Delete this book?</h6>
                 <p class="text-muted" style="font-size: 11px;">This record will be permanently deleted.</p>
                 <div class="d-flex justify-content-center gap-2 mt-3">
-                    <button class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" style="font-size: 11px;">Cancel</button>
-                    <a href="#" id="confirmDeleteBtn" class="btn btn-danger btn-sm px-3" style="font-size: 11px;">
+                    <button type="button" class="btn btn-light btn-sm px-3" data-bs-dismiss="modal" data-dismiss="modal" style="font-size: 11px;">Cancel</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn btn-danger btn-sm px-3" style="font-size: 11px;">
                         Delete
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -302,10 +302,35 @@
 </div>
 
 <script>
+    let selectedBookId = null;
+
     function showDeleteModal(bookId) {
-        document.getElementById('confirmDeleteBtn').href =
-            '${pageContext.request.contextPath}/admin/deleteBook?id=' + bookId;
-        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        selectedBookId = bookId;
+        const modalEl = document.getElementById('deleteModal');
+        
+        // គាំទ្រទាំង Bootstrap 4 និង Bootstrap 5
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            let modalObj = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modalObj.show();
+        } else if (typeof $ !== 'undefined' && $.fn.modal) {
+            $(modalEl).modal('show');
+        } else {
+            // ករណីគ្មាន Bootstrap JS៖ ប្រើ confirm ធម្មតា
+            if (confirm("Are you sure you want to delete this book?")) {
+                executeDelete(bookId);
+            }
+        }
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        if (selectedBookId) {
+            executeDelete(selectedBookId);
+        }
+    });
+
+    function executeDelete(bookId) {
+        const contextPath = '${pageContext.request.contextPath}';
+        window.location.href = contextPath + '/admin/deleteBook?id=' + bookId;
     }
 
     function filterTable() {
