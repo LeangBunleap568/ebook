@@ -33,7 +33,7 @@ public class CartDAOImpl implements CartDAO {
                 stmt.execute(sql);
                 stmt.close();
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("CartDAOImpl Table Init Exception: " + e.getMessage());
         }
     }
@@ -56,7 +56,7 @@ public class CartDAOImpl implements CartDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("CartDAOImpl addCart Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -88,7 +88,7 @@ public class CartDAOImpl implements CartDAO {
                 list.add(c);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("CartDAOImpl getCartByUser Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -108,7 +108,7 @@ public class CartDAOImpl implements CartDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("CartDAOImpl removeBook Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -127,7 +127,7 @@ public class CartDAOImpl implements CartDAO {
                 count = rs.getInt(1);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("CartDAOImpl countCart Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -144,7 +144,7 @@ public class CartDAOImpl implements CartDAO {
             ps.executeUpdate();
             ps.close();
             f = true;
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("CartDAOImpl deleteCartByUid Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -163,7 +163,7 @@ public class CartDAOImpl implements CartDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("CartDAOImpl isBookInCart Exception: " + e.getMessage());
             e.printStackTrace();
         }

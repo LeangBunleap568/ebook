@@ -44,7 +44,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 stmt.execute(sql);
                 stmt.close();
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookOrderDAOImpl Table Init Exception: " + e.getMessage());
         }
     }
@@ -76,7 +76,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
             ps.executeBatch();
             ps.close();
             f = true;
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookOrderDAOImpl saveOrder Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -96,7 +96,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 list.add(bo);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookOrderDAOImpl getBookOrder Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -115,7 +115,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 list.add(bo);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookOrderDAOImpl getAllOrder Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -151,7 +151,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             e.printStackTrace();
         }
         return count;
@@ -168,7 +168,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 count = rs.getInt(1);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             e.printStackTrace();
         }
         return count;
@@ -190,7 +190,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 }
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookOrderDAOImpl getTotalSalesUSD Exception: " + e.getMessage());
         }
         return total;
@@ -208,7 +208,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             e.printStackTrace();
         }
         return f;
@@ -226,7 +226,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookOrderDAOImpl deleteOrdersByEmail Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -245,7 +245,7 @@ public class BookOrderDAOImpl implements BookOrderDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookOrderDAOImpl deleteOrderByOrderNo Exception: " + e.getMessage());
             e.printStackTrace();
         }

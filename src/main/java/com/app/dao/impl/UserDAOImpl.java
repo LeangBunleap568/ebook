@@ -3,7 +3,7 @@ package com.app.dao.impl;
 import com.app.dao.*;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -25,30 +25,24 @@ public class UserDAOImpl implements UserDAO {
         if (conn == null)
             return;
         try {
-            DatabaseMetaData meta = conn.getMetaData();
-            try (ResultSet rs = meta.getTables(null, null, "user", new String[] { "TABLE" })) {
-                if (!rs.next()) {
-                    System.out.println("Creating `user` table...");
-                    String sql = "CREATE TABLE `user` (" +
-                            "  id       INT NOT NULL AUTO_INCREMENT," +
-                            "  name     VARCHAR(100) NOT NULL," +
-                            "  email    VARCHAR(150) NOT NULL UNIQUE," +
-                            "  phone    VARCHAR(20)  DEFAULT NULL," +
-                            "  password VARCHAR(255) NOT NULL," +
-                            "  address  VARCHAR(255) DEFAULT NULL," +
-                            "  landmark VARCHAR(100) DEFAULT NULL," +
-                            "  city     VARCHAR(100) DEFAULT NULL," +
-                            "  state    VARCHAR(100) DEFAULT NULL," +
-                            "  pincode  VARCHAR(20)  DEFAULT NULL," +
-                            "  PRIMARY KEY (id)" +
-                            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-                    try (Statement st = conn.createStatement()) {
-                        st.executeUpdate(sql);
-                        System.out.println("`user` table created.");
-                    }
-                }
+            String sql = "CREATE TABLE IF NOT EXISTS `user` (" +
+                    "  id       INT NOT NULL AUTO_INCREMENT," +
+                    "  name     VARCHAR(100) NOT NULL," +
+                    "  email    VARCHAR(150) NOT NULL UNIQUE," +
+                    "  phone    VARCHAR(20)  DEFAULT NULL," +
+                    "  password VARCHAR(255) NOT NULL," +
+                    "  address  VARCHAR(255) DEFAULT NULL," +
+                    "  landmark VARCHAR(100) DEFAULT NULL," +
+                    "  city     VARCHAR(100) DEFAULT NULL," +
+                    "  state    VARCHAR(100) DEFAULT NULL," +
+                    "  pincode  VARCHAR(20)  DEFAULT NULL," +
+                    "  PRIMARY KEY (id)" +
+                    ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+            try (Statement st = conn.createStatement()) {
+                st.executeUpdate(sql);
+                System.out.println("`user` table ensured.");
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("ensureTableExists error: " + e.getMessage());
         }
     }
@@ -70,7 +64,7 @@ public class UserDAOImpl implements UserDAO {
                 System.out.println("User registered: " + us.getEmail());
                 return true;
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("Register error: " + e.getMessage());
             // Surface a user-friendly message for duplicate email
             if (e.getMessage() != null && e.getMessage().contains("Duplicate entry")) {
@@ -107,7 +101,7 @@ public class UserDAOImpl implements UserDAO {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("Login error: " + e.getMessage());
             throw new RuntimeException("Login failed: " + e.getMessage());
         }
@@ -127,7 +121,7 @@ public class UserDAOImpl implements UserDAO {
                     return rs.next();
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("checkPassword error: " + e.getMessage());
         }
         return false;
@@ -147,7 +141,7 @@ public class UserDAOImpl implements UserDAO {
                 int rows = ps.executeUpdate();
                 return rows > 0;
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("updateProfile error: " + e.getMessage());
         }
         return false;
@@ -165,7 +159,7 @@ public class UserDAOImpl implements UserDAO {
                     return rs.next(); // true = user already exists
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("checkUser error: " + e.getMessage());
         }
         return false;
@@ -180,7 +174,7 @@ public class UserDAOImpl implements UserDAO {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             e.printStackTrace();
         }
         return count;
@@ -210,7 +204,7 @@ public class UserDAOImpl implements UserDAO {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("getUserById error: " + e.getMessage());
         }
         return null;
@@ -236,7 +230,7 @@ public class UserDAOImpl implements UserDAO {
                     users.add(us);
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("getAllUsers error: " + e.getMessage());
         }
         return users;
@@ -251,7 +245,7 @@ public class UserDAOImpl implements UserDAO {
                 ps.setInt(1, id);
                 return ps.executeUpdate() > 0;
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("deleteUser error: " + e.getMessage());
         }
         return false;

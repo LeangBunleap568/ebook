@@ -38,7 +38,7 @@ public class BookDAOImpl implements BookDAO {
                 stmt.execute(sql);
                 stmt.close();
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl Table Init Exception: " + e.getMessage());
         }
     }
@@ -62,7 +62,7 @@ public class BookDAOImpl implements BookDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl addBooks Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -90,7 +90,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getAllBooks Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -117,7 +117,7 @@ public class BookDAOImpl implements BookDAO {
                 b.setEmail(rs.getString(8));
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getBookById Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -141,7 +141,7 @@ public class BookDAOImpl implements BookDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl updateEditBooks Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -161,7 +161,7 @@ public class BookDAOImpl implements BookDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl deleteBooks Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -191,7 +191,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getNewBook Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -220,7 +220,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getRecentBooks Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -250,7 +250,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getOldBooks Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -279,7 +279,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getAllRecentBook Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -309,7 +309,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getAllNewBook Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -339,7 +339,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getAllOldBook Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -369,7 +369,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getBookByOld Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -390,7 +390,7 @@ public class BookDAOImpl implements BookDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl oldBookDelete Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -422,7 +422,7 @@ public class BookDAOImpl implements BookDAO {
                 list.add(b);
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl getBookBySearch Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -438,7 +438,7 @@ public class BookDAOImpl implements BookDAO {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             e.printStackTrace();
         }
         return count;
@@ -458,7 +458,7 @@ public class BookDAOImpl implements BookDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl updateBookImage Exception: " + e.getMessage());
             e.printStackTrace();
         }
@@ -477,7 +477,7 @@ public class BookDAOImpl implements BookDAO {
                 f = true;
             }
             ps.close();
-        } catch (Exception e) {
+        } catch (Exception e) { e.printStackTrace();
             System.out.println("BookDAOImpl deleteBooksByEmail Exception: " + e.getMessage());
             e.printStackTrace();
         }
