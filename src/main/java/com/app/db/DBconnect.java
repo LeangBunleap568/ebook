@@ -18,16 +18,17 @@ public class DBconnect {
     private static final String PASSWORD = getEnvVar("DB_PASSWORD", "admin123");
 
     private static final String URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DB_NAME
-            + "?useSSL=false"
+            + "?useSSL=true"
+            + "&requireSSL=true"
             + "&allowPublicKeyRetrieval=true"
             + "&useUnicode=true"
             + "&characterEncoding=UTF-8"
-            + "&serverTimezone=UTC";
+            + "&serverTimezone=UTC"
+            + "&connectTimeout=15000"
+            + "&socketTimeout=30000";
 
     public static Connection getConn() {
         try {
-            // isValid(2) actually pings MySQL Ã¢â‚¬â€ catches server-side timeouts
-            // that isClosed() alone cannot detect.
             if (conn == null || conn.isClosed() || !conn.isValid(2)) {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(URL, USER, PASSWORD);
