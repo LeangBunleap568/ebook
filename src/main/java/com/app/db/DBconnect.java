@@ -2,12 +2,15 @@ package com.app.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class DBconnect {
     private static Connection conn;
 
+    private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+
     private static String getEnvVar(String key, String defaultValue) {
-        String value = System.getenv(key);
+        String value = dotenv.get(key);
         return (value != null && !value.isEmpty()) ? value : defaultValue;
     }
 
@@ -33,6 +36,14 @@ public class DBconnect {
         try {
             if (conn == null || conn.isClosed() || !conn.isValid(2)) {
                 Class.forName("com.mysql.cj.jdbc.Driver");
+                
+                System.out.println("========================================");
+                System.out.println("Attempting DB Connection...");
+                System.out.println("   URL      : " + URL);
+                System.out.println("   USER     : " + (USER != null ? USER : "null") + " (Length: " + (USER != null ? USER.length() : 0) + ")");
+                System.out.println("   PASSWORD : " + (PASSWORD != null && !PASSWORD.isEmpty() ? "**** (Length: " + PASSWORD.length() + ")" : "EMPTY or NULL"));
+                System.out.println("========================================");
+                
                 conn = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("========================================");
                 System.out.println("✅ DB Connected Successfully!");
