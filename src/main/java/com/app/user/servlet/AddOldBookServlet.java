@@ -48,7 +48,8 @@ public class AddOldBookServlet extends HttpServlet {
 
             if (f) {
                 if (part != null && !fileName.isEmpty()) {
-                    String path = getServletContext().getRealPath("") + "book";
+                    String basePath = getServletContext().getRealPath("");
+                    String path = new File(basePath, "book").getAbsolutePath();
                     File dir = new File(path);
                     if (!dir.exists()) {
                         dir.mkdirs();

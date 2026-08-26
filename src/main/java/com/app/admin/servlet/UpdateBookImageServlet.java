@@ -67,7 +67,8 @@ public class UpdateBookImageServlet extends HttpServlet {
 
             if (success) {
                 // Save to runtime webapp folder
-                String webappPath = getServletContext().getRealPath("") + File.separator + "book";
+                String basePath = getServletContext().getRealPath("");
+                String webappPath = new File(basePath, "book").getAbsolutePath();
                 File webappDir = new File(webappPath);
                 if (!webappDir.exists()) {
                     webappDir.mkdirs();

@@ -69,7 +69,8 @@ public class AddBooksServlet extends HttpServlet {
 
             if (f) {
                 // Save uploaded image to webapp book directory (matches JSP image serving path)
-                String path = getServletContext().getRealPath("") + "book";
+                String basePath = getServletContext().getRealPath("");
+                String path = new File(basePath, "book").getAbsolutePath();
                 File file = new File(path);
                 if (!file.exists()) {
                     file.mkdirs();
