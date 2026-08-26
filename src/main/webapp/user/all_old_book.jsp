@@ -24,13 +24,17 @@
         .btn-view-details { border: 1px solid #94a3b8; background: #fff; color: var(--c-text); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
         .btn-view-details:hover { background: var(--c-text); color: #fff; }
         .badge-custom { font-size: 0.65rem; padding: 4px 8px; text-transform: uppercase; font-weight: 800; color: #fff; display: inline-block; background: var(--c-old-badge); }
+        @media (max-width: 400px) {
+            .book-img-wrapper { height: 160px; }
+            .book-card { padding: 0.5rem !important; }
+        }
     </style>
 </head>
 <body>
     <%@include file="../component/navbar.jsp" %>
 
     <div class="container my-5">
-        <div class="d-flex align-items-center justify-content-between mb-4 section-header">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4 section-header">
             <h4 class="section-title mb-0 d-flex align-items-center">
                 <i class="fas fa-book me-2" style="color: var(--c-old-badge);"></i> All Old Books
             </h4>
@@ -85,7 +89,7 @@
                             </div>
                             <div class="pt-2 border-top mt-2">
                                 <div class="fw-bold price-text mb-2">$<%= price %></div>
-                                <div class="d-flex gap-2">
+                                <div class="d-flex flex-wrap gap-2">
                                     <a href="${pageContext.request.contextPath}/user/cart?bid=<%= b.getBookId() %>&uid=${userobj.id}" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                     <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm w-50 py-1.5"><i class="fas fa-eye me-1"></i>View</a>
                                 </div>

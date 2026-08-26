@@ -51,13 +51,14 @@
         text-transform: uppercase;
     }
 
-    .search-box { display: flex; width: 280px; }
+    .search-box { display: flex; flex: 1; max-width: 320px; min-width: 0; }
     .search-input {
         background: #ffffff;
         border: 1px solid var(--c-input-border);
         padding: 6px 12px;
         font-size: 0.85rem;
         width: 100%;
+        min-width: 0;
         color: var(--c-text);
         font-weight: 500;
     }
@@ -72,12 +73,13 @@
         padding: 0 14px;
         cursor: pointer;
         transition: background-color 0.2s ease;
+        flex-shrink: 0;
     }
     .search-btn:hover {
         background: var(--c-accent);
     }
 
-    .nav-actions { display: flex; gap: 8px; }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .btn-classic {
         background: #ffffff;
         border: 1px solid var(--c-input-border);
@@ -90,6 +92,7 @@
         align-items: center;
         gap: 6px;
         transition: all 0.2s ease;
+        white-space: nowrap;
     }
     .btn-classic:hover { 
         background: var(--c-accent); 
@@ -97,14 +100,36 @@
         border-color: var(--c-accent);
     }
 
+    /* Mobile hamburger toggle */
+    .nav-toggle {
+        display: none;
+        background: none;
+        border: 1px solid var(--c-input-border);
+        color: var(--c-text);
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+    .mobile-collapse {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
     .menu-bar {
         display: flex;
         justify-content: space-between;
-        padding: 0 2rem;
+        padding: 0 1rem;
         background: var(--c-surface);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
     }
+    .menu-bar::-webkit-scrollbar { display: none; }
     .menu-bar a {
-        padding: 12px 16px;
+        padding: 10px 14px;
         color: var(--c-muted);
         text-decoration: none;
         font-size: 0.85rem;
@@ -113,6 +138,7 @@
         letter-spacing: 0.5px;
         border-bottom: 3px solid transparent;
         transition: all 0.2s ease;
+        white-space: nowrap;
     }
     .menu-bar a:hover {
         color: var(--c-text);
@@ -122,6 +148,20 @@
         color: var(--c-accent);
         border-bottom-color: var(--c-accent);
     }
+
+    @media (max-width: 767px) {
+        .top-bar { padding: 0 1rem; gap: 8px; flex-wrap: nowrap; }
+        .nav-toggle { display: inline-flex; align-items: center; }
+        .mobile-collapse { display: none; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .mobile-collapse.show { display: flex; }
+        .search-box { max-width: 100%; width: 100%; }
+        .nav-actions { width: 100%; }
+        .btn-classic { font-size: 0.8rem; padding: 5px 10px; }
+        .brand-logo { font-size: 1.05rem; }
+    }
+    @media (min-width: 768px) {
+        .top-bar { gap: 16px; }
+    }
 </style>
 
 <div class="header-nav">
@@ -130,41 +170,48 @@
             <i class="fas fa-book-open me-2" style="color: var(--c-accent);"></i>eBook
         </a>
 
-        <c:if test="${not ((not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/'))}">
-            <form class="search-box" action="${pageContext.request.contextPath}/user/search.jsp" method="GET">
-                <input class="search-input" type="search" name="ch" placeholder="Search book..." required>
-                <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
-            </form>
-        </c:if>
+        <%-- Mobile toggle button --%>
+        <button class="nav-toggle" id="navToggle" onclick="document.getElementById('mobileCollapse').classList.toggle('show')" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
 
-        <div class="nav-actions">
-            <c:choose>
-                <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/')}">
-                    <span class="btn-classic"><i class="fas fa-user-shield me-1"></i>Admin</span>
-                    <a href="${pageContext.request.contextPath}/logout" class="btn-classic"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                </c:when>
-                <c:when test="${not empty userobj}">
-                    <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn-classic"><i class="fas fa-user"></i>${userobj.name}</a>
-                    <%
-                        user navUser = (user) session.getAttribute("userobj");
-                        int cartCount = 0;
-                        if (navUser != null) {
-                            java.sql.Connection navbarConn = DBconnect.getConn();
-                            if (navbarConn != null) {
-                                cartCount = new CartDAOImpl(navbarConn).countCart(navUser.getId());
+        <div class="mobile-collapse" id="mobileCollapse">
+            <c:if test="${not ((not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/'))}">
+                <form class="search-box" action="${pageContext.request.contextPath}/user/search.jsp" method="GET">
+                    <input class="search-input" type="search" name="ch" placeholder="Search book..." required>
+                    <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </c:if>
+
+            <div class="nav-actions">
+                <c:choose>
+                    <c:when test="${(not empty userobj and userobj.email == 'admin@gmail.com') or currentUri.contains('/admin/')}">
+                        <span class="btn-classic"><i class="fas fa-user-shield me-1"></i>Admin</span>
+                        <a href="${pageContext.request.contextPath}/logout" class="btn-classic"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                    </c:when>
+                    <c:when test="${not empty userobj}">
+                        <a href="${pageContext.request.contextPath}/user/setting.jsp" class="btn-classic"><i class="fas fa-user"></i>${userobj.name}</a>
+                        <%
+                            user navUser = (user) session.getAttribute("userobj");
+                            int cartCount = 0;
+                            if (navUser != null) {
+                                java.sql.Connection navbarConn = DBconnect.getConn();
+                                if (navbarConn != null) {
+                                    cartCount = new CartDAOImpl(navbarConn).countCart(navUser.getId());
+                                }
                             }
-                        }
-                    %>
-                    <a href="${pageContext.request.contextPath}/user/cart.jsp" class="btn-classic">
-                        <i class="fas fa-shopping-cart"></i>Cart (<%= cartCount %>)
-                    </a>
-                    <a href="${pageContext.request.contextPath}/logout" class="btn-classic"><i class="fas fa-sign-out-alt"></i></a>
-                </c:when>
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/login.jsp" class="btn-classic"><i class="fas fa-sign-in-alt"></i>Sign In</a>
-                    <a href="${pageContext.request.contextPath}/register.jsp" class="btn-classic"><i class="fas fa-user-plus"></i>Register</a>
-                </c:otherwise>
-            </c:choose>
+                        %>
+                        <a href="${pageContext.request.contextPath}/user/cart.jsp" class="btn-classic">
+                            <i class="fas fa-shopping-cart"></i>Cart (<%= cartCount %>)
+                        </a>
+                        <a href="${pageContext.request.contextPath}/logout" class="btn-classic"><i class="fas fa-sign-out-alt"></i></a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/login.jsp" class="btn-classic"><i class="fas fa-sign-in-alt"></i>Sign In</a>
+                        <a href="${pageContext.request.contextPath}/register.jsp" class="btn-classic"><i class="fas fa-user-plus"></i>Register</a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
     </div>
 

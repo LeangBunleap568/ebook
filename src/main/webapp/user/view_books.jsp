@@ -47,11 +47,16 @@
             padding: 2rem;
         }
         .product-image {
-            height: 300px;
-            width: 200px;
+            height: 280px;
+            width: 100%;
+            max-width: 200px;
             object-fit: cover;
             border: 1px solid var(--ui-border);
             box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.05);
+        }
+        @media (max-width: 576px) {
+            .product-image { height: 220px; max-width: 160px; }
+            .product-image-container { padding: 1rem; }
         }
         .feature-box {
             background: #f8fafc;
@@ -143,7 +148,7 @@
         <div class="row g-4 align-items-stretch">
             
             <!-- Left Card: Book Image & Metadata -->
-            <div class="col-lg-5">
+            <div class="col-12 col-md-5 col-lg-5">
                 <div class="ui-card p-4 h-100 d-flex flex-column justify-content-between text-center">
                     <div class="product-image-container mb-4">
                         <img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="product-image" alt="<%= b.getBookName() %>" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/book/default_book.svg';">
@@ -158,7 +163,7 @@
             </div>
 
             <!-- Right Card: Details, Seller Info & Actions -->
-            <div class="col-lg-7">
+            <div class="col-12 col-md-7 col-lg-7">
                 <div class="ui-card p-4 p-md-5 h-100 d-flex flex-column justify-content-between text-center">
                     <div>
                         <h3 class="fw-bold text-uppercase mb-4" style="color: var(--ui-navy); border-bottom: 2px solid var(--ui-border); padding-bottom: 12px;"><%= b.getBookName() %></h3>

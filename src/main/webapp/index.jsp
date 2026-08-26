@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ebook Store Classic Modern</title>
     <%@include file="component/rootCss.jsp" %>
     <style>
@@ -17,7 +18,12 @@
         .horizontal-scroll-container { display: flex; overflow-x: auto; padding: 1rem 0.25rem; gap: 1.25rem; cursor: grab; user-select: none; }
         .horizontal-scroll-container::-webkit-scrollbar { height: 6px; }
         .horizontal-scroll-container::-webkit-scrollbar-thumb { background: #94a3b8; }
-        .scroll-item { flex: 0 0 240px; max-width: 240px; }
+        .scroll-item { flex: 0 0 220px; max-width: 220px; }
+        @media (max-width: 576px) {
+            .scroll-item { flex: 0 0 180px; max-width: 180px; }
+            .horizontal-scroll-container { padding: 0.75rem 0; gap: 0.85rem; }
+            .section-title { font-size: 1rem; }
+        }
         .book-card { border: 2px solid var(--c-border) !important; background: var(--c-surface) !important; }
         .book-card:hover { border-color: var(--c-accent) !important; }
         .book-img-wrapper { height: 200px; background: #fff; border: 1px solid var(--c-border); display: flex; align-items: center; justify-content: center; }
@@ -44,7 +50,7 @@
     <div class="container my-5">
         <!-- 1. Recent Books -->
         <section class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3 section-header">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 section-header">
                 <h4 class="section-title mb-0"><i class="fas fa-clock me-2" style="color: #d97706;"></i> Recent Books</h4>
                 <a href="${pageContext.request.contextPath}/user/all_recent_book.jsp" class="btn btn-sm btn-view-all px-3 py-1.5">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
@@ -74,7 +80,7 @@
 
         <!-- 2. New Books -->
         <section class="mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3 section-header">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 section-header">
                 <h4 class="section-title mb-0"><i class="fas fa-sparkles me-2" style="color: var(--c-accent);"></i> New Books</h4>
                 <a href="${pageContext.request.contextPath}/user/all_new_book.jsp" class="btn btn-sm btn-view-all px-3 py-1.5">View All <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
@@ -94,6 +100,35 @@
                                       <a href="${pageContext.request.contextPath}/user/cart?bid=<%= b.getBookId() %>" class="btn btn-add-cart btn-sm w-50 py-1.5">
     <i class="fas fa-cart-plus me-1"></i>Add
 </a>
+                                        <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm w-50 py-1.5"><i class="fas fa-eye me-1"></i>View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }} %>
+            </div>
+        </section>
+        <!-- 3. Old Books -->
+        <section class="mb-5">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 section-header">
+                <h4 class="section-title mb-0"><i class="fas fa-book-open me-2" style="color: #64748b;"></i> Old Books</h4>
+                <a href="${pageContext.request.contextPath}/user/all_old_book.jsp" class="btn btn-sm btn-view-all px-3 py-1.5">View All <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+            <div class="horizontal-scroll-container">
+                <% List<BookDtls> list3 = dao.getAllOldBook();
+                   if (list3 == null || list3.isEmpty()) { %>
+                    <div class="text-center w-100 py-4 border border-dashed bg-white"><p class="text-muted fw-bold mb-0">No Old Books Available</p></div>
+                <% } else { for (BookDtls b : list3) { %>
+                    <div class="scroll-item">
+                        <div class="card h-100 book-card p-3">
+                            <div class="book-img-wrapper mb-3"><img src="${pageContext.request.contextPath}/book/<%= b.getPhotoName() %>" class="book-img" onerror="this.src='${pageContext.request.contextPath}/book/default_book.svg';"></div>
+                            <div class="card-body p-0 d-flex flex-column justify-content-between">
+                                <div><span class="badge badge-custom mb-2" style="background:#64748b;">Old</span><h6 class="card-title text-truncate fw-bold mb-1"><%= b.getBookName() %></h6><p class="small text-truncate mb-2 text-muted">Author: <%= b.getAuthor() %></p></div>
+                                <div class="pt-2 border-top mt-2">
+                                    <div class="fw-bold price-text mb-2">$<%= new java.text.DecimalFormat("#,##0.00").format(Double.parseDouble(b.getPrice())) %></div>
+                                    <div class="d-flex gap-2">
+                                        <a href="${pageContext.request.contextPath}/user/cart?bid=<%= b.getBookId() %>" class="btn btn-add-cart btn-sm w-50 py-1.5"><i class="fas fa-cart-plus me-1"></i>Add</a>
                                         <a href="${pageContext.request.contextPath}/user/view_books.jsp?id=<%= b.getBookId() %>" class="btn btn-view-details btn-sm w-50 py-1.5"><i class="fas fa-eye me-1"></i>View</a>
                                     </div>
                                 </div>

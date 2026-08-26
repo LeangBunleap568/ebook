@@ -124,6 +124,14 @@
         .status-cancelled { background: #fef2f2; color: var(--ui-red); border-color: var(--ui-red); }
         .status-pending { background: #fffbeb; color: var(--ui-amber); border-color: var(--ui-amber); }
         .status-completed { background: #f0fdf4; color: var(--ui-green); border-color: var(--ui-green); }
+        /* Mobile responsive table: hide author on xs */
+        @media (max-width: 575px) {
+            .table-custom th.col-author,
+            .table-custom td.col-author { display: none; }
+            .table-custom th, .table-custom td { font-size: 0.78rem; padding: 6px 8px; }
+            .info-box { font-size: 0.78rem; }
+            .order-id-label { font-size: 0.75rem; word-break: break-all; }
+        }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -196,7 +204,7 @@
                     <div class="ui-card p-4 mb-4">
                         
                         <!-- Order Header Bar -->
-                        <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-3 border-bottom gap-2">
+                        <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between align-items-start align-items-sm-center pb-3 mb-3 border-bottom gap-2">
                             <div class="d-flex align-items-center gap-2">
                                 <% if ("Cancelled".equals(first.getStatus())) { %>
                                     <span class="status-badge status-cancelled"><i class="fas fa-times-circle me-1"></i>Cancelled</span>
@@ -207,7 +215,7 @@
                                 <% } %>
                                 <span class="small text-muted fw-bold">(<%= items.size() %> Items)</span>
                             </div>
-                            <div class="font-monospace small fw-bold" style="color: var(--ui-navy);">
+                            <div class="font-monospace small fw-bold order-id-label" style="color: var(--ui-navy);">
                                 ORDER ID: <span class="text-primary">#<%= orderNo %></span>
                             </div>
                         </div>
@@ -228,7 +236,7 @@
                                     <tr>
                                         <th style="width: 40px;">#</th>
                                         <th>Book Name</th>
-                                        <th>Author</th>
+                                        <th class="col-author">Author</th>
                                         <th class="text-end">Price</th>
                                     </tr>
                                 </thead>
@@ -240,7 +248,7 @@
                                     <tr>
                                         <td class="text-muted fw-bold small"><%= i++ %></td>
                                         <td class="fw-bold" style="color: var(--ui-navy);"><%= item.getBookName() %></td>
-                                        <td class="text-muted"><%= item.getAuthor() %></td>
+                                        <td class="text-muted col-author"><%= item.getAuthor() %></td>
                                         <td class="text-end fw-bold" style="color: var(--ui-navy);">$<%= fmt.format(p) %></td>
                                     </tr>
                                     <% } %>
@@ -249,7 +257,7 @@
                         </div>
 
                         <!-- Footer / Actions -->
-                        <div class="d-flex flex-wrap justify-content-between align-items-center pt-2">
+                        <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between align-items-start align-items-sm-center gap-2 pt-2">
                             <div>
                                 <% if ("Pending".equals(first.getStatus()) || "Processing".equals(first.getStatus())) { %>
                                     <a href="${pageContext.request.contextPath}/user/cancel_order?orderNo=<%= orderNo %>" 
@@ -259,7 +267,7 @@
                                     </a>
                                 <% } %>
                             </div>
-                            <div class="text-end">
+                            <div class="text-start text-sm-end">
                                 <span class="small text-uppercase text-muted fw-bold me-2">Total Amount:</span>
                                 <span class="fw-bold fs-6" style="color: var(--ui-green);">$<%= fmt.format(orderTotal) %></span>
                             </div>
